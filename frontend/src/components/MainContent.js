@@ -1,18 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MainContent.css';
 import TrackDiagram from './TrackDiagram';
-// Import our data model
-import layoutData from '../data/ghaziabad_layout';
+import socketService from '../services/socketService'; // Import our new service
 
 const MainContent = () => {
-    // In the future, this state will be updated by a WebSocket connection
-    const [networkState, setNetworkState] = useState(layoutData);
+    // This state will now hold the REAL-TIME data from the backend
+    const [networkState, setNetworkState] = useState(null);
+
+    useEffect(() => {
+        // --- Setup Connection and Listeners ---
+        socketService.connect();
+
+        // Listen for the very first state payload from the server
+        socketService.on('initial-state', (data) => {
+            console.log("Received initial state");
+            setNetworkState(data);
+        });
+
+        // Listen for ongoing real-time updates
+        socketService.on('network-update', (data) => {
+            // No console log here to avoid flooding the console
+            setNetworkState(data);
+        });
+
+        // --- Cleanup on component unmount ---
+        return () => {
+            console.log("Disconnecting socket...");
+            // Stop listening to events to prevent memory leaks
+            socketService.off('initial-state');
+            socketService.off('network-update');
+            socketService.disconnect();
+        };
+    }, []); // The empty dependency array [] means this effect runs only once on mount
+
+    // While waiting for the initial state, show a loading message
+    if (!networkState) {
+        return <div className="loading-message">Connecting to simulation server...</div>;
+    }
 
     return (
         <main className="main-content">
             <div className="panel track-panel" id="panel-1">
-                 {/* Pass the entire network object as a prop */}
-                 <TrackDiagram network={networkState.network} />
+                 <TrackDiagram 
+                    network={networkState.network} 
+                    trains={networkState.trains} 
+                 />
             </div>
             <div className="panel track-panel" id="panel-2">
                 {/* Placeholder for future content */}

@@ -1,0 +1,19 @@
+.train-group {
+    transition: transform 1s linear; /* Matches the backend tick rate for smooth movement */
+}
+
+.train-body {
+    fill: var(--accent-orange);
+    stroke: #000;
+    stroke-width: 1px;
+    rx: 3px; /* Rounded corners */
+}
+
+.train-label {
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #000;
+    font-size: 8px;
+    font-weight: bold;
+    font-family: var(--font-main);
+}

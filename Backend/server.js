@@ -2,24 +2,22 @@ const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
 const cors = require('cors');
-require('dotenv').config();
+const SimulationEngine = require('./simulationEngine');
 
-const decisionRoutes = require('./routes/decisionRoutes');
-
+// --- Server Setup ---
+// Initialize express app and create an HTTP server
 const app = express();
 const server = http.createServer(app);
+const PORT = 5001; // Use a different port than the frontend (React's default is 3000)
 
-// Use CORS to allow your frontend to connect
-app.use(cors({
-    origin: "http://localhost:3000" // The default for Create React App
-}));
+// --- CORS Configuration ---
+// Enable Cross-Origin Resource Sharing to allow our React frontend
+// (running on localhost:3000) to connect to this backend.
+app.use(cors({ origin: "http://localhost:3000" }));
 
-app.use(express.json());
-
-// API Routes
-app.use('/api/decisions', decisionRoutes);
-
-// WebSocket Server
+// --- WebSocket (Socket.io) Server Setup ---
+// Initialize a new Socket.io server and attach it to the HTTP server.
+// Configure CORS for the WebSocket connection as well.
 const io = new Server(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -27,49 +25,56 @@ const io = new Server(server, {
     }
 });
 
-// This is a mock simulation of real-time train data.
-// In a real system, this would come from actual railway sensors.
-let trainData = [
-    { id: '12345 Exp', position: 10, speed: 80, status: 'On Time' },
-    { id: '67890 Fght', position: 5, speed: 50, status: 'On Time' },
-    { id: '54321 Lcl', position: 8, speed: 60, status: 'Delayed' },
-];
+// --- Simulation Engine Initialization ---
+// Create a new instance of our simulation logic.
+const engine = new SimulationEngine();
+// Define the update frequency. The simulation will update every 1 second (1000ms).
+const TICK_RATE = 1000;
 
+// =============================================================================
+// --- Real-time Logic ---
+// =============================================================================
+
+/**
+ * The "Game Loop": This interval is the heartbeat of the simulation.
+ * At every tick, it updates the simulation state and broadcasts it.
+ */
+setInterval(() => {
+    // 1. Tell the engine to perform one step of the simulation
+    //    (e.g., move trains, check for events).
+    engine.update();
+    
+    // 2. Get the complete, latest state of the network from the engine.
+    const currentState = engine.getState();
+    
+    // 3. Broadcast this new state to ALL connected clients using the 'network-update' event.
+    //    The frontend will listen for this event to re-render the map.
+    io.emit('network-update', currentState);
+
+}, TICK_RATE);
+
+
+/**
+ * Connection Handler: This block runs whenever a new client (a web browser)
+ * opens a WebSocket connection to this server.
+ */
 io.on('connection', (socket) => {
-    console.log('A user connected:', socket.id);
-    // Send the initial data immediately on connection
-    socket.emit('initialData', { trains: trainData });
+    console.log(`A user connected: ${socket.id}`);
 
+    // When a new client connects, we immediately send them the current state.
+    // This ensures their screen isn't blank until the next global update tick.
+    // We use a different event name, 'initial-state', for this first payload.
+    socket.emit('initial-state', engine.getState());
+
+    // Set up a listener for when this specific client disconnects.
     socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id);
+        console.log(`User disconnected: ${socket.id}`);
     });
 });
 
-// Simulate train movement every 3 seconds
-setInterval(() => {
-    trainData = trainData.map(train => {
-        // Simple linear movement for simulation
-        let newPosition = train.position + (train.speed / 100);
-        if (newPosition > 100) newPosition = 0; // Loop back
-        return { ...train, position: newPosition };
-    });
 
-    // Broadcast the updated data to all connected clients
-    io.emit('updateData', { trains: trainData });
-    
-    // Check for a simulated conflict
-    if (trainData[0].position > 48 && trainData[0].position < 52 && trainData[1].position > 45 && trainData[1].position < 49) {
-        io.emit('conflictDetected', {
-            conflictId: `C${Date.now()}`,
-            description: `Precedence conflict at Ghaziabad Junction. Train ${trainData[0].id} and ${trainData[1].id} are approaching the same junction.`,
-            involved: [trainData[0].id, trainData[1].id],
-            location: 'Ghaziabad Junction'
-        });
-    }
-
-}, 3000);
-
-const PORT = process.env.PORT || 5000;
+// --- Start the HTTP Server ---
+// Make the server listen for incoming connections on the specified port.
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Backend simulation server is running on http://localhost:${PORT}`);
 });
