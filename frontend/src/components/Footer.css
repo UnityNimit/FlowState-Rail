@@ -1,0 +1,49 @@
+.app-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-panel);
+    padding: 0 15px;
+    height: 48px;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-status {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.footer-status .status-ok {
+    color: var(--status-green);
+    font-weight: bold;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background-color: var(--bg-panel-header);
+    border: 1px solid #6a6f71;
+    color: var(--text-primary);
+    padding: 8px 24px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #63686a;
+}
+
+.action-btn.primary {
+    background-color: var(--accent-cyan-dark);
+    border-color: var(--accent-cyan);
+    color: #1a1c1d;
+}
+
+.action-btn.primary:hover {
+    background-color: var(--accent-cyan);
+}

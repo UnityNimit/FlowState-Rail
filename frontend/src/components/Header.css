@@ -1,0 +1,46 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2a2d2f;
+    padding: 0 10px;
+    height: 32px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 13px;
+    -webkit-app-region: drag; /* Allows dragging the window */
+}
+
+.header-title {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.header-time {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.window-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    -webkit-app-region: no-drag; /* Exclude controls from drag region */
+}
+
+.control-icon {
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.control-icon:hover {
+    background-color: var(--bg-panel);
+}
+
+.close-icon:hover {
+    background-color: #e81123;
+}

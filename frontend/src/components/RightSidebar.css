@@ -1,0 +1,100 @@
+.right-sidebar {
+    width: 320px;
+    background-color: var(--bg-panel);
+    border-left: 1px solid var(--border-color);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Status List specific styles */
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.status-dot.green { background-color: var(--status-green); }
+.status-dot.yellow { background-color: var(--status-yellow); }
+.status-dot.red { background-color: var(--status-red); }
+
+/* Emergency Controls specific styles */
+.emergency-controls {
+    display: flex;
+    justify-content: space-around;
+    gap: 8px;
+}
+
+.emergency-controls button {
+    flex: 1;
+    background-color: #a84343;
+    color: white;
+    border: 1px solid #7a2a2a;
+    border-radius: 4px;
+    padding: 8px 5px;
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.emergency-controls button:hover {
+    background-color: #c44e4e;
+}
+
+/* AI Assistant specific styles */
+.ai-assistant {
+    flex-grow: 1; /* Take remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-controls {
+    display: flex;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.ai-feed {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ai-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+}
+
+.ai-message.alert {
+    color: var(--accent-orange);
+}
+
+.star-icon {
+    color: var(--accent-yellow);
+    flex-shrink: 0; /* Prevents icon from shrinking */
+    margin-top: 2px;
+}

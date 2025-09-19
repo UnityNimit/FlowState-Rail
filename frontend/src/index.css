@@ -1,0 +1,49 @@
+/* Using a Google Font that closely matches the UI */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  /* Color Palette from the image */
+  --bg-main: #33383a;
+  --bg-panel: #43484a;
+  --bg-panel-header: #53585a;
+  --border-color: #2a2d2e;
+  --text-primary: #d1d5db;
+  --text-secondary: #a1a5ab;
+  --accent-cyan: #70e0ff;
+  --accent-cyan-dark: #32c4e6;
+  --accent-yellow: #fde88d;
+  --accent-orange: #ff9f43;
+  --status-green: #4ade80;
+  --status-yellow: #facc15;
+  --status-red: #f87171;
+  --font-main: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+}
+
+/* Custom Scrollbar for a more native feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8b92a0;
+}
