@@ -2,15 +2,20 @@ const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
 const cors = require('cors');
+const path = require('path');
 const SimulationEngine = require('./simulationEngine');
 const { getOptimalRoutingPlan } = require('./geminiDispatcher');
 
 const app = express();
 const server = http.createServer(app);
-const PORT = 5001;
-app.use(cors({ origin: "http://localhost:3000" }));
+const PORT = process.env.PORT || 5001;
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+app.use(cors());
 const io = new Server(server, {
-    cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] }
+    cors: { origin: "*", methods: ["GET", "POST"] }
 });
 
 const engine = new SimulationEngine();
@@ -54,6 +59,12 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);
     });
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 
 server.listen(PORT, () => {

@@ -127,3 +127,5 @@ input:checked + .slider:before {
     cursor: pointer;
     font-weight: 500;
 }
+
+

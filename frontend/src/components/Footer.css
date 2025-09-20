@@ -20,30 +20,21 @@
 
 .footer-actions {
     display: flex;
-    gap: 10px;
 }
 
-.action-btn {
-    background-color: var(--bg-panel-header);
-    border: 1px solid #6a6f71;
-    color: var(--text-primary);
-    padding: 8px 24px;
+.weather-btn {
+    background-color: #6a6f71;
+    border: 1px solid #7a7f81;
+    color: var(--text-secondary);
+    padding: 8px 16px;
     border-radius: 4px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 
-.action-btn:hover {
-    background-color: #63686a;
-}
-
-.action-btn.primary {
-    background-color: var(--accent-cyan-dark);
-    border-color: var(--accent-cyan);
-    color: #1a1c1d;
-}
-
-.action-btn.primary:hover {
-    background-color: var(--accent-cyan);
+.weather-btn.enabled {
+    background-color: #3b82f6; /* Blue for enabled */
+    border-color: #60a5fa;
+    color: white;
 }

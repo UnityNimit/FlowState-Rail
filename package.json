@@ -1,0 +1,13 @@
+{
+  "name": "flowstate-rail",
+  "version": "1.0.0",
+  "description": "FlowState-Rail Monorepo",
+  "main": "Backend/server.js",
+  "scripts": {
+    "install": "npm install --prefix Backend && npm install --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "start": "node Backend/server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
