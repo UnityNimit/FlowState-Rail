@@ -25,11 +25,9 @@ const RightSidebar = () => {
             <div className="panel ai-assistant">
                 <div className="panel-header">
                     <span>AI Assistant: RailOps</span>
-<<<<<<< HEAD
                     <div className="ai-controls"><FiMinimize2 /><FiMaximize2 /><IoClose /></div>
-=======
                     <div className="ai-controls"></div>
->>>>>>> a902346e7c0cd8ce47d2429af486055c938e80a2
+{/* >>>>>>> a902346e7c0cd8ce47d2429af486055c938e80a2 */}
                 </div>
                 <div className="panel-content ai-feed">
                     <button className="ai-action-button" onClick={handleGetPlanClick} disabled={isThinking}>
