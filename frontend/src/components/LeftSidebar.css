@@ -33,37 +33,16 @@
     padding: 12px;
 }
 
-/* Legend Styles */
-.legend-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 13px;
+.map-dropdown {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
 }
 
-.legend-list li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.line-style {
-    display: inline-block;
-    width: 30px;
-    height: 4px;
-    margin-right: 10px;
-    border-radius: 2px;
-}
-
-.line-style.bridge { background-color: var(--text-secondary); border: 1px solid var(--text-primary); }
-.line-style.tunnel { background-color: var(--text-secondary); border-top: 2px dotted; border-bottom: 2px dotted; }
-.line-style.railroad { background-color: var(--text-secondary); }
-.line-style.high-speed { background-color: var(--accent-cyan-dark); }
-.line-style.siding { height: 2px; background-color: var(--text-secondary); }
-.line-style.spur { height: 2px; background-color: gray; }
-.line-style.maintenance { background-color: var(--accent-orange); }
-
-/* Toggle Switch Styles */
 .panel-content.toggles {
     display: flex;
     flex-direction: column;
@@ -148,3 +127,5 @@ input:checked + .slider:before {
     cursor: pointer;
     font-weight: 500;
 }
+
+

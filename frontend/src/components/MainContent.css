@@ -42,3 +42,41 @@
     font-size: 1.5rem;
     color: var(--text-secondary);
 }
+
+
+.sim-controls {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background-color: rgba(42, 45, 46, 0.8);
+    padding: 5px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 10;
+}
+
+.sim-label {
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 5px;
+    color: var(--text-secondary);
+}
+
+.sim-speed-btn {
+    background-color: var(--bg-panel-header);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.sim-speed-btn.active,
+.sim-speed-btn:hover {
+    background-color: var(--accent-cyan-dark);
+    color: #1a1c1d;
+    border-color: var(--accent-cyan);
+}

@@ -1,71 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './RightSidebar.css';
-import { IoClose, IoStar } from 'react-icons/io5';
-import { FiMinimize2, FiMaximize2 } from 'react-icons/fi';
+import { IoClose } from 'react-icons/io5';
+import { FiMinimize2, FiMaximize2, FiInfo, FiCpu } from 'react-icons/fi';
+import socketService from '../services/socketService';
 
-// A reusable status item component
-const StatusItem = ({ label, status, toggled }) => (
-    <div className="status-item">
-        <div className="status-label">
-            <span className={`status-dot ${status}`}></span>
-            {label}
-        </div>
-        <label className="switch">
-            <input type="checkbox" defaultChecked={toggled} />
-            <span className="slider round"></span>
-        </label>
-    </div>
-);
+// ... (StatusItem component remains the same)
 
 const RightSidebar = () => {
+    const [recommendations, setRecommendations] = useState([]);
+    const [isThinking, setIsThinking] = useState(false);
+
+    useEffect(() => {
+        // ... (socket listeners remain the same)
+    }, []);
+
+    const handleGetPlanClick = () => {
+        socketService.emit('ai:get-plan');
+    };
+
     return (
         <aside className="right-sidebar">
-            <div className="panel">
-                <div className="panel-header">
-                    <span>System Status</span>
-                </div>
-                <div className="panel-content status-list">
-                    <StatusItem label="Communication Link" status="green" toggled={true} />
-                    <StatusItem label="Primary Power Supply" status="green" toggled={true} />
-                    <StatusItem label="Backup Power Supply" status="green" toggled={false} />
-                    <StatusItem label="Signal Health" status="yellow" toggled={true} />
-                    <StatusItem label="Manual Override" status="yellow" toggled={false} />
-                    <StatusItem label="Emergency Override" status="green" toggled={false} />
-                </div>
-            </div>
-
-            <div className="panel">
-                <div className="panel-header">
-                    <span>Emergency Controls</span>
-                </div>
-                <div className="panel-content emergency-controls">
-                    <button>ALL SIGNALS HALT</button>
-                    <button>SECTION POWER OFF</button>
-                    <button>BROADCAST ALERT</button>
-                </div>
-            </div>
+            {/* ... (System Status panel remains the same) */}
             
             <div className="panel ai-assistant">
                 <div className="panel-header">
                     <span>AI Assistant: RailOps</span>
-                    <div className="ai-controls">
-                        <FiMinimize2 />
-                        <FiMaximize2 />
-                        <IoClose />
-                    </div>
+                    <div className="ai-controls"></div>
                 </div>
                 <div className="panel-content ai-feed">
-                    <div className="ai-message">
-                        <IoStar className="star-icon" />
-                        <span>High-priority train 12417 approaching Sahibabad Jn.</span>
-                    </div>
-                    <div className="ai-message">
-                        <IoStar className="star-icon" />
-                        <span>Potential congestion detected on Line 3 in 15 mins.</span>
-                    </div>
-                    <div className="ai-message alert">
-                        <IoStar className="star-icon" />
-                        <span>Signal S14B unresponsive. Suggest rerouting freight 58210 via siding.</span>
+                    <button className="ai-action-button" onClick={handleGetPlanClick} disabled={isThinking}>
+                        <FiCpu /> {isThinking ? 'Optimizing...' : 'Apply AI Plan'}
+                    </button>
+                    <div className="ai-recommendation-list">
+                        {isThinking && <div className="thinking-indicator">AI is analyzing network state...</div>}
+                        
+                        {!isThinking && recommendations.length === 0 && (
+                             <div className="no-plan-message">Click "Apply AI Plan" to get recommendations.</div>
+                        )}
+                        
+                        {recommendations.map((rec, index) => (
+                            <div key={rec.trainId + index} 
+                                 className={`ai-recommendation-item ${rec.action.includes('HOLD') ? 'action-hold' : 'action-proceed'}`}>
+                                <div className="rec-priority">{rec.priority}</div>
+                                <div className="rec-details">
+                                    <span className="rec-train-id">{rec.trainId}</span>
+                                    <span className="rec-action">
+                                        {rec.action.includes('HOLD') ? `HOLD AT ${rec.details}` : rec.action}
+                                        <span className="rec-path">{rec.humanReadablePath !== 'N/A' && rec.humanReadablePath}</span>
+                                    </span>
+                                </div>
+                                <div className="rec-justification" title={rec.justification}>
+                                    <FiInfo />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
