@@ -41,6 +41,13 @@ class SocketService {
             this.socket.off(eventName);
         }
     }
+
+    emit(eventName, data) {
+        if (this.socket) {
+            this.socket.emit(eventName, data);
+        }
+    }
+    
 }
 
 // Export a single instance of the service
