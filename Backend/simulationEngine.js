@@ -141,6 +141,17 @@ class SimulationEngine {
     // ==================================================================
     // --- MISSING HELPER FUNCTIONS (NOW INCLUDED) ---
     // ==================================================================
+
+    setTrackStatus(trackId, status) {
+        const track = this.state.network.trackSegments.find(s => s.id === trackId);
+        if (track) {
+            track.status = status;
+            console.log(`ENGINE: Manually set track ${trackId} status to ${status}.`);
+        } else {
+            // This can happen if the user types a non-existent ID
+            console.error(`ENGINE: Attempted to set status for non-existent track ${trackId}.`);
+        }
+    }
     
     advanceTrainToNextSegment(train, route) {
         const currentSegmentIndex = route.trackSegments.indexOf(train.currentSegmentId);

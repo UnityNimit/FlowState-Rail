@@ -1,7 +1,18 @@
+/* --- FIX: Main container now handles layout and scrolling correctly --- */
 .left-sidebar {
     width: 280px;
     background-color: var(--bg-panel);
     border-right: 1px solid var(--border-color);
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column;
+    height: 100%; /* Ensure it takes full height of its container */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* --- NEW: This wrapper will contain all panels and will be the scrollable element --- */
+.sidebar-content {
+    flex-grow: 1; /* Allows this div to grow and fill available space */
+    overflow-y: auto; /* The magic property! Shows a scrollbar ONLY if needed */
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -10,8 +21,15 @@
 
 .panel {
     background-color: var(--bg-main);
-    border-radius: 4px;
+    border-radius: 6px; /* Slightly more rounded corners */
     border: 1px solid var(--border-color);
+    flex-shrink: 0; /* Prevents panels from shrinking when content scrolls */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Soft shadow for panels */
+    transition: box-shadow 0.2s ease-in-out; /* Smooth transition for shadow */
+}
+
+.panel:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow on hover */
 }
 
 .panel-header {
@@ -19,14 +37,12 @@
     justify-content: space-between;
     align-items: center;
     background-color: var(--bg-panel-header);
-    padding: 8px 12px;
-    font-weight: 500;
+    padding: 10px 12px; /* Increased padding */
+    font-weight: 600; /* Slightly bolder font */
     border-bottom: 1px solid var(--border-color);
-}
-
-.panel-header .close-icon {
-    cursor: pointer;
-    font-size: 18px;
+    border-top-left-radius: 6px; /* Match panel border-radius */
+    border-top-right-radius: 6px; /* Match panel border-radius */
+    color: var(--text-primary);
 }
 
 .panel-content {
@@ -35,13 +51,47 @@
 
 .map-dropdown {
     width: 100%;
-    padding: 8px;
+    padding: 10px; /* Increased padding */
     background-color: var(--bg-main);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b2b2b2%22%20d%3D%22M287%2C197.978L146.2%2C57.178L5.4%2C197.978H287z%22%2F%3E%3C%2Fsvg%3E'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+.map-dropdown:hover {
+    border-color: var(--accent-orange);
+}
+
+.map-dropdown:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3); /* Orange glow on focus */
+}
+
+.map-image-container {
+    margin-top: 15px;
+    background-color: var(--bg-panel);
+    padding: 8px; /* Increased padding around image */
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow for image container */
+}
+.map-image {
+    width: 100%;
+    border-radius: 2px;
+    display: block;
+    object-fit: cover; /* Ensures image covers area without distortion */
+    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+}
+
 
 .panel-content.toggles {
     display: flex;
@@ -53,6 +103,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px 0;
+}
+.toggle-item.disabled {
+    opacity: 0.5; /* More distinct disabled opacity */
+    cursor: not-allowed;
+    filter: grayscale(50%); /* Subtle grayscale effect */
+}
+.toggle-item.disabled .toggle-label {
+    color: var(--text-secondary);
 }
 
 .toggle-label {
@@ -60,72 +119,182 @@
     align-items: center;
     gap: 10px;
     font-weight: 500;
+    color: var(--text-primary);
 }
 
+/* Toggle Switch Styles */
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 44px;
-  height: 24px;
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Adjusted width */
+    height: 22px; /* Adjusted height */
 }
 
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #6a6f71;
-  transition: .4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-darker); /* Off state background */
+    -webkit-transition: .4s;
+    transition: background-color .4s ease; /* Smooth transition for background */
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
+    position: absolute;
+    content: "";
+    height: 16px; /* Adjusted size */
+    width: 16px; /* Adjusted size */
+    left: 3px; /* Adjusted position */
+    bottom: 3px; /* Adjusted position */
+    background-color: var(--text-secondary); /* Handle color */
+    -webkit-transition: .4s;
+    transition: transform .4s ease; /* Smooth transition for handle movement */
 }
 
 input:checked + .slider {
-  background-color: var(--accent-cyan-dark);
+    background-color: var(--accent-orange); /* On state background */
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--accent-cyan-dark);
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3); /* Orange glow on focus */
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+    -webkit-transform: translateX(18px); /* Adjusted translation */
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+    background-color: #1a1c1d; /* Darker handle color when checked */
 }
 
+/* Rounded sliders */
 .slider.round {
-  border-radius: 24px;
+    border-radius: 22px; /* Match height for perfect roundness */
 }
 
 .slider.round:before {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
-.sidebar-footer {
-    margin-top: auto;
-    padding: 10px;
-    background-color: var(--bg-panel-header);
+
+/* --- RENAMED and enhanced styles --- */
+.track-control-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.track-input {
+    flex-grow: 1;
+    background-color: var(--bg-main);
     border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 10px; /* Increased padding */
     border-radius: 4px;
-    text-align: center;
-    cursor: pointer;
-    font-weight: 500;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.track-input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3);
+}
 
+.track-add-btn {
+    background-color: var(--accent-orange);
+    color: #1a1c1d;
+    border: none;
+    /* Adjusted to ensure it fits and is square */
+    width: 38px; /* Set a fixed width */
+    height: 38px; /* Set a fixed height, matching input visual height approx */
+    padding: 0; /* Remove padding as width/height are explicit */
+    line-height: 38px; /* Center content vertically */
+    text-align: center; /* Center content horizontally */
+    border-radius: 4px;
+    font-weight: 600; /* Bolder font */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-size: 1.2em; /* Keep existing font size for the + */
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.track-add-btn:hover {
+    background-color: #ffb74d; /* Slightly lighter orange on hover */
+    transform: translateY(-1px); /* Subtle lift effect */
+}
+
+.track-add-btn:active {
+    transform: translateY(0); /* Press effect */
+}
+
+.blocked-track-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.no-tracks-message {
+    font-style: italic;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 10px 0;
+    background-color: var(--bg-darker); /* Subtle background */
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.blocked-track-item {
+    display: flex;
+    align-items: center;
+    background-color: #4a3a30; /* Darker, slightly desaturated orange for blocked item */
+    padding: 8px 12px; /* Increased padding */
+    border-radius: 4px;
+    color: var(--accent-orange);
+    font-weight: 500;
+    border: 1px solid #6e553c; /* Subtle border */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.blocked-track-item:hover {
+    transform: translateY(-2px); /* Lift effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.faulty-icon {
+    margin-right: 10px; /* Increased margin */
+    color: #ff8c00; /* A slightly deeper orange for the icon */
+    font-size: 1.1em;
+}
+
+.blocked-track-item span {
+    flex-grow: 1; /* Allows track ID to take available space */
+}
+
+.track-remove-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.track-remove-btn:hover {
+    color: #e74c3c; /* Red color on hover for removal */
+    transform: scale(1.1); /* Slightly larger on hover */
+}
+
+.track-remove-btn:active {
+    transform: scale(0.9); /* Press effect */
+}

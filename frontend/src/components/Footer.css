@@ -20,8 +20,18 @@
 
 .footer-actions {
     display: flex;
+    /* Added alignment for the new text, adjust if needed */
+    align-items: center; 
 }
 
+/* Styles for the new text "Built by Team Rose A" */
+.team-rose-text {
+    color: #888888; /* Gray color */
+    font-style: italic; /* Italics */
+    font-size: 14px; /* Adjust font size if necessary to match surrounding text */
+}
+
+/* Original weather button styles are kept as per the instruction "change nothing else but remove the wearther button and instead of it write build by team Rose A in gray color and italics" */
 .weather-btn {
     background-color: #6a6f71;
     border: 1px solid #7a7f81;

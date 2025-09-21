@@ -27,22 +27,90 @@ const TrackDiagram = ({ network, trains, onSignalClick }) => {
             <defs>
                 <style>
                     {`
-                        .track { stroke: #6b7280; stroke-width: 2.5; fill: none; transition: stroke 0.3s; }
-                        .track-occupied { stroke: var(--status-red); stroke-width: 4; }
-                        .track-route-locked { stroke: var(--accent-cyan); stroke-width: 4; }
-                        .track-faulty { stroke: #ff5252; stroke-dasharray: 5, 5; animation: faulty-blink 1s infinite; }
+                        /* Tracks */
+                        .track {
+                            stroke: #6b7280;
+                            stroke-width: 3.5; /* Slightly thicker */
+                            fill: none;
+                            stroke-linecap: round; /* Smoother ends */
+                            stroke-linejoin: round; /* Smoother joins */
+                            transition: stroke 0.3s ease-in-out, stroke-width 0.3s ease-in-out;
+                        }
+                        .track-occupied {
+                            stroke: var(--status-red); /* #f87171 */
+                            stroke-width: 5; /* Thicker when occupied */
+                            filter: drop-shadow(0 0 3px rgba(248, 113, 113, 0.7)); /* Subtle glow */
+                        }
+                        .track-route-locked {
+                            stroke: var(--accent-cyan); /* #22d3ee */
+                            stroke-width: 4.5;
+                            filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.5)); /* Subtle glow */
+                        }
+                        .track-faulty {
+                            stroke: #ff5252;
+                            stroke-dasharray: 8, 8; /* Slightly longer dashes */
+                            animation: faulty-blink 1.2s infinite ease-in-out; /* Slower, smoother blink */
+                            filter: drop-shadow(0 0 4px rgba(255, 82, 82, 0.8)); /* Stronger red glow */
+                        }
 
-                        .signal { stroke: #d1d5db; stroke-width: 1; transition: fill 0.3s; }
-                        .signal-red { fill: #f87171; }
-                        .signal-green { fill: #4ade80; }
+                        /* Signals */
+                        .signal {
+                            stroke: #d1d5db;
+                            stroke-width: 1.5; /* Slightly thicker border */
+                            transition: fill 0.3s ease-in-out, stroke-width 0.3s ease-in-out, transform 0.1s ease-out; /* Added transform */
+                            transform-origin: center center; /* Ensure scaling from center */
+                            filter: drop-shadow(0 0 1px rgba(0,0,0,0.3)); /* Subtle shadow for signals */
+                        }
+                        .signal-red {
+                            fill: #f87171; /* Original red */
+                            filter: drop-shadow(0 0 4px rgba(248, 113, 113, 0.8)); /* Stronger glow for red */
+                        }
+                        .signal-green {
+                            fill: #4ade80; /* Original green */
+                            filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.8)); /* Stronger glow for green */
+                        }
 
-                        .point { fill: var(--accent-yellow); transition: fill 0.3s; }
-                        .point-locked { fill: var(--accent-orange); }
+                        /* Points */
+                        .point {
+                            fill: var(--accent-yellow); /* #fcd34d */
+                            stroke: #a16207; /* Darker yellow border */
+                            stroke-width: 1;
+                            transition: fill 0.3s ease-in-out, transform 0.2s ease-out;
+                            transform-origin: center center; /* For smooth transform */
+                        }
+                        .point-locked {
+                            fill: var(--accent-orange); /* #fb923c */
+                            stroke: #c2410c; /* Darker orange border */
+                            transform: scale(1.1); /* Slightly larger when locked */
+                            filter: drop-shadow(0 0 3px rgba(251, 146, 60, 0.6)); /* Subtle orange glow */
+                        }
                         
-                        .label { fill: #a1a5ab; font-size: 10px; font-family: var(--font-main); text-anchor: middle; }
+                        /* Labels */
+                        .label {
+                            fill: #cbd5e1; /* Lighter text for better contrast */
+                            font-size: 11px; /* Slightly larger */
+                            font-family: var(--font-main); /* Using CSS variable */
+                            text-anchor: middle;
+                            text-shadow: 1px 1px 2px rgba(0,0,0,0.7); /* Text shadow for readability */
+                            transition: fill 0.3s ease, font-size 0.1s ease; /* Transition for label hover */
+                        }
                         
-                        .speed-label { fill: #828a99; font-size: 9px; font-family: var(--font-main); text-anchor: middle; pointer-events: none; }
-                        .speed-label-restricted { fill: var(--accent-yellow); font-weight: bold; }
+                        /* Speed Labels */
+                        .speed-label {
+                            fill: #94a3b8; /* Softer gray */
+                            font-size: 10px; /* Slightly larger */
+                            font-family: var(--font-main); /* Using CSS variable */
+                            text-anchor: middle;
+                            pointer-events: none;
+                            transition: fill 0.3s ease, font-weight 0.3s ease;
+                            text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.6);
+                        }
+                        .speed-label-restricted {
+                            fill: var(--accent-yellow); /* #fcd34d */
+                            font-weight: bold;
+                            font-size: 11px; /* Even larger when restricted */
+                            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+                        }
                     `}
                 </style>
             </defs>
@@ -53,17 +121,13 @@ const TrackDiagram = ({ network, trains, onSignalClick }) => {
                     const endNode = nodesMap.get(segment.endNodeId);
                     if (!startNode || !endNode) return null;
                     
-                    // ==================================================================
-                    // FIX: Changed the logic to give priority to 'occupied'.
-                    // This 'if/else if' structure ensures only one special state is shown.
-                    // ==================================================================
                     let statusClass = '';
                     if (segment.isOccupied) {
-                        statusClass = 'track-occupied'; // Priority 1: Red
+                        statusClass = 'track-occupied';
                     } else {
                         const route = network.routes.find(r => r.isLockedByTrainId && r.trackSegments.includes(segment.id));
                         if (route) {
-                            statusClass = 'track-route-locked'; // Priority 2: Cyan
+                            statusClass = 'track-route-locked';
                         }
                     }
 

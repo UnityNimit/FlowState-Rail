@@ -1,16 +1,54 @@
+/*
+    Ensure CSS variables like --border-color, --text-primary, etc.,
+    are defined in a globally accessible CSS file (e.g., App.css, index.css)
+    or directly in the :root selector.
+*/
+
+/* Keyframe animation for a subtle glowing border effect */
+@keyframes glow-border {
+    0% { border-color: var(--border-color); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+    50% { border-color: rgba(255, 165, 0, 0.4); box-shadow: 0 1px 5px rgba(255, 165, 0, 0.25); } /* Subtle orange glow */
+    100% { border-color: var(--border-color); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+}
+
 .app-header {
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the content horizontally */
-    background-color: #2a2d2f;
-    padding: 0 10px;
-    height: 32px;
+    justify-content: center;
+    /* Subtle gradient for a premium look */
+    background: linear-gradient(to right, #2c3034, #2a2d2f, #2c3034);
+    padding: 0 15px; /* Slightly increased padding */
+    height: 40px; /* Slightly taller header */
     border-bottom: 1px solid var(--border-color);
     color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 16px; /* Slightly larger base font */
+    font-weight: 600; /* Bolder base font */
+    
+    /* Stronger, more refined box-shadow for depth */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    
+    /* Apply the glow animation to the bottom border and shadow */
+    animation: glow-border 4s ease-in-out infinite;
 }
 
 .header-title {
-    /* Title is now the only element, so it will be centered by the flex container */
+    /* Further enhance the title */
+    font-size: 18px; /* More prominent title size */
+    font-weight: 700; /* Extra bold */
+    letter-spacing: 1.5px; /* Spaced out letters for a sophisticated feel */
+    color: var(--text-primary); /* Ensure it uses the primary text color */
+    
+    /* Subtle text shadow for a more "popping" effect */
+    text-shadow: 0px 0px 4px rgba(255, 165, 0, 0.5), /* Orange glow */
+                 0px 0px 8px rgba(0, 0, 0, 0.6); /* Darker shadow for depth */
+    
+    /* Add a subtle transition if any properties might change on hover/focus */
+    transition: text-shadow 0.3s ease-in-out;
+}
+
+/* Optional: slight interactive effect on title */
+.header-title:hover {
+    text-shadow: 0px 0px 6px rgba(255, 165, 0, 0.7),
+                 0px 0px 10px rgba(0, 0, 0, 0.8);
+    cursor: default; /* Indicate it's not clickable, just decorative */
 }

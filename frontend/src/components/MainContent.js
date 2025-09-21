@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './MainContent.css';
 import TrackDiagram from './TrackDiagram';
+import Chatbot from './Chatbot'; // Import the new Chatbot component
 import socketService from '../services/socketService';
 
 const MainContent = () => {
     const [networkState, setNetworkState] = useState(null);
-    const [simSpeed, setSimSpeed] = useState(1); // Default speed is 1x
+    const [simSpeed, setSimSpeed] = useState(1);
 
     useEffect(() => {
         socketService.connect();
@@ -19,10 +20,8 @@ const MainContent = () => {
         };
     }, []);
     
-    // Send speed update to backend whenever it changes
     useEffect(() => {
         socketService.emit('controller:set-sim-speed', { speed: simSpeed });
-        console.log(`UI: Set simulation speed to ${simSpeed}x`);
     }, [simSpeed]);
 
     const handleSignalClick = (signalId) => {
@@ -36,7 +35,6 @@ const MainContent = () => {
     return (
         <main className="main-content">
             <div className="panel track-panel" id="panel-1">
-                 {/* --- NEW: SIMULATION SPEED CONTROLS --- */}
                  <div className="sim-controls">
                     <span className="sim-label">Sim Speed:</span>
                     {[1, 2, 4, 8].map(speed => (
@@ -55,8 +53,11 @@ const MainContent = () => {
                     onSignalClick={handleSignalClick}
                  />
             </div>
-            <div className="panel track-panel" id="panel-2"></div>
-            <div className="panel track-panel" id="panel-3"></div>
+
+            {/* --- MERGED PANEL with Chatbot --- */}
+            <div className="panel" id="panel-chat">
+                <Chatbot networkState={networkState} />
+            </div>
         </main>
     );
 };
