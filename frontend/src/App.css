@@ -1,16 +1,11 @@
-.app-container {
-    display: flex;
-    flex-direction: column; /* This is the key fix */
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    background-color: var(--bg-main);
-    border: 1px solid #1a1c1d;
-    box-sizing: border-box;
+.App-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .main-body {
-    display: flex;
-    flex-grow: 1;
-    overflow: hidden;
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
 }

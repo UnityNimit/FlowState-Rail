@@ -1,0 +1,15 @@
+/* frontend/src/components/ControlRoom.css */
+
+.control-room-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: #0f172a; /* A dark background for the whole page */
+}
+
+.main-body {
+  display: flex;
+  flex-grow: 1; /* This makes the main body fill the available space */
+  overflow: hidden; /* Prevents scrollbars on the main layout */
+}

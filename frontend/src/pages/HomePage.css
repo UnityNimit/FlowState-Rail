@@ -1,0 +1,433 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* --- Base Setup --- */
+html, body {
+  overflow: hidden; /* Prevent default scrollbar and allow GSAP to control */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.home-page {
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  background-color: #000; /* Ensures a black base */
+}
+
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; /* Ensures it's always at the very back */
+  pointer-events: none; /* Allows clicks to pass through to content */
+}
+
+.scrollable-content {
+  position: relative;
+  z-index: 1; /* Ensures content is above the background */
+  width: 100%;
+}
+
+/* --- Hero Section (First View) --- */
+.hero-section {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center the content block */
+  justify-content: flex-start; /* Aligns content to the top initially */
+  padding: 12vh 20px 0; /* Increased top padding to push content down a bit from absolute top edge, using vh for responsiveness */
+  position: relative;
+  z-index: 2; /* Ensures hero content is above everything */
+  background: transparent; /* Allows Hyperspeed to show through */
+}
+
+.hero-content {
+  padding: 0; /* No padding */
+  margin-bottom: 50px; /* Space between text block and button/scroll indicator */
+  max-width: 2500px; /* Control width of the text block */
+  width: 100%;
+  text-align: center; /* Ensure title and subtitle are centered */
+}
+
+/* FlowState Rail Text Heading*/
+.hero-title {
+  font-size: 6.8rem;
+  font-weight: 1500;
+  font-family: 'Press Start 2P', sans-serif;
+  margin: -50px auto 2px auto; /* Centered horizontally within its max-width */
+  letter-spacing: -5px;
+}
+
+/* Apply gradient to the actual shuffled characters */
+.hero-title .shuffle-char {
+  background: linear-gradient(90deg, #E060E6, #00C6FF); /* Enhanced gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.hero-subtitle {
+  font-size: 1.6rem; /* Slightly larger */
+  font-weight: 400;
+  margin: 15px auto 40px auto; /* Centered horizontally within its max-width */
+  color: #a0aec0; /* This will be overridden by .shiny-text's color */
+  max-width: 600px;
+  animation: fadeInUp 1s ease-out 0.3s; /* This will apply to the ShinyText div */
+  animation-fill-mode: backwards;
+  line-height: 1.4; /* Better readability */
+}
+
+
+/* This is enter control room button */
+.hero-button {
+  display: inline-block;
+  padding: 10px 17px; /* Slightly larger button */
+  margin: 170px auto 40px auto;
+  font-size: 1.25rem; /* Slightly larger font */
+  font-weight: 400;
+  color: white; /* This will be overridden by .shiny-text's color for the text */
+  /* --- UPDATED: Blurred Background for Button with Grey Tint and thicker border --- */
+  background: rgba(100, 100, 100, 0.25); /* Grey tint translucent background */
+  backdrop-filter: blur(12px); /* Apply blur directly to button */
+  -webkit-backdrop-filter: blur(12px); /* Safari compatibility */
+  border: 3px solid rgba(255, 255, 255, 0.25); /* Increased border thickness and definition */
+  /* --- END UPDATED --- */
+  border-radius: 50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, border-color 0.3s ease;
+  animation: fadeInUp 1s ease-out 0.6s;
+  animation-fill-mode: backwards;
+}
+
+.hero-button:hover {
+  transform: scale(1.05);
+  background: rgba(150, 150, 150, 0.35); /* Slightly brighter grey on hover */
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); /* White glow for subtle emphasis */
+  border-color: rgba(255, 255, 255, 0.6); /* More prominent border on hover */
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 120px; /* Positioned relative to hero-section */
+  color: #a0aec0;
+  font-size: 1rem; /* Slightly larger */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  animation: bounce 2s infinite ease-in-out, fadeIn 2s ease-out;
+}
+
+.scroll-indicator::after {
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  border-right: 2px solid #a0aec0;
+  border-bottom: 2px solid #a0aec0;
+  transform: rotate(45deg);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* --- General Content Section Styling (Stacking Effect & Full Cover) --- */
+.content-section {
+  padding: 120px 5%; /* Increased vertical padding */
+  min-height: 100vh; /* IMPORTANT: Ensure it takes at least full viewport height for snapping */
+  display: flex; /* Added to center content vertically */
+  flex-direction: column; /* Added to center content vertically */
+  justify-content: center; /* Added to center content vertically */
+  align-items: center; /* Added to center content horizontally */
+  max-width: 1200px;
+  margin: 0 auto; /* Removed margin-top: -50px for snap scrolling consistency */
+  text-align: center;
+  background: linear-gradient(180deg, rgb(12, 12, 12) 0%, rgb(0, 0, 0) 100%);
+  border-radius: 15px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Adjust margin-top for the first content section to not overlap the hero */
+.content-section:first-of-type {
+    margin-top: 0;
+}
+
+
+.content-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.section-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #e2e8f0;
+  background: linear-gradient(90deg, #00C6FF, #E060E6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-intro {
+  font-size: 1.3rem;
+  color: #a0aec0;
+  max-width: 850px;
+  margin: 0 auto 60px auto;
+  line-height: 1.7;
+}
+
+/* --- Problem Section Cards --- */
+.problem-cards {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: rgba(26, 32, 44, 0.8);
+  padding: 35px;
+  border-radius: 18px;
+  border: 1px solid #2d3748;
+  flex-basis: 320px;
+  flex-grow: 1;
+  max-width: 350px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  background: rgba(30, 36, 50, 0.9);
+}
+
+.card-icon {
+  color: #00C6FF;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  font-size: 1.6rem;
+  margin: 0 0 15px 0;
+  color: #cbd5e0;
+}
+
+.card p {
+  color: #a0aec0;
+  line-height: 1.6;
+}
+
+/* --- Solution Section --- */
+.solution-section {
+  background: linear-gradient(180deg, rgb(0, 0, 0) 0%, rgb(5, 5, 5) 100%);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 50px auto 0;
+    text-align: left;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px;
+    background-color: rgba(26, 32, 44, 0.8);
+    border-radius: 12px;
+    font-size: 1.15rem;
+    color: #cbd5e0;
+    border: 1px solid #2d3748;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.feature-item svg {
+    color: #E060E6;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+/* --- Final CTA Section --- */
+.cta-section {
+  padding: 120px 5%;
+  min-height: 100vh; /* IMPORTANT: Ensure it takes at least full viewport height for snapping */
+  display: flex; /* Added to center content vertically */
+  flex-direction: column; /* Added to center content vertically */
+  justify-content: center; /* Added to center content vertically */
+  align-items: center; /* Added to center content horizontally */
+  background: radial-gradient(circle at center, rgb(26, 32, 44) 0%, rgb(8, 8, 8) 100%);
+  text-align: center;
+  border-radius: 15px;
+  margin-bottom: 0; /* Remove bottom margin if it's the last snapped section */
+}
+
+.cta-section h2 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #00C6FF, #E060E6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 25px;
+}
+
+.cta-section p {
+  font-size: 1.3rem;
+  color: #a0aec0;
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+/* For the ShinyText inside the button: you might need to adjust its styling
+   or how it interacts with the .hero-button's own styling.
+   The .hero-button has `color: white;` and ShinyText applies its own color.
+   The background for the shine effect works because it's clip-text.
+   If you want the button itself to shine, you'd apply the linear-gradient to .hero-button.
+*/
+.hero-button .shiny-text {
+    /* Adjustments specific to button text if needed, e.g., to override default ShinyText color */
+    color: white; /* Ensure the base text color is white before the shine gradient */
+}
+
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .section-title {
+        font-size: 2.5rem;
+    }
+    .section-intro {
+        font-size: 1.15rem;
+    }
+    /* Adjust min-height for sections if content is very short on smaller screens */
+    .content-section, .cta-section {
+        min-height: auto; /* Allow content to dictate height */
+        padding: 80px 4%;
+    }
+    .hero-section {
+        padding-top: 10vh;
+    }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 10vh;
+  }
+  .hero-title {
+    font-size: 3.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+  .hero-content {
+    margin-bottom: 40px;
+  }
+  .hero-button {
+      padding: 14px 28px;
+      font-size: 1.1rem;
+  }
+  .section-title {
+    font-size: 2.2rem;
+  }
+  .section-intro {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+  .content-section {
+      padding: 80px 4%;
+  }
+  .problem-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+  .card {
+      max-width: 90%;
+  }
+  .feature-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+  }
+  .cta-section h2 {
+      font-size: 2rem;
+  }
+  .cta-section p {
+      font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+      padding-top: 8vh;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin: 10px auto 25px auto;
+    }
+    .hero-content {
+        margin-bottom: 30px;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .card h3 {
+        font-size: 1.3rem;
+    }
+    .feature-item {
+        font-size: 1rem;
+        padding: 15px;
+    }
+}

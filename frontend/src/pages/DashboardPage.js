@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './MainContent.css';
-import TrackDiagram from './TrackDiagram';
-import Chatbot from './Chatbot'; // Import the new Chatbot component
+import './DashboardPage.css';
+import TrackDiagram from '../components/TrackDiagram';
+import Chatbot from '../components/Chatbot';// Import the new Chatbot component
 import socketService from '../services/socketService';
 
 const MainContent = () => {
