@@ -39,7 +39,8 @@ const LeftSidebar = () => {
     const [faultyTracks, setFaultyTracks] = useState(['TC-PF4']);
 
     useEffect(() => {
-        socketService.emit('ai:set-priorities', aiPriorities);
+        // MODIFIED: Use the correct event name for the Python backend
+        socketService.emit('controller_set_priorities', aiPriorities);
     }, [aiPriorities]);
 
     const handlePriorityToggle = (priorityKey) => {

@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 // The URL of our backend server
-const SERVER_URL = "http://localhost:5001";
+const SERVER_URL = "http://localhost:8000";
 
 class SocketService {
     socket;
@@ -47,7 +47,7 @@ class SocketService {
             this.socket.emit(eventName, data);
         }
     }
-    
+
 }
 
 // Export a single instance of the service

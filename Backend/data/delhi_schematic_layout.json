@@ -1,0 +1,54 @@
+{
+  "network": {
+    "nodes": [
+      { "id": "S-APP-1", "type": "SIGNAL", "position": { "x": 50, "y": 100 }, "state": "RED" },
+      { "id": "S-APP-2", "type": "SIGNAL", "position": { "x": 50, "y": 250 }, "state": "RED" },
+      
+      { "id": "P-1A", "type": "SWITCH", "position": { "x": 150, "y": 100 }, "state": "NORMAL" },
+      { "id": "P-1B", "type": "SWITCH", "position": { "x": 150, "y": 250 }, "state": "NORMAL" },
+
+      { "id": "J-YARD-IN", "type": "JUNCTION", "position": { "x": 250, "y": 175 } },
+
+      { "id": "S-PF-1", "type": "SIGNAL", "position": { "x": 350, "y": 50 }, "state": "RED" },
+      { "id": "S-PF-2", "type": "SIGNAL", "position": { "x": 350, "y": 100 }, "state": "RED" },
+      { "id": "S-PF-3", "type": "SIGNAL", "position": { "x": 350, "y": 150 }, "state": "RED" },
+      { "id": "S-PF-4", "type": "SIGNAL", "position": { "x": 350, "y": 200 }, "state": "RED" },
+      { "id": "S-PF-5", "type": "SIGNAL", "position": { "x": 350, "y": 250 }, "state": "RED" },
+      { "id": "S-PF-6", "type": "SIGNAL", "position": { "x": 350, "y": 300 }, "state": "RED" },
+
+      { "id": "P-YARD-1", "type": "SWITCH", "position": { "x": 850, "y": 175 }, "state": "NORMAL" },
+      
+      { "id": "S-EXIT-1", "type": "SIGNAL", "position": { "x": 950, "y": 100 }, "state": "RED" },
+      { "id": "S-EXIT-2", "type": "SIGNAL", "position": { "x": 950, "y": 250 }, "state": "RED" },
+
+      { "id": "T-EAST", "type": "TERMINAL", "position": { "x": 1050, "y": 100 } },
+      { "id": "T-WEST", "type": "TERMINAL", "position": { "x": 1050, "y": 250 } }
+    ],
+    "trackSegments": [
+      { "id": "TS-APP-1", "startNodeId": "S-APP-1", "endNodeId": "P-1A", "length": 1000 },
+      { "id": "TS-APP-2", "startNodeId": "S-APP-2", "endNodeId": "P-1B", "length": 1000 },
+      { "id": "TS-1A-YI", "startNodeId": "P-1A", "endNodeId": "J-YARD-IN", "length": 500 },
+      { "id": "TS-1B-YI", "startNodeId": "P-1B", "endNodeId": "J-YARD-IN", "length": 500 },
+      
+      { "id": "TS-YI-PF1", "startNodeId": "J-YARD-IN", "endNodeId": "S-PF-1", "length": 500 },
+      { "id": "TS-YI-PF2", "startNodeId": "J-YARD-IN", "endNodeId": "S-PF-2", "length": 500 },
+      { "id": "TS-YI-PF3", "startNodeId": "J-YARD-IN", "endNodeId": "S-PF-3", "length": 500 },
+      { "id": "TS-YI-PF4", "startNodeId": "J-YARD-IN", "endNodeId": "S-PF-4", "length": 500 },
+      { "id": "TS-YI-PF5", "startNodeId": "J-YARD-IN", "endNodeId": "S-PF-5", "length": 500 },
+      { "id": "TS-YI-PF6", "startNodeId": "J-YARD-IN", "endNodeId": "S-PF-6", "length": 500 },
+
+      { "id": "TS-PF1-PY", "startNodeId": "S-PF-1", "endNodeId": "P-YARD-1", "length": 2000 },
+      { "id": "TS-PF2-PY", "startNodeId": "S-PF-2", "endNodeId": "P-YARD-1", "length": 2000 },
+      { "id": "TS-PF3-PY", "startNodeId": "S-PF-3", "endNodeId": "P-YARD-1", "length": 2000 },
+      { "id": "TS-PF4-PY", "startNodeId": "S-PF-4", "endNodeId": "P-YARD-1", "length": 2000 },
+      { "id": "TS-PF5-PY", "startNodeId": "S-PF-5", "endNodeId": "P-YARD-1", "length": 2000 },
+      { "id": "TS-PF6-PY", "startNodeId": "S-PF-6", "endNodeId": "P-YARD-1", "length": 2000 },
+
+      { "id": "TS-PY-E1", "startNodeId": "P-YARD-1", "endNodeId": "S-EXIT-1", "length": 500 },
+      { "id": "TS-PY-E2", "startNodeId": "P-YARD-1", "endNodeId": "S-EXIT-2", "length": 500 },
+      { "id": "TS-E1-T", "startNodeId": "S-EXIT-1", "endNodeId": "T-EAST", "length": 1000 },
+      { "id": "TS-E2-T", "startNodeId": "S-EXIT-2", "endNodeId": "T-WEST", "length": 1000 }
+    ],
+    "routes": []
+  }
+}

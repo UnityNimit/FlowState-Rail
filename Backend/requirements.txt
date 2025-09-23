@@ -1,6 +1,7 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-socketio
 sqlalchemy
 pandas
 psycopg2-binary
+ortools
