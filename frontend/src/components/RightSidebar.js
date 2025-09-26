@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './RightSidebar.css';
-import { FiInfo, FiCpu, FiPlayCircle, FiCloudDrizzle } from 'react-icons/fi';
+import { FiInfo, FiCpu, FiPlayCircle } from 'react-icons/fi';
 import socketService from '../services/socketService';
 import ttsService from '../services/ttsService';
 
 const RightSidebar = () => {
     const [recommendations, setRecommendations] = useState([]);
     const [isThinking, setIsThinking] = useState(false);
-    const [considerWeather, setConsiderWeather] = useState(true);
+    const [simSpeed, setSimSpeed] = useState(1);
+
+    useEffect(() => {
+        // --- THE CRITICAL FIX ---
+        // The event name is changed to use an underscore, matching the
+        // Python backend's event handler function name.
+        socketService.emit('controller_set_sim_speed', { speed: simSpeed });
+    }, [simSpeed]);
 
     useEffect(() => {
         socketService.on('ai:plan-thinking', () => {
@@ -36,15 +43,9 @@ const RightSidebar = () => {
     }, []);
 
     const handleGetPlanClick = () => {
-        // Here you could also send the 'considerWeather' state if the AI uses it
         socketService.emit('ai:get-plan');
     };
-
-    const handleSimulateClick = () => {
-        console.log("Simulate Plan button clicked. (Functionality to be implemented)");
-        // This is where you would trigger a "fast-forward" simulation of the current AI plan
-    };
-
+    
     const handleHoverJustification = (justificationText) => {
         ttsService.speak(justificationText);
     };
@@ -55,29 +56,23 @@ const RightSidebar = () => {
 
     return (
         <aside className="right-sidebar">
-            {/* --- NEW: AI Plan Controls Panel --- */}
             <div className="panel">
-                <div className="panel-header"><span>AI Plan Controls</span></div>
-                <div className="panel-content plan-controls">
-                    <div className="control-item">
-                        <label htmlFor="weatherToggle" className="control-label">
-                            <FiCloudDrizzle />
-                            Consider Weather
-                        </label>
-                        <label className="switch">
-                            <input 
-                                id="weatherToggle"
-                                type="checkbox" 
-                                checked={considerWeather} 
-                                onChange={() => setConsiderWeather(!considerWeather)} 
-                            />
-                            <span className="slider round"></span>
-                        </label>
+                <div className="panel-header"><span>Simulation Controls</span></div>
+                <div className="panel-content">
+                    <div className="sim-controls-wrapper">
+                        <span className="sim-label">Sim Speed:</span>
+                        <div className="sim-speed-buttons">
+                            {[1, 2, 8, 20].map(speed => (
+                                <button
+                                    key={speed}
+                                    className={`sim-speed-btn ${simSpeed === speed ? 'active' : ''}`}
+                                    onClick={() => setSimSpeed(speed)}
+                                >
+                                    {speed}x
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                    <button className="simulate-button" onClick={handleSimulateClick}>
-                        <FiPlayCircle />
-                        Simulate Plan
-                    </button>
                 </div>
             </div>
             
@@ -98,7 +93,6 @@ const RightSidebar = () => {
                         )}
                         
                         {recommendations.map((rec, index) => {
-                            // --- NEW: Improved logic for human-readable details ---
                             const isHoldAction = rec.action.includes('HOLD');
                             const displayAction = isHoldAction ? 'HOLD' : 'PROCEED VIA';
                             const displayDetails = isHoldAction 

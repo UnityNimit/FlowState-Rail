@@ -16,6 +16,17 @@ class Simulation:
         self.adjacency_list = self._build_adjacency_list()
         self.master_schedule = self._load_master_schedule()
         
+        self.priorities = {
+            'Shatabdi':   10,
+            'Rajdhani':   9,
+            'Passenger':  8,
+            'DMU':        7,
+            'MEMU':       6,
+            'SF Express': 5,
+            'Mail':       4,
+            'Express':    3
+        }
+
         self.active_trains = []
         self.processed_train_ids = set()
         self.locked_resources = set()
@@ -25,7 +36,7 @@ class Simulation:
         self.current_time_seconds = 0
         start_time_str = time.strftime('%H:%M:%S', time.gmtime(self.current_time_seconds % 86400))
         print(f"🚀 Simulation starting at {start_time_str}.")
-        print(f"✅ Definitive Interlocking Simulation Engine Initialized with Dynamic Locking.")
+        print(f"✅ Definitive Interlocking Simulation Engine Initialized with Passenger Boarding Logic.")
 
     def get_state(self):
         self._update_network_state()
@@ -99,7 +110,8 @@ class Simulation:
                     "start_node": train_data['Start Node'], "end_node": train_data['End Node'],
                     "state": "WAITING_PLAN", "route": [], "node_path": [], "currentSegmentId": None,
                     "positionOnSegment": 0.0, "speed_kph": 0,
-                    "waiting_since": self.current_time_seconds  # ADDED: Start wait timer
+                    "waiting_since": self.current_time_seconds,
+                    "boarding_timer_ends_at": None # NEW: Timer for boarding
                 }
                 self.active_trains.append(new_train)
                 self.processed_train_ids.add(train_id)
@@ -123,7 +135,8 @@ class Simulation:
             travel_time = 30 
             increment = 1.0 / travel_time
             
-            train['positionOnSegment'] += increment * (self.tick_rate * self.sim_speed)
+            train['positionOnSegment'] += increment * self.tick_rate
+            
             if train['positionOnSegment'] >= 1.0:
                 train['positionOnSegment'] = 1.0
                 self._handle_train_at_node(train)
@@ -133,11 +146,13 @@ class Simulation:
         current_route_index = train['route'].index(completed_segment_id)
         
         cleared_node_id = train['node_path'][current_route_index]
+        arrived_at_node_id = train['node_path'][current_route_index + 1]
+
         self.locked_resources.discard(completed_segment_id)
         self.locked_resources.discard(cleared_node_id)
         self.plan_needed = True
         
-        print(f"  -> ➡️ Train {train['id']} cleared {cleared_node_id} & {completed_segment_id}.")
+        print(f"  -> ➡️ Train {train['id']} cleared {cleared_node_id} & {completed_segment_id}, arrived at {arrived_at_node_id}.")
 
         if current_route_index + 1 >= len(train['route']):
             final_node = train['node_path'][-1]
@@ -146,12 +161,26 @@ class Simulation:
             train['state'] = 'EXITED'
             return
         
-        train['state'] = 'STOPPED_AWAITING_CLEARANCE'
-        train['speed_kph'] = 0
-        train['waiting_since'] = self.current_time_seconds  # ADDED: Start wait timer at signal
+        # --- NEW: Check if the arrival node is a platform ---
+        if arrived_at_node_id.startswith("S-PF-"):
+            train['state'] = 'BOARDING_PASSENGERS'
+            train['speed_kph'] = 0
+            train['boarding_timer_ends_at'] = self.current_time_seconds + 100  # 100 seconds boarding time
+            print(f"  ->  boarding Train {train['id']} at {arrived_at_node_id}. Waiting for 100s.")
+        else:
+            # Original logic for non-platform nodes
+            train['state'] = 'STOPPED_AWAITING_CLEARANCE'
+            train['speed_kph'] = 0
+            train['waiting_since'] = self.current_time_seconds
 
     def _check_and_dispatch_trains(self):
-        for train in self.active_trains:
+        # Check all trains that are waiting for some condition
+        dispatchable_trains = [
+            t for t in self.active_trains if t['state'] in ['READY_TO_PROCEED', 'STOPPED_AWAITING_CLEARANCE', 'BOARDING_PASSENGERS']
+        ]
+        dispatchable_trains.sort(key=lambda t: self.priorities.get(t['type'], 0), reverse=True)
+
+        for train in dispatchable_trains:
             if train['state'] == 'READY_TO_PROCEED':
                 next_segment_id = train['route'][0]
                 next_node_id = train['node_path'][1]
@@ -164,8 +193,16 @@ class Simulation:
                     train['speed_kph'] = 60
                     train['currentSegmentId'] = next_segment_id
                     train['positionOnSegment'] = 0.0
-                    train['waiting_since'] = None  # ADDED: Clear wait timer
-                    print(f"  -> 🟢 DISPATCHED Train {train['id']} onto {next_segment_id}.")
+                    train['waiting_since'] = None
+                    print(f"  -> 🟢 DISPATCHED Train {train['id']} ({train['type']}) onto {next_segment_id}.")
+
+            elif train['state'] == 'BOARDING_PASSENGERS':
+                # --- NEW: Handle the boarding state ---
+                if self.current_time_seconds >= train['boarding_timer_ends_at']:
+                    train['state'] = 'STOPPED_AWAITING_CLEARANCE'
+                    train['boarding_timer_ends_at'] = None
+                    train['waiting_since'] = self.current_time_seconds # Start punctuality timer now
+                    print(f"  -> ✅ Boarding complete for {train['id']}. Now awaiting clearance.")
 
             elif train['state'] == 'STOPPED_AWAITING_CLEARANCE':
                 current_route_index = train['route'].index(train['currentSegmentId'])
@@ -180,9 +217,8 @@ class Simulation:
                     train['speed_kph'] = 60
                     train['currentSegmentId'] = next_segment_id
                     train['positionOnSegment'] = 0.0
-                    train['waiting_since'] = None # ADDED: Clear wait timer
-                    print(f"  -> 🟢 CLEARED Train {train['id']} to proceed onto {next_segment_id}.")
-
+                    train['waiting_since'] = None
+                    print(f"  -> 🟢 CLEARED Train {train['id']} ({train['type']}) to proceed onto {next_segment_id}.")
 
     def _update_network_state(self):
         occupied_segments = {
@@ -192,7 +228,8 @@ class Simulation:
             seg['isOccupied'] = seg['id'] in occupied_segments
 
     def tick(self):
-        self.current_time_seconds += self.tick_rate * self.sim_speed
+        self.current_time_seconds += self.tick_rate
+        
         self._spawn_trains()
         self._check_and_dispatch_trains()
         self._update_train_positions()

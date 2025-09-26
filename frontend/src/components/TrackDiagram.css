@@ -6,78 +6,73 @@
 
 @keyframes faulty-blink {
     0% { opacity: 1; }
-    50% { opacity: 0.3; } /* More distinct blink */
+    50% { opacity: 0.3; }
     100% { opacity: 1; }
 }
 
 @keyframes dash-flow {
     to {
-        stroke-dashoffset: -9; /* Moves the dashes along the path */
+        stroke-dashoffset: -9;
     }
 }
 
 .signal-group {
     cursor: pointer;
-    /* Removed all transforms from the group itself */
 }
 
-/* Hover effects for the signal circle */
 .signal-group:hover .signal {
-    stroke-width: 3.5px; /* Thicker stroke to make it appear to grow */
-    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)); /* Stronger white glow */
-    /* No transform: scale here */
+    stroke-width: 3.5px;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
 }
 
-/* Hover effects for the manual override indicator */
 .signal-group:hover .manual-override-indicator {
-    stroke-width: 3.5px; /* Thicker stroke */
-    filter: drop-shadow(0 0 4px var(--accent-yellow)); /* Add a glow */
-    /* No transform: scale here */
+    stroke-width: 3.5px;
+    filter: drop-shadow(0 0 4px var(--accent-yellow));
 }
 
-/* Hover effects for the signal label */
 .signal-group:hover .label {
-    fill: var(--accent-orange); /* Change label color on hover */
-    font-size: 12.5px; /* Slightly larger label on hover */
-    text-shadow: 1px 1px 4px rgba(255, 165, 0, 0.8); /* Enhanced text shadow */
+    fill: var(--accent-orange);
+    font-size: 12.5px;
+    text-shadow: 1px 1px 4px rgba(255, 165, 0, 0.8);
 }
 
 
 .manual-override-indicator {
     fill: none;
     stroke: var(--accent-yellow);
-    stroke-width: 2px; /* Thicker */
-    stroke-dasharray: 6 3; /* Dashed circle */
-    animation: dash-flow 2s linear infinite; /* Animating dashes */
-    transform-origin: center center; /* Ensures animation originates from center */
-    transition: stroke-width 0.3s ease-out, filter 0.3s ease-out; /* Transition for stroke-width and filter */
-    /* No transform here */
+    stroke-width: 2px;
+    stroke-dasharray: 6 3;
+    animation: dash-flow 2s linear infinite;
+    transform-origin: center center;
+    transition: stroke-width 0.3s ease-out, filter 0.3s ease-out;
 }
 
 .train-group {
-    transition: transform 1s linear; /* Keep as is, assumes backend update rate */
+    /* --- THE CRITICAL FIX --- */
+    /* The transition is now much faster, allowing the speed change to be visible. */
+    /* It's set to be slightly less than the base tick rate for smoothness. */
+    transition: transform 0.8s linear;
 }
 
 .train-body {
-    stroke: #1a1c1d; /* Darker stroke */
-    stroke-width: 1.5px; /* Slightly thicker stroke */
-    rx: 4px; /* Slightly more rounded corners */
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5)); /* Stronger shadow for depth */
+    stroke: #1a1c1d;
+    stroke-width: 1.5px;
+    rx: 4px;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
     transition: fill 0.3s ease;
 }
 
-/* Color coding for train types */
-.train-type-express { fill: #e74c3c; /* Brighter red */ }
-.train-type-passenger { fill: #3498db; /* Brighter blue */ }
-.train-type-freight { fill: #7f8c8d; /* Slightly darker gray */ }
+.train-type-express { fill: #e74c3c; }
+.train-type-passenger { fill: #3498db; }
+.train-type-freight { fill: #7f8c8d; }
 
 .train-label {
     text-anchor: middle;
     dominant-baseline: middle;
-    fill: #ecf0f1; /* Lighter text for contrast */
-    font-size: 9px; /* Slightly larger */
+    fill: #ecf0f1;
+    font-size: 9px;
     font-weight: bold;
     font-family: var(--font-main);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8); /* Stronger text shadow */
-    pointer-events: none; /* Do not block mouse events for the label */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    pointer-events: none;
 }

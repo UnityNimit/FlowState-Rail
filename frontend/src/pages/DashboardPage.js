@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './DashboardPage.css';
 import TrackDiagram from '../components/TrackDiagram';
-import Chatbot from '../components/Chatbot';// Import the new Chatbot component
+import Chatbot from '../components/Chatbot';
 import socketService from '../services/socketService';
 
 const MainContent = () => {
     const [networkState, setNetworkState] = useState(null);
-    const [simSpeed, setSimSpeed] = useState(1);
 
     useEffect(() => {
         socketService.connect();
@@ -19,10 +18,8 @@ const MainContent = () => {
             socketService.disconnect();
         };
     }, []);
-    
-    useEffect(() => {
-        socketService.emit('controller:set-sim-speed', { speed: simSpeed });
-    }, [simSpeed]);
+
+    // The simSpeed state and useEffect have been removed from this component.
 
     const handleSignalClick = (signalId) => {
         socketService.emit('controller:set-signal', { signalId });
@@ -35,18 +32,7 @@ const MainContent = () => {
     return (
         <main className="main-content">
             <div className="panel track-panel" id="panel-1">
-                 <div className="sim-controls">
-                    <span className="sim-label">Sim Speed:</span>
-                    {[1, 2, 4, 8].map(speed => (
-                        <button 
-                            key={speed}
-                            className={`sim-speed-btn ${simSpeed === speed ? 'active' : ''}`}
-                            onClick={() => setSimSpeed(speed)}
-                        >
-                            {speed}x
-                        </button>
-                    ))}
-                 </div>
+                 {/* The sim-controls div has been removed from here. */}
                  <TrackDiagram 
                     network={networkState.network} 
                     trains={networkState.trains}
@@ -54,7 +40,6 @@ const MainContent = () => {
                  />
             </div>
 
-            {/* --- MERGED PANEL with Chatbot --- */}
             <div className="panel" id="panel-chat">
                 <Chatbot networkState={networkState} />
             </div>

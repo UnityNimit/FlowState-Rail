@@ -8,54 +8,62 @@
     gap: 10px;
 }
 
-/* --- NEW: Styles for the Plan Controls panel --- */
-.plan-controls {
+/* --- NEW: Styles for the Sim Controls moved from DashboardPage.css --- */
+.sim-controls-wrapper {
+    background-color: var(--bg-main);
+    padding: 8px 12px;
+    border-radius: 6px;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-.control-item {
-    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-}
-.control-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 500;
+    border: 1px solid var(--border-color);
 }
 
-.simulate-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 10px;
+.sim-label {
     font-size: 14px;
     font-weight: 500;
+    margin-right: 10px;
+    color: var(--text-secondary);
+}
+
+.sim-speed-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sim-speed-btn {
     background-color: var(--bg-panel-header);
-    color: var(--text-primary);
     border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s;
-}
-.simulate-button:hover {
-    background-color: #6a6f71;
-    border-color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 40px;
+    text-align: center;
+    transition: all 0.2s ease;
 }
 
+.sim-speed-btn.active,
+.sim-speed-btn:hover {
+    background-color: var(--accent-cyan-dark);
+    color: #1a1c1d;
+    border-color: var(--accent-cyan);
+    transform: translateY(-1px);
+}
+/* --- End of new styles --- */
 
-/* --- Styles for the main AI Assistant panel --- */
+
+/* --- Existing styles for AI Assistant --- */
 .ai-assistant {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 .ai-controls {
-    height: 16px; /* Keep space consistent even though it's empty */
+    height: 16px;
 }
 .ai-feed {
     flex-grow: 1;
@@ -161,14 +169,4 @@
 }
 .rec-justification:hover {
     color: var(--accent-cyan);
-}
-
-/* ... (keep all the existing styles) ... */
-
-/* --- Add this NEW style for the disabled state of the simulate button --- */
-.simulate-button:disabled {
-    background-color: #3e4446;
-    border-color: var(--border-color);
-    color: var(--text-secondary);
-    cursor: not-allowed;
 }
