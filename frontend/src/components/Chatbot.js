@@ -5,40 +5,50 @@ import socketService from '../services/socketService';
 
 const Chatbot = ({ networkState }) => {
     const [messages, setMessages] = useState([
-        { sender: 'ai', text: 'Welcome, Controller. Ask me anything about the current network state.' }
+        { sender: 'ai', text: 'Welcome, Controller. Start a simulation and then ask me anything about the network state.' }
     ]);
     const [currentMessage, setCurrentMessage] = useState('');
     const [isThinking, setIsThinking] = useState(false);
-    const messagesEndRef = useRef(null); // Ref to auto-scroll
+    const messagesEndRef = useRef(null); 
 
-    // Effect to auto-scroll to the bottom of the chat on new messages
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); // Adjusted block for better scroll behavior
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, [messages]);
 
     useEffect(() => {
-        socketService.on('chatbot:thinking', () => setIsThinking(true));
-        socketService.on('chatbot:response', (response) => {
+        const handleThinking = () => setIsThinking(true);
+        const handleResponse = (response) => {
             setMessages(prev => [...prev, response]);
             setIsThinking(false);
-        });
+        };
+
+        socketService.on('chatbot:thinking', handleThinking);
+        socketService.on('chatbot:response', handleResponse);
 
         return () => {
             socketService.off('chatbot:thinking');
             socketService.off('chatbot:response');
         };
     }, []);
+    
+    // Reset welcome message if simulation stops
+    useEffect(() => {
+        if (!networkState) {
+             setMessages([
+                { sender: 'ai', text: 'Welcome, Controller. Start a simulation and then ask me anything about the network state.' }
+            ]);
+        }
+    }, [networkState]);
+
 
     const handleSendMessage = (e) => {
         e.preventDefault();
         const question = currentMessage.trim();
-        if (!question) return;
+        if (!question || !networkState) return; // Prevent sending if sim is stopped
 
-        // Add user's message to the history immediately
         setMessages(prev => [...prev, { sender: 'user', text: question }]);
         setCurrentMessage('');
 
-        // Send the question and the CURRENT network state to the backend
         socketService.emit('chatbot:query', { question, networkState });
     };
 
@@ -51,7 +61,7 @@ const Chatbot = ({ networkState }) => {
                     </div>
                 ))}
                 {isThinking && (
-                    <div className="message-bubble ai thinking"> {/* Added 'thinking' class */}
+                    <div className="message-bubble ai thinking">
                         <div className="typing-indicator">
                             <span></span><span></span><span></span>
                         </div>
@@ -66,9 +76,9 @@ const Chatbot = ({ networkState }) => {
                     placeholder="Ask about trains, tracks, or signals..."
                     value={currentMessage}
                     onChange={(e) => setCurrentMessage(e.target.value)}
-                    disabled={isThinking}
+                    disabled={isThinking || !networkState} // Disable if sim is stopped
                 />
-                <button type="submit" className="chatbot-send-btn" disabled={isThinking || !currentMessage.trim()}>
+                <button type="submit" className="chatbot-send-btn" disabled={isThinking || !currentMessage.trim() || !networkState}>
                     <FiSend />
                 </button>
             </form>

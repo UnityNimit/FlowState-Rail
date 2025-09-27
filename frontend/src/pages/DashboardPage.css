@@ -29,6 +29,51 @@
     height: 100%;
     font-size: 1.5rem;
     color: var(--text-secondary);
+    text-align: center;
+    padding: 20px;
 }
 
-/* The .sim-controls, .sim-label, and .sim-speed-btn styles have been removed from this file. */
+/* NEW: Style for error messages */
+.error-message {
+    color: var(--status-red);
+    font-weight: bold;
+}
+
+.toolbar-floating {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 2500;
+}
+
+.toolbar-btn {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.toolbar-btn.danger {
+    background: var(--status-red);
+    color: #fff;
+    border-color: transparent;
+}
+
+
+
+
+
+
+.panel.track-panel {
+    position: relative; /* so absolute toolbar is located inside the panel */
+}
+
+/* if needed, make main-content relative as a broader fallback */
+.main-content {
+    position: relative;
+}

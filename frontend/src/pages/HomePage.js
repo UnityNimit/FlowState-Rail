@@ -50,6 +50,8 @@ const hyperspeedPreset = {
     }
 };
 
+
+
 const HomePage = () => {
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -173,7 +175,7 @@ const HomePage = () => {
         {/* Section 1: Hero */}
         <section className="hero-section">
           <div className="hero-content">
-            <Shuffle
+            {/* <Shuffle
                 text="FlowState Rail"
                 className="hero-title"
                 shuffleDirection="right"
@@ -188,7 +190,9 @@ const HomePage = () => {
                 triggerOnce={true}
                 triggerOnHover={true}
                 respectReducedMotion={true}
-            />
+            /> */}
+
+            <h1 className="hero-title">FlowState Rail</h1>
             <ShinyText
               text="Intelligent Decision Support for the Future of Indian Railways"
               className="hero-subtitle"

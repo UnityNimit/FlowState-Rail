@@ -76,3 +76,45 @@
     text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
     pointer-events: none;
 }
+
+
+
+
+
+
+
+
+.signal { cursor: pointer; transition: stroke-width 0.12s ease, opacity 0.12s ease; }
+.signal:hover { stroke-width: 2.5; opacity: 0.95; }
+
+/* keep other styles the same (speeds, popup etc) */
+.track { cursor: pointer; }
+.speed-label { font-family: var(--font-main); font-size: 9px; fill: #e5e7eb; }
+
+.track-popup {
+    position: fixed;
+    right: 18px;
+    top: 80px;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    z-index: 9999;
+}
+
+.popup-btn {
+    margin-right: 8px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.popup-btn.danger {
+    background: var(--status-red);
+    color: white;
+    border-color: transparent;
+}

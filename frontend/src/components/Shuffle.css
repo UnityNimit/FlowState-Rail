@@ -4,18 +4,18 @@
   white-space: normal;
   word-wrap: break-word;
   will-change: transform;
-  line-height: 1; /* keep line height consistent before/after split to avoid jump */
-  /* font-size: 4rem; -- Removed to be controlled by parent class like .hero-title */
-  /* font-family: 'Press Start 2P', sans-serif; -- Removed to be controlled by parent class */
+  /* line-height: 1;  */
   text-transform: uppercase;
-  visibility: hidden; /* hidden until initialized to avoid flash/jump */
-  text-align: center; /* Moved here from .shuffle-char for overall centering */
+  /* visibility: hidden; */ /* This is the line I am commenting out. */
+  opacity: 0; /* I am replacing visibility with opacity. */
+  text-align: center;
 }
 
 .shuffle-parent.is-ready {
-  visibility: visible;
+  /* visibility: visible; */ /* This is no longer needed. */
+  opacity: 1; /* I am replacing visibility with opacity. */
+  transition: opacity 0.1s ease-in; /* Added a subtle fade-in */
 }
-
 .shuffle-char-wrapper {
   display: inline-block;
   overflow: hidden;

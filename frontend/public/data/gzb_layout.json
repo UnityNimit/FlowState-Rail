@@ -1,0 +1,17 @@
+{
+  "network": {
+    "nodes": [
+      { "id": "S-APP-1", "type": "SIGNAL", "position": { "x": 50, "y": 100 }, "state": "RED" },
+      { "id": "S-APP-2", "type": "SIGNAL", "position": { "x": 50, "y": 250 }, "state": "RED" },
+      { "id": "S-PF-1", "type": "SIGNAL", "position": { "x": 350, "y": 150 }, "state": "RED" },
+      { "id": "T-EAST", "type": "TERMINAL", "position": { "x": 1050, "y": 100 } },
+      { "id": "T-WEST", "type": "TERMINAL", "position": { "x": 1050, "y": 250 } }
+    ],
+    "trackSegments": [
+       { "id": "TS-APP-1-PF1", "startNodeId": "S-APP-1", "endNodeId": "S-PF-1", "length": 1000 },
+       { "id": "TS-APP-2-PF1", "startNodeId": "S-APP-2", "endNodeId": "S-PF-1", "length": 1000 },
+       { "id": "TS-PF1-EAST", "startNodeId": "S-PF-1", "endNodeId": "T-EAST", "length": 2000 },
+       { "id": "TS-PF1-WEST", "startNodeId": "S-PF-1", "endNodeId": "T-WEST", "length": 2000 }
+    ]
+  }
+}

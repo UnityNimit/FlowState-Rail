@@ -118,13 +118,13 @@ const Shuffle = ({
           if (!parent) return;
 
           const w = ch.getBoundingClientRect().width;
-          if (!w) return;
+          // if (!w) return;
 
           const wrap = document.createElement('span');
           Object.assign(wrap.style, {
             display: 'inline-block',
             overflow: 'hidden',
-            width: w + 'px',
+            // width: w + 'px',
             verticalAlign: 'baseline'
           });
 
@@ -140,18 +140,18 @@ const Shuffle = ({
 
           const firstOrig = ch.cloneNode(true);
           Object.assign(firstOrig.style, { display: 'inline-block', width: w + 'px' }); // Removed textAlign: 'center'
-          firstOrig.style.textAlign = 'center'; // Explicitly set for clone
+          //firstOrig.style.textAlign = 'center'; // Explicitly set for clone
 
           ch.setAttribute('data-orig', '1');
           Object.assign(ch.style, { display: 'inline-block', width: w + 'px' }); // Removed textAlign: 'center'
-          ch.style.textAlign = 'center'; // Explicitly set for original
+          //ch.style.textAlign = 'center'; // Explicitly set for original
 
           inner.appendChild(firstOrig);
           for (let k = 0; k < rolls; k++) {
             const c = ch.cloneNode(true);
             if (scrambleCharset) c.textContent = rand(scrambleCharset);
             Object.assign(c.style, { display: 'inline-block', width: w + 'px' }); // Removed textAlign: 'center'
-            c.style.textAlign = 'center'; // Explicitly set for scramble
+            //c.style.textAlign = 'center'; // Explicitly set for scramble
             inner.appendChild(c);
           }
           inner.appendChild(ch);
@@ -289,11 +289,14 @@ const Shuffle = ({
       };
 
       const create = () => {
-        build();
-        if (scrambleCharset) randomizeScrambles();
-        play();
-        armHover();
-        setReady(true);
+        // We are wrapping the original content of this function in a setTimeout
+        setTimeout(() => {
+          build();
+          if (scrambleCharset) randomizeScrambles();
+          play();
+          armHover();
+          setReady(true);
+        }, 100); // A 100ms delay is imperceptible but gives the browser ample time to render the font
       };
 
       const st = ScrollTrigger.create({

@@ -26,66 +26,68 @@ const priorityOrder = [
     { key: 'weather', label: 'Weather Conditions', icon: <FiCloudDrizzle /> },
 ];
 
-const LeftSidebar = () => {
-    const [selectedMap, setSelectedMap] = useState('ghaziabad');
+const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, blockedTracks, onBlockedTracksChange }) => {
     const [aiPriorities, setAiPriorities] = useState({
-        congestion: true,
+        congestion: true,      // ALWAYS on
         trainType: true,
         punctuality: true,
-        trackCondition: false,
-        weather: true,
+        trackCondition: true,  // ALWAYS on
+        weather: false,
     });
     const [faultyTrackInput, setFaultyTrackInput] = useState('');
-    const [faultyTracks, setFaultyTracks] = useState(['TC-PF4']);
+
+    const isSimRunning = simulationStatus !== 'stopped';
 
     useEffect(() => {
-        // MODIFIED: Use the correct event name for the Python backend
+        // emit the priorities whenever they change; server is authoritative and will reapply forced flags
         socketService.emit('controller_set_priorities', aiPriorities);
     }, [aiPriorities]);
 
     const handlePriorityToggle = (priorityKey) => {
-        if (priorityKey === 'congestion') return;
+        // prevent toggling congestion/trackCondition (they must remain ON)
+        if (priorityKey === 'congestion' || priorityKey === 'trackCondition') return;
         setAiPriorities(prev => ({ ...prev, [priorityKey]: !prev[priorityKey] }));
     };
 
     const handleAddFaultyTrack = () => {
         const trackIdToAdd = faultyTrackInput.toUpperCase().trim();
-        if (trackIdToAdd && !faultyTracks.includes(trackIdToAdd)) {
-            const newFaultyTracks = [...faultyTracks, trackIdToAdd];
-            setFaultyTracks(newFaultyTracks);
-            socketService.emit('controller:set-track-status', { trackId: trackIdToAdd, status: 'FAULTY' });
+        if (trackIdToAdd && !blockedTracks.includes(trackIdToAdd)) {
+            const newFaultyTracks = [...blockedTracks, trackIdToAdd];
+            onBlockedTracksChange(newFaultyTracks);
+            socketService.emit('controller_set_track_status', { trackId: trackIdToAdd, status: 'FAULTY' });
             setFaultyTrackInput('');
         }
     };
 
     const handleRemoveFaultyTrack = (trackId) => {
-        const newFaultyTracks = faultyTracks.filter(t => t !== trackId);
-        setFaultyTracks(newFaultyTracks);
-        socketService.emit('controller:set-track-status', { trackId: trackId, status: 'OPERATIONAL' });
+        const newFaultyTracks = blockedTracks.filter(t => t !== trackId);
+        onBlockedTracksChange(newFaultyTracks);
+        socketService.emit('controller_set_track_status', { trackId: trackId, status: 'OPERATIONAL' });
     };
 
     return (
         <aside className="left-sidebar">
             <div className="sidebar-content">
                 <div className="panel">
-                    <div className="panel-header"><span>Map Selector</span></div>
+                    <div className="panel-header"><span>Station Selector</span></div>
                     <div className="panel-content">
                         <select
-                            value={selectedMap}
-                            onChange={(e) => setSelectedMap(e.target.value)}
+                            value={selectedStation}
+                            onChange={(e) => onStationChange(e.target.value)}
                             className="map-dropdown"
+                            disabled={isSimRunning}
                         >
-                            <option value="ghaziabad">Ghaziabad Junction</option>
-                            <option value="other" disabled>Other Map</option>
+                            <option value="DLI">Delhi Junction</option>
+                            <option value="GZB">Ghaziabad Junction</option>
+                            <option value="SBB">Shahibabad</option>
+                            <option value="ANVR">Anand Vihar Terminal</option>
                         </select>
                         <div className="map-image-container">
-                            {selectedMap === 'ghaziabad' && (
-                                <img
-                                    src={process.env.PUBLIC_URL + '/ghaziabad_junction.jpg'}
-                                    alt="Ghaziabad Junction Map"
-                                    className="map-image"
-                                />
-                            )}
+                             <img
+                                src={process.env.PUBLIC_URL + '/ghaziabad_junction.jpg'}
+                                alt={`${selectedStation} Map`}
+                                className="map-image"
+                            />
                         </div>
                     </div>
                 </div>
@@ -98,7 +100,7 @@ const LeftSidebar = () => {
                                 key={p.key} label={p.label} icon={p.icon}
                                 isChecked={aiPriorities[p.key]}
                                 onToggle={() => handlePriorityToggle(p.key)}
-                                isDisabled={p.key === 'congestion'}
+                                isDisabled={p.key === 'congestion' || p.key === 'trackCondition'}
                             />
                         ))}
                     </div>
@@ -111,7 +113,7 @@ const LeftSidebar = () => {
                             <input
                                 type="text"
                                 className="track-input"
-                                placeholder="e.g., TC-PF5"
+                                placeholder="e.g., TS-APP-1"
                                 value={faultyTrackInput}
                                 onChange={(e) => setFaultyTrackInput(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddFaultyTrack()}
@@ -121,10 +123,10 @@ const LeftSidebar = () => {
                             </button>
                         </div>
                         <div className="blocked-track-list">
-                            {faultyTracks.length === 0 ? (
+                            {blockedTracks.length === 0 ? (
                                 <div className="no-tracks-message">No tracks manually blocked.</div>
                             ) : (
-                                faultyTracks.map(trackId => (
+                                blockedTracks.map(trackId => (
                                     <div key={trackId} className="blocked-track-item">
                                         <FiAlertCircle className="faulty-icon" />
                                         <span>{trackId}</span>

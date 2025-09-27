@@ -1,0 +1,14 @@
+{
+  "network": {
+    "nodes": [
+      { "id": "S-APP-1", "type": "SIGNAL", "position": { "x": 50, "y": 150 }, "state": "RED" },
+      { "id": "S-PF-1", "type": "SIGNAL", "position": { "x": 350, "y": 150 }, "state": "RED" },
+      { "id": "T-EAST", "type": "TERMINAL", "position": { "x": 1050, "y": 150 } }
+    ],
+    "trackSegments": [
+       { "id": "TS-APP-1-PF1", "startNodeId": "S-APP-1", "endNodeId": "S-PF-1", "length": 1000 },
+       { "id": "TS-PF1-EAST", "startNodeId": "S-PF-1", "endNodeId": "T-EAST", "length": 2000 }
+    ],
+    "routes": []
+  }
+}

@@ -26,7 +26,7 @@ def generate_schedule():
         train_type = random.choice(TRAIN_TYPES)
         
         # Cluster arrival times to create conflicts
-        arrival_time = START_TIME + timedelta(minutes=random.randint(0, 300))  # Within first 5 hours
+        arrival_time = START_TIME + timedelta(minutes=random.randint(0, 10))  # Within first 5 hours
         
         # Randomly assign start and end points from the schematic
         start_node = random.choice(['S-APP-1', 'S-APP-2'])
