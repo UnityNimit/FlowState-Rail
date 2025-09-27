@@ -1,0 +1,73 @@
+# =============================================================================
+# FlowState-Rail: Unified .gitignore for Full-Stack Application
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Environment Variables & Sensitive Files
+# -----------------------------------------------------------------------------
+# Ignore all .env files in any subdirectory (most important rule).
+**/.env*
+
+# -----------------------------------------------------------------------------
+# General Dependencies & Build Artifacts
+# -----------------------------------------------------------------------------
+# Ignore dependency directories for both Node.js and Python.
+node_modules/
+venv/
+.venv/
+env/
+
+# Ignore general build output folders.
+/build/
+/dist/
+
+# -----------------------------------------------------------------------------
+# Frontend Specific (React)
+# -----------------------------------------------------------------------------
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Yarn PnP files
+.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# -----------------------------------------------------------------------------
+# Backend Specific (Python)
+# -----------------------------------------------------------------------------
+# Python bytecode and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+*.egg-info/
+*.egg
+
+# -----------------------------------------------------------------------------
+# System & IDE Files
+# -----------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+
+# IDE-specific
+.idea/
+.vscode/
+*.swp
+*.swo

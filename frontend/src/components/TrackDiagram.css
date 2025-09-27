@@ -48,23 +48,22 @@
 }
 
 .train-group {
-    /* --- THE CRITICAL FIX --- */
-    /* The transition is now much faster, allowing the speed change to be visible. */
-    /* It's set to be slightly less than the base tick rate for smoothness. */
     transition: transform 0.8s linear;
 }
 
+/* VISUAL TWEAK: Enhanced train body style */
 .train-body {
-    stroke: #1a1c1d;
-    stroke-width: 1.5px;
-    rx: 4px;
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+    stroke: #111827;      /* Darker, thicker stroke for definition */
+    stroke-width: 2px;
+    rx: 5px;              /* Slightly softer corners */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
     transition: fill 0.3s ease;
 }
 
-.train-type-express { fill: #e74c3c; }
-.train-type-passenger { fill: #3498db; }
-.train-type-freight { fill: #7f8c8d; }
+/* DEPRECATED: These classes are no longer used by the new color system */
+/* .train-type-express { fill: #e74c3c; } */
+/* .train-type-passenger { fill: #3498db; } */
+/* .train-type-freight { fill: #7f8c8d; } */
 
 .train-label {
     text-anchor: middle;
@@ -73,19 +72,61 @@
     font-size: 9px;
     font-weight: bold;
     font-family: var(--font-main);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    /* VISUAL TWEAK: Added a subtle shadow to make text pop on all colors */
+    text-shadow: 0px 0px 3px rgba(0,0,0,1);
     pointer-events: none;
 }
 
+.track, .signal {
+    transition: all 0.2s ease-in-out;
+}
 
+.track-occupied {
+    stroke: #ef4444; /* Brighter red for occupied tracks */
+    stroke-width: 4.5;
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.7)); /* Red glow */
+}
 
+.track-route-locked {
+    stroke: var(--accent-cyan);
+    stroke-width: 4;
+    filter: drop-shadow(0 0 5px rgba(6, 182, 212, 0.7)); /* Cyan glow */
+}
 
+.track-faulty {
+    stroke: #f97316; /* Bright orange for faulty tracks */
+    stroke-width: 3;
+    stroke-dasharray: 8 4;
+    animation: faulty-blink 1.5s infinite; /* Blinking animation */
+}
 
+.track-weather-bad {
+    stroke: #38bdf8; /* Bright blue for bad weather */
+    stroke-width: 4;
+    stroke-opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.6)); /* Blue glow */
+}
 
+.signal-red {
+    fill: #ef4444; /* Brighter red for signals */
+    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.8)); /* Red glow */
+}
 
+.signal-green {
+    fill: #22c55e; /* Brighter green for signals */
+    filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.9)); /* Green glow */
+}
 
-.signal { cursor: pointer; transition: stroke-width 0.12s ease, opacity 0.12s ease; }
-.signal:hover { stroke-width: 2.5; opacity: 0.95; }
+.signal { 
+    stroke: #111827;      /* Darker stroke for definition */
+    stroke-width: 2px; 
+    cursor: pointer; 
+    transition: stroke-width 0.2s ease, filter 0.2s ease;
+}
+.signal:hover { 
+    stroke-width: 3px;
+    filter: brightness(1.2);
+}
 
 /* keep other styles the same (speeds, popup etc) */
 .track { cursor: pointer; }
@@ -95,26 +136,36 @@
     position: fixed;
     right: 18px;
     top: 80px;
-    background: var(--bg-main);
+    background: var(--bg-dark-2);
     border: 1px solid var(--border-color);
     padding: 12px;
-    border-radius: 6px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     z-index: 9999;
 }
 
 .popup-btn {
     margin-right: 8px;
-    padding: 6px 8px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: 6px;
     background: transparent;
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.popup-btn:hover {
+    background: var(--glass);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .popup-btn.danger {
-    background: var(--status-red);
+    background: #ef4444;
     color: white;
     border-color: transparent;
+}
+
+.popup-btn.danger:hover {
+    background: #dc2626;
 }

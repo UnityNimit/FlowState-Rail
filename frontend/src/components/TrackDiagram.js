@@ -3,21 +3,21 @@ import React from 'react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import './TrackDiagram.css';
 
-const priorityOrder = [
-    'Shatabdi', 'Rajdhani', 'Passenger', 'DMU', 'MEMU',
-    'SF Express', 'Mail', 'Express'
-];
-const startColor = { r: 241, g: 196, b: 15 };
-const endColor = { r: 231, g: 76, b: 60 };
+// NEW: Color map based on your provided high-priority palette.
+const trainColorMap = new Map([
+    ['Shatabdi', '#FF0000'],
+    ['Rajdhani', '#0000FF'],
+    ['Passenger', '#228B22'],
+    ['DMU', '#FFD700'],
+    ['MEMU', '#FF8C00'],
+    ['SF Express', '#800080'],
+    ['Mail', '#A52A2A'],
+    ['Express', '#808080']
+]);
 
+// The getTrainColor function is now simpler and uses the new map.
 const getTrainColor = (trainType = '') => {
-    const priorityIndex = priorityOrder.findIndex(p => trainType.trim() === p.trim());
-    if (priorityIndex === -1) return '#95a5a6';
-    const factor = priorityIndex / (priorityOrder.length - 1);
-    const r = Math.round(startColor.r + (endColor.r - startColor.r) * factor);
-    const g = Math.round(startColor.g + (endColor.g - startColor.g) * factor);
-    const b = Math.round(startColor.b + (endColor.b - startColor.b) * factor);
-    return `rgb(${r}, ${g}, ${b})`;
+    return trainColorMap.get(trainType.trim()) || '#95a5a6'; // Default gray for any other type
 };
 
 const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames = true, showSpeeds = false }) => {
@@ -62,20 +62,21 @@ const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames 
         <TransformWrapper limitToBounds={false} minScale={0.2} maxScale={15}>
             <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
                 <svg width="1200" height="400" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet">
+                    {/* VISUAL TWEAK: Inline styles are updated for a cleaner look */}
                     <defs>
                         <style>{`
-                            .track { stroke: #6b7280; stroke-width: 3; fill: none; transition: stroke 0.3s; cursor: pointer; }
+                            .track { stroke: #4b5563; stroke-width: 3; fill: none; transition: stroke 0.3s; cursor: pointer; }
                             .track-occupied { stroke: var(--status-red); stroke-width: 4.5; }
                             .track-route-locked { stroke: var(--accent-cyan); stroke-width: 4; }
                             .track-faulty { stroke: var(--status-red); stroke-width: 3; stroke-dasharray: 8 4; }
                             .track-weather-bad { stroke: #1f2937; stroke-width: 4; stroke-opacity: 0.85; }
-                            .signal { stroke: #d1d5db; stroke-width: 1.5; cursor: pointer; }
+                            .signal { stroke: #111827; stroke-width: 2px; cursor: pointer; }
                             .signal-red { fill: #f87171; }
                             .signal-green { fill: #4ade80; }
-                            .point { fill: var(--accent-yellow); }
+                            .point { fill: var(--accent-yellow); stroke: #1f2326; stroke-width: 1.5px; }
                             .label { fill: #cbd5e1; font-size: 11px; text-anchor: middle; pointer-events: none; }
-                            .train-body { stroke: black; stroke-width: 1; rx: 3px; }
-                            .train-label { text-anchor: middle; dominant-baseline: middle; fill: white; font-size: 9px; font-weight: bold; pointer-events: none; }
+                            .train-body { stroke: #111827; stroke-width: 2px; rx: 5px; }
+                            .train-label { text-anchor: middle; dominant-baseline: middle; fill: white; font-size: 9px; font-weight: bold; pointer-events: none; text-shadow: 0 0 3px black; }
                             .speed-label { font-size: 9px; fill: #e5e7eb; pointer-events: none; }
                         `}</style>
                     </defs>
@@ -99,7 +100,7 @@ const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames 
 
                             const midX = (startNode.position.x + endNode.position.x) / 2;
                             const midY = (startNode.position.y + endNode.position.y) / 2;
-                            const speedText = `Max: 60 km/h`;
+                            const speedText = `60`;
 
                             return (
                                 <g key={segment.id}>
@@ -118,6 +119,22 @@ const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames 
                         })}
                     </g>
 
+                    <g id="trains">
+                         {trains && trains.filter(t => t.currentSegmentId).map(train => {
+                            const pos = calculateTrainPosition(train);
+                            if (!pos) return null;
+                            const statusSymbol = train.state === 'HOLD' ? '⏸️' : '';
+                            return (
+                                <g key={train.id} transform={`translate(${pos.x}, ${pos.y})`} className="train-group">
+                                    <rect className="train-body" fill={getTrainColor(train.type)} x="-22" y="-7" width="44" height="14" />
+                                    <text className="train-label" x="0" y="0">{train.id} {statusSymbol}</text>
+                                </g>
+                            );
+                        })}
+                    </g>
+
+                    {/* --- FIX: Render Order Changed --- */}
+                    {/* By rendering the nodes (signals) LAST, they will always appear ON TOP of the trains and tracks. */}
                     <g id="nodes">
                         {network.nodes.map(node => (
                             <g key={node.id}>
@@ -131,25 +148,17 @@ const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames 
                                         title={`${node.id} (${(node.state||'RED')})`}
                                     />
                                 }
-                                {node.type === 'SWITCH' && <rect x={node.position.x - 5} y={node.position.y - 5} width="10" height="10" className="point" />}
+                                {/* VISUAL TWEAK: Switches are now rendered as diamonds for a cleaner look */}
+                                {node.type === 'SWITCH' && 
+                                    <rect 
+                                        x={node.position.x - 5} y={node.position.y - 5} 
+                                        width="10" height="10" className="point" 
+                                        transform={`rotate(45 ${node.position.x} ${node.position.y})`}
+                                    />
+                                }
                                 {showNames && <text x={node.position.x} y={node.position.y > 200 ? node.position.y + 20 : node.position.y - 10} className="label">{node.id}</text>}
                             </g>
                         ))}
-                    </g>
-
-                    <g id="trains">
-                         {trains && trains.filter(t => t.currentSegmentId).map(train => {
-                            const pos = calculateTrainPosition(train);
-                            if (!pos) return null;
-                            const statusSymbol = train.state === 'HOLD' ? '⏸️' : '';
-                            return (
-                                // IMPORTANT: use SVG transform attribute (not style.transform) to avoid jitter with zoom/pan
-                                <g key={train.id} transform={`translate(${pos.x}, ${pos.y})`} className="train-group">
-                                    <rect className="train-body" fill={getTrainColor(train.type)} x="-20" y="-6" width="40" height="12" rx="3" />
-                                    <text className="train-label" x="0" y="0">{train.id} {statusSymbol}</text>
-                                </g>
-                            );
-                        })}
                     </g>
                 </svg>
             </TransformComponent>

@@ -1,44 +1,23 @@
 .main-content {
     flex-grow: 1;
-    padding: 10px;
+    padding: 14px;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 3fr 2fr;
-    gap: 10px;
+    gap: 12px;
 }
 .panel {
-    background-color: var(--bg-main);
+    background-color: var(--bg-dark-1);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: 10px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 .track-panel {
     position: relative;
 }
-#panel-1 {
-    grid-row: 1 / 2;
-}
-#panel-chat {
-    grid-row: 2 / 3;
-}
-.loading-message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    font-size: 1.5rem;
-    color: var(--text-secondary);
-    text-align: center;
-    padding: 20px;
-}
-
-/* NEW: Style for error messages */
-.error-message {
-    color: var(--status-red);
-    font-weight: bold;
-}
-
+/* ... other existing styles ... */
 .toolbar-floating {
     position: absolute;
     top: 12px;
@@ -46,34 +25,120 @@
     display: flex;
     gap: 8px;
     z-index: 2500;
-}
-
-.toolbar-btn {
-    background: var(--bg-main);
+    background: rgba(21, 23, 24, 0.7);
+    backdrop-filter: blur(8px);
+    padding: 6px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
-    padding: 6px 8px;
-    border-radius: 6px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+}
+.toolbar-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 7px 12px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: none;
+    color: var(--text-primary);
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+/* NEW: Style for the icon-only settings button */
+.toolbar-btn.icon-btn {
+    padding: 7px;
+    line-height: 0; /* Helps center the icon */
+    font-size: 16px;
+}
+.toolbar-btn:hover {
+    background: var(--glass);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+/* ... other existing styles ... */
+
+
+/* --- NEW: STYLES FOR SETTINGS PANEL --- */
+.settings-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(12, 15, 17, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
-.toolbar-btn.danger {
-    background: var(--status-red);
-    color: #fff;
-    border-color: transparent;
+.settings-panel {
+    width: 680px;
+    max-width: 90vw;
+    background: var(--bg-dark-2);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
 }
 
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+}
+.settings-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+.close-btn:hover { color: var(--text-primary); }
 
-
-
-
-
-.panel.track-panel {
-    position: relative; /* so absolute toolbar is located inside the panel */
+.settings-content {
+    display: flex;
+    gap: 20px;
+    padding: 18px;
+}
+.settings-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.settings-column h4 {
+    margin: 0 0 4px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
 }
 
-/* if needed, make main-content relative as a broader fallback */
-.main-content {
-    position: relative;
-}
+/* Toggle Switch Styles (borrowed and adapted) */
+.settings-toggle-item { display: flex; justify-content: space-between; align-items: center; }
+.switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-dark-1); transition: .4s; border: 1px solid var(--border-color); }
+.slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: var(--text-secondary); transition: .4s; }
+input:checked + .slider { background-color: var(--accent-cyan-dark); border-color: var(--accent-cyan); }
+input:checked + .slider:before { transform: translateX(18px); background-color: #fff; }
+.slider.round { border-radius: 22px; }
+.slider.round:before { border-radius: 50%; }
+
+/* Legend Styles */
+.legend-item { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.legend-item .track { stroke-width: 4; }
+.legend-swatch { width: 18px; height: 18px; border-radius: 4px; }
+.legend-swatch.signal-green { background-color: #22c55e; filter: drop-shadow(0 0 4px #22c55e); }
+.legend-swatch.signal-red { background-color: #ef4444; filter: drop-shadow(0 0 4px #ef4444); }
+.legend-swatch.point { background-color: var(--accent-yellow); }
+.legend-swatch.train-high-prio { background-color: #e74c3c; } /* Example color from getTrainColor */
+.legend-swatch.train-low-prio { background-color: #7f8c8d; } /* Example color */

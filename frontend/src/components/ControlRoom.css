@@ -5,7 +5,7 @@
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background-color: #0f172a; /* A dark background for the whole page */
+  background-color: var(--bg-dark-1); /* #0f172a to --bg-dark-1 */
 }
 
 .main-body {

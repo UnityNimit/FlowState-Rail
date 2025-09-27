@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--bg-panel);
+    background-color: var(--bg-dark-1); /* --bg-panel to --bg-dark-1 */
     padding: 0 15px;
     height: 48px;
     border-top: 1px solid var(--border-color);
@@ -14,8 +14,9 @@
 }
 
 .footer-status .status-ok {
-    color: var(--status-green);
+    color: #22c55e; /* --status-green to #22c55e */
     font-weight: bold;
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5); /* Added text-shadow */
 }
 
 .footer-actions {
@@ -26,7 +27,7 @@
 
 /* Styles for the new text "Built by Team Rose A" */
 .team-rose-text {
-    color: #888888; /* Gray color */
+    color: var(--text-tertiary); /* #888888 to --text-tertiary */
     font-style: italic; /* Italics */
     font-size: 14px; /* Adjust font size if necessary to match surrounding text */
 }

@@ -1,47 +1,57 @@
+/* --- START OF FILE LeftSidebar.css --- */
+
 /* --- FIX: Main container now handles layout and scrolling correctly --- */
 .left-sidebar {
     width: 280px;
-    background-color: var(--bg-panel);
+    background-color: var(--bg-dark-1);
     border-right: 1px solid var(--border-color);
-    display: flex; /* Use flexbox for layout */
+    display: flex;
     flex-direction: column;
-    height: 100%; /* Ensure it takes full height of its container */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    height: 100%;
+    box-shadow: none;
+    padding: 14px;
+    box-sizing: border-box;
+    gap: 12px;
 }
 
 /* --- NEW: This wrapper will contain all panels and will be the scrollable element --- */
 .sidebar-content {
-    flex-grow: 1; /* Allows this div to grow and fill available space */
-    overflow-y: auto; /* The magic property! Shows a scrollbar ONLY if needed */
-    padding: 10px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.panel {
-    background-color: var(--bg-main);
-    border-radius: 6px; /* Slightly more rounded corners */
+/* CORE FIX: Scoped the .panel selector to prevent styles from leaking to other components */
+.left-sidebar .panel {
+    background-color: var(--bg-dark-2);
+    border-radius: 10px;
     border: 1px solid var(--border-color);
-    flex-shrink: 0; /* Prevents panels from shrinking when content scrolls */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Soft shadow for panels */
-    transition: box-shadow 0.2s ease-in-out; /* Smooth transition for shadow */
+    flex-shrink: 0;
+    box-shadow: none;
+    transition: transform .12s ease, box-shadow .12s ease, border-color 0.2s ease;
+    min-height: 74px;
+    box-sizing: border-box;
 }
 
-.panel:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow on hover */
+.left-sidebar .panel:hover {
+    transform: translateY(-4px); /* This will now ONLY apply to panels in the left sidebar */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-panel-header);
-    padding: 10px 12px; /* Increased padding */
-    font-weight: 600; /* Slightly bolder font */
+    background-color: transparent;
+    padding: 10px 12px;
+    font-weight: 700;
     border-bottom: 1px solid var(--border-color);
-    border-top-left-radius: 6px; /* Match panel border-radius */
-    border-top-right-radius: 6px; /* Match panel border-radius */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     color: var(--text-primary);
 }
 
@@ -52,34 +62,34 @@
 .map-dropdown {
     width: 100%;
     padding: 10px; /* Increased padding */
-    background-color: var(--bg-main);
+    background-color: var(--bg-dark-2); /* --bg-main to --bg-dark-2 */
     color: var(--text-primary);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: 6px; /* 4px to 6px */
     font-size: 14px;
     appearance: none; /* Remove default dropdown arrow */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b2b2b2%22%20d%3D%22M287%2C197.978L146.2%2C57.178L5.4%2C197.978H287z%22%2F%3E%3C%2Fsvg%3E'); /* Custom dropdown arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2395a0ad%22%20d%3D%22M287%2C197.978L146.2%2C57.178L5.4%2C197.978H287z%22%2F%3E%3C%2Fsvg%3E'); /* Custom dropdown arrow */
     background-repeat: no-repeat;
     background-position: right 10px top 50%;
-    background-size: 12px;
+    background-size: 10px; /* 12px to 10px */
     cursor: pointer;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .map-dropdown:hover {
-    border-color: var(--accent-orange);
+    border-color: rgba(255, 255, 255, 0.1); /* --accent-orange to rgba(255, 255, 255, 0.1) */
 }
 
 .map-dropdown:focus {
     outline: none;
-    border-color: var(--accent-orange);
-    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3); /* Orange glow on focus */
+    border-color: var(--accent-cyan); /* --accent-orange to --accent-cyan */
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); /* Orange glow on focus */
 }
 
 .map-image-container {
     margin-top: 15px;
-    background-color: var(--bg-panel);
-    padding: 8px; /* Increased padding around image */
+    background-color: var(--bg-dark-1); /* --bg-panel to --bg-dark-1 */
+    padding: 4px; /* 8px to 4px */
     border-radius: 4px;
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow for image container */
@@ -143,16 +153,17 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--bg-darker); /* Off state background */
+    background-color: var(--bg-dark-1); /* --bg-darker to --bg-dark-1 */
     -webkit-transition: .4s;
     transition: background-color .4s ease; /* Smooth transition for background */
+    border: 1px solid var(--border-color); /* Added border */
 }
 
 .slider:before {
     position: absolute;
     content: "";
-    height: 16px; /* Adjusted size */
-    width: 16px; /* Adjusted size */
+    height: 14px; /* 16px to 14px */
+    width: 14px; /* 16px to 14px */
     left: 3px; /* Adjusted position */
     bottom: 3px; /* Adjusted position */
     background-color: var(--text-secondary); /* Handle color */
@@ -161,18 +172,19 @@
 }
 
 input:checked + .slider {
-    background-color: var(--accent-orange); /* On state background */
+    background-color: var(--accent-cyan-dark); /* --accent-orange to --accent-cyan-dark */
+    border-color: var(--accent-cyan); /* Added border-color */
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3); /* Orange glow on focus */
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); /* Orange glow on focus */
 }
 
 input:checked + .slider:before {
     -webkit-transform: translateX(18px); /* Adjusted translation */
     -ms-transform: translateX(18px);
     transform: translateX(18px);
-    background-color: #1a1c1d; /* Darker handle color when checked */
+    background-color: #fff; /* #1a1c1d to #fff */
 }
 
 /* Rounded sliders */
@@ -194,33 +206,34 @@ input:checked + .slider:before {
 
 .track-input {
     flex-grow: 1;
-    background-color: var(--bg-main);
+    background-color: var(--bg-dark-2); /* --bg-main to --bg-dark-2 */
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 10px; /* Increased padding */
-    border-radius: 4px;
+    /* padding: 0px; Increased padding */
+    padding-left: 5px; 
+    border-radius: 6px; /* 4px to 6px */
     font-size: 14px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .track-input:focus {
     outline: none;
-    border-color: var(--accent-orange);
-    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3);
+    border-color: var(--accent-cyan); /* --accent-orange to --accent-cyan */
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); /* 0 0 0 2px rgba(255, 165, 0, 0.3) */
 }
 
 .track-add-btn {
-    background-color: var(--accent-orange);
-    color: #1a1c1d;
-    border: none;
+    background-color: var(--accent-cyan-dark); /* --accent-orange to --accent-cyan-dark */
+    color: #fff; /* #1a1c1d to #fff */
+    border: 1px solid var(--accent-cyan); /* none to 1px solid var(--accent-cyan) */
     /* Adjusted to ensure it fits and is square */
     width: 38px; /* Set a fixed width */
     height: 38px; /* Set a fixed height, matching input visual height approx */
     padding: 0; /* Remove padding as width/height are explicit */
     line-height: 38px; /* Center content vertically */
     text-align: center; /* Center content horizontally */
-    border-radius: 4px;
-    font-weight: 600; /* Bolder font */
+    border-radius: 6px; /* 4px to 6px */
+    font-weight: 700; /* 600 to 700 */
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.1s ease;
     font-size: 1.2em; /* Keep existing font size for the + */
@@ -228,8 +241,9 @@ input:checked + .slider:before {
 }
 
 .track-add-btn:hover {
-    background-color: #ffb74d; /* Slightly lighter orange on hover */
-    transform: translateY(-1px); /* Subtle lift effect */
+    background-color: var(--accent-cyan); /* #ffb74d to --accent-cyan */
+    transform: translateY(-2px); /* -1px to -2px */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3); /* Added box-shadow */
 }
 
 .track-add-btn:active {
@@ -246,21 +260,21 @@ input:checked + .slider:before {
     font-style: italic;
     color: var(--text-secondary);
     text-align: center;
-    padding: 10px 0;
-    background-color: var(--bg-darker); /* Subtle background */
-    border-radius: 4px;
+    padding: 12px; /* 10px 0 to 12px */
+    background-color: var(--bg-dark-2); /* --bg-darker to --bg-dark-2 */
+    border-radius: 8px; /* 4px to 8px */
     font-size: 0.9em;
 }
 
 .blocked-track-item {
     display: flex;
     align-items: center;
-    background-color: #4a3a30; /* Darker, slightly desaturated orange for blocked item */
+    background-color: var(--bg-dark-2); /* #4a3a30 to --bg-dark-2 */
     padding: 8px 12px; /* Increased padding */
-    border-radius: 4px;
-    color: var(--accent-orange);
+    border-radius: 6px; /* 4px to 6px */
+    color: var(--text-primary);
     font-weight: 500;
-    border: 1px solid #6e553c; /* Subtle border */
+    border: 1px solid var(--border-color); /* #6e553c to --border-color */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -271,7 +285,7 @@ input:checked + .slider:before {
 
 .faulty-icon {
     margin-right: 10px; /* Increased margin */
-    color: #ff8c00; /* A slightly deeper orange for the icon */
+    color: #ef4444; /* #ff8c00 to #ef4444 */
     font-size: 1.1em;
 }
 
@@ -291,7 +305,7 @@ input:checked + .slider:before {
 }
 
 .track-remove-btn:hover {
-    color: #e74c3c; /* Red color on hover for removal */
+    color: #ef4444; /* #e74c3c to #ef4444 */
     transform: scale(1.1); /* Slightly larger on hover */
 }
 

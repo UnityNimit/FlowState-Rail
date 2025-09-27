@@ -10,10 +10,11 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-main);
-    border-radius: 8px; /* Slightly rounded corners for the container */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* More prominent shadow for depth */
+    background-color: var(--bg-dark-1); /* --bg-main to --bg-dark-1 */
+    border-radius: 10px; /* 8px to 10px */
+    box-shadow: none; /* 0 4px 15px rgba(0, 0, 0, 0.3); */
     overflow: hidden; /* Ensures content respects border-radius */
+    border: 1px solid var(--border-color); /* Added border */
 }
 
 .chatbot-messages {
@@ -23,8 +24,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px; /* Slightly reduced gap between messages for denser chat */
-    background-color: var(--bg-main); /* Ensure background is consistent */
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle inner shadow for depth */
+    background-color: transparent; /* --bg-main to transparent */
+    box-shadow: none; /* inset 0 2px 5px rgba(0, 0, 0, 0.1); */
     border-bottom: 1px solid var(--border-color); /* Separator from input */
 }
 
@@ -34,13 +35,13 @@
     max-width: 78%; /* Increased max-width for longer messages */
     line-height: 1.5;
     word-wrap: break-word; /* Ensures long words wrap */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for each bubble */
+    box-shadow: none; /* 0 1px 3px rgba(0, 0, 0, 0.2); */
     transition: transform 0.1s ease-out; /* Smooth pop-in for new messages */
 }
 
 .message-bubble.user {
     background-color: var(--accent-cyan-dark); /* Using the provided variable */
-    color: #1a1c1d; /* Dark text for contrast on bright bubble */
+    color: #fff; /* #1a1c1d to #fff */
     align-self: flex-end;
     /* Custom border radius for a chat bubble look */
     border-radius: 18px 18px 4px 18px; /* Top-left, Top-right, Bottom-right, Bottom-left */
@@ -48,7 +49,7 @@
 }
 
 .message-bubble.ai {
-    background-color: var(--bg-panel-header); /* Using the provided variable */
+    background-color: var(--bg-dark-2); /* --bg-panel-header to --bg-dark-2 */
     color: var(--text-primary);
     align-self: flex-start;
     /* Custom border radius for a chat bubble look */
@@ -59,13 +60,13 @@
 .chatbot-input-form {
     display: flex;
     padding: 10px;
-    background-color: var(--bg-main); /* Match container background */
+    background-color: var(--bg-dark-1); /* --bg-main to --bg-dark-1 */
     align-items: center; /* Vertically align items */
 }
 
 .chatbot-input {
     flex-grow: 1;
-    background-color: var(--bg-panel); /* Lighter background for input */
+    background-color: var(--bg-dark-2); /* --bg-panel to --bg-dark-2 */
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     padding: 12px 18px; /* Increased padding */
@@ -76,10 +77,10 @@
 }
 .chatbot-input:focus {
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.3); /* Cyan glow on focus */
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3); /* 0 0 0 3px rgba(34, 211, 238, 0.3) */
 }
 .chatbot-input:disabled {
-    background-color: var(--bg-darker);
+    background-color: var(--bg-dark-2); /* --bg-darker to --bg-dark-2 */
     cursor: not-allowed;
     opacity: 0.7;
 }
@@ -89,22 +90,22 @@
     width: 48px; /* Increased size */
     height: 48px; /* Increased size */
     margin-left: 12px; /* Increased margin */
-    background-color: var(--accent-cyan-dark);
+    background: linear-gradient(180deg,var(--accent-cyan) 0%, var(--accent-cyan-dark) 100%); /* --accent-cyan-dark to linear-gradient */
     border: none;
     border-radius: 50%; /* Perfect circle */
-    color: #1a1c1d; /* Dark text for contrast */
+    color: #fff; /* #1a1c1d to #fff */
     font-size: 20px; /* Larger icon */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for the button */
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2); /* 0 2px 5px rgba(0, 0, 0, 0.2) */
 }
 .chatbot-send-btn:hover:not(:disabled) {
     background-color: var(--accent-cyan); /* Lighter cyan on hover */
-    transform: translateY(-1px); /* Slight lift effect */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* More pronounced shadow on hover */
+    transform: translateY(-2px); /* -1px to -2px */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3); /* 0 4px 8px rgba(0, 0, 0, 0.3) */
 }
 .chatbot-send-btn:active:not(:disabled) {
     transform: translateY(0); /* Press effect */

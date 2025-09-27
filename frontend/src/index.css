@@ -1,28 +1,32 @@
-/* Using a Google Font that closely matches the UI */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+/* Using the Inter font for a modern, clean UI */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Color Palette from the image */
-  --bg-main: #33383a;
-  --bg-panel: #43484a;
-  --bg-panel-header: #53585a;
-  --border-color: #2a2d2e;
-  --text-primary: #d1d5db;
-  --text-secondary: #a1a5ab;
-  --accent-cyan: #70e0ff;
-  --accent-cyan-dark: #32c4e6;
-  --accent-yellow: #fde88d;
-  --accent-orange: #ff9f43;
-  --status-green: #4ade80;
-  --status-yellow: #facc15;
-  --status-red: #f87171;
-  --font-main: 'Roboto', sans-serif;
+  /* THEME OVERHAUL: Definitive Modern Dark Palette */
+  --bg-dark-1: #151718;
+  --bg-dark-2: #1f2326;
+  --glass: rgba(255,255,255,0.04);
+  --border-color: rgba(255,255,255,0.06);
+  --text-primary: #e6eef6;
+  --text-secondary: #95a0ad;
+  --text-tertiary: #606a7c;
+  
+  --accent-cyan: #06b6d4;
+  --accent-cyan-dark: #0891b2;
+  --accent-orange: #f39c12;
+  --accent-yellow: #facc15;
+
+  --status-green: #22c55e;
+  --status-yellow: #f59e0b;
+  --status-red: #ef4444;
+
+  --font-main: 'Inter', sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-main);
+  background-color: var(--bg-dark-1); /* Use the darkest background */
   color: var(--text-primary);
   font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
@@ -30,20 +34,21 @@ body {
   font-size: 14px;
 }
 
-/* Custom Scrollbar for a more native feel */
+/* Custom Scrollbar styled for the dark theme */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--border-color);
+  background: var(--bg-dark-1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6b7280;
+  background: #3e454a; /* A slightly lighter grey for the thumb */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #8b92a0;
+  background: #50585f;
 }
