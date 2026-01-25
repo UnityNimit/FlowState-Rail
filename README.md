@@ -45,16 +45,38 @@ This simulation environment models a complete railway section, allowing controll
 
 ---
 
-## ✨ Key Features
+## 🔹 Key Features
 
-- **🧠 AI-Powered Route Optimization**: Utilizes a Python backend with Google OR-Tools to solve complex routing and scheduling problems, minimizing delays and preventing conflicts.
-- **🌐 Real-Time Network Visualization**: An interactive SVG-based track diagram built with React, showing live train positions, signal states, and track occupancy.
-- **🕹️ Full Simulation Control**: Start, pause, stop, and accelerate the simulation. Test different scenarios and observe the AI's response to changing conditions.
-- **✋ Human-in-the-Loop Design**: The AI provides recommendations, but the human controller has the final say with full manual override capabilities for signals and tracks.
-- **🤖 Conversational AI Assistant**: An integrated chatbot, powered by the Gemini API, that can answer natural language questions about the real-time state of the network.
-- **⚙️ Dynamic AI Strategy Configuration**: Controllers can adjust the AI's decision-making priorities on the fly, balancing factors like network congestion, train priority, punctuality, and adverse weather conditions.
-- **📊 Modular & Data-Driven**: Easily simulate different railway sections by simply changing the station layout (`.json`) and schedule (`.csv`) files.
-- **PERSISTENT State**: The user interface state is saved to `sessionStorage`, allowing for page reloads without losing the simulation context.
+- **🧠 AI-Powered Route Optimization**  
+  Leverages a Python backend with **Google OR-Tools** to solve complex routing and scheduling problems, reducing delays and preventing track conflicts through intelligent optimization.
+
+- **🌐 Real-Time Network Visualization**  
+  An interactive **SVG-based track diagram** built with **React**, displaying live train positions, signal states, and track occupancy in real time.
+
+- **🕹️ Full Simulation Control**  
+  Supports complete control over the simulation lifecycle — **start, pause, stop, and accelerate** — enabling scenario testing and observation of AI-driven decisions under changing conditions.
+
+- **✋ Human-in-the-Loop Architecture**  
+  The AI suggests optimal actions, but the human controller retains full authority with **manual override** of signals and track assignments, ensuring safety and transparency.
+
+- **🤖 Conversational AI Assistant**  
+  An integrated chatbot powered by the **Gemini API** allows users to query the system in natural language and receive real-time insights about network status and train behavior.
+
+- **⚙️ Dynamic AI Strategy Configuration**  
+  Decision-making priorities can be adjusted on the fly, balancing factors such as:
+  - Network congestion  
+  - Train priority  
+  - Punctuality  
+  - Adverse weather conditions  
+
+- **📊 Modular & Data-Driven Design**  
+  New railway sections can be simulated easily by modifying:
+  - Station layouts (`.json`)  
+  - Train schedules (`.csv`)  
+  This enables rapid testing of different network configurations.
+
+- **💾 Persistent State Management**  
+  The UI state is stored in **`sessionStorage`**, allowing page reloads without losing the current simulation context or configuration.
 
 ---
 
