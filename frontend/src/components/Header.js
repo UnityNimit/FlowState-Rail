@@ -1,5 +1,6 @@
 // Header.js
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 
@@ -349,6 +350,15 @@ const Header = () => {
         <>
             <header className="app-header">
                 <div className="header-left">
+                    <Link to="/" className="header-brand-link" title="Return to Flow Home">
+                        <img
+                            src={process.env.PUBLIC_URL + '/logo.png'}
+                            alt="Flow"
+                            className="header-brand-logo"
+                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                        <span className="header-brand-text">Flow</span>
+                    </Link>
                     <button className="tutorial-launch" title="Run guided tutorial" onClick={startTutorial}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
                             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
@@ -358,16 +368,15 @@ const Header = () => {
                     </button>
                 </div>
                 {/* CODED BY NIMIT */}
-                <div style={{ fontWeight: 'bold', fontSize: '28px' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '24px' }}>
                     <ShinyText
                     text="Railway Section Controller"
                     speed={2}
                     pause={false}
-
                     />
                 </div>
                 <div className="header-right">
-                    <div className="brand-sub">FlowState · Dispatch Console</div>
+                    <div className="brand-sub">Flow · Dispatch Console</div>
                 </div>
             </header>
 

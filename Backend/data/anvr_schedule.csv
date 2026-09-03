@@ -1,0 +1,3 @@
+Train No,Train Name,Start Node,End Node,Arrival time,Type
+70101,ANVR-CNB-EXP,S-APP-1,T-EAST,00:12:00,Express
+70102,ANVR-GKP-SF,S-APP-2,T-EAST,00:22:00,SF Express

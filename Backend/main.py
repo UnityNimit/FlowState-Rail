@@ -1,10 +1,28 @@
+import sys
+import os
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 import asyncio
+import json
 import socketio
 from fastapi import FastAPI
 from simulation import Simulation
 from optimizer import Optimizer
 import time
 import traceback
+
+try:
+    from dotenv import load_dotenv
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    load_dotenv(env_path)
+except ImportError:
+    pass
 
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
 app = FastAPI()
@@ -675,6 +693,58 @@ async def controller_set_all_signals_red(sid, data):
         # Keep a small marker in pending_signal_overrides; frontend should re-request or toggle signals after load.
         pending_signal_overrides['_ALL_SIGNALS_RED_'] = True
         print("🕓 Received set-all-signals-red while simulation not running. Will apply after start.")
+
+
+@sio.on('chatbot:query')
+async def handle_chatbot_query(sid, data):
+    question = data.get('question', '') if isinstance(data, dict) else ''
+    network_state = data.get('networkState', {}) if isinstance(data, dict) else {}
+    print(f"💬 Chatbot query received from {sid}: {question}")
+    await sio.emit('chatbot:thinking', to=sid)
+
+    api_key = os.getenv('GEMINI_API_KEY')
+    reply_text = None
+
+    if api_key:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            prompt = f"""You are "RailOps AI," an intelligent, real-time railway operations assistant for Indian Railways traffic control.
+Answer the controller's question concisely, accurately, and professionally using ONLY the current system state below.
+
+System State:
+{json.dumps(network_state, indent=2)}
+
+Controller Question:
+"{question}"
+
+Instructions:
+- Keep the response short and direct (1-3 sentences).
+- If information isn't in the state snapshot, state that clearly without guessing.
+"""
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            res = await asyncio.to_thread(model.generate_content, prompt)
+            reply_text = res.text.strip()
+        except Exception as err:
+            print(f"⚠️ Gemini API chat error: {err}")
+            err_str = str(err)
+            if "429" in err_str or "Quota" in err_str:
+                quota_note = " (Note: Gemini API free-tier quota is currently exhausted for this key.)"
+            else:
+                quota_note = f" (Note: Gemini API returned: {err_str[:60]}...)"
+            
+            trains = network_state.get('trains', [])
+            running = [t for t in trains if t.get('state') == 'RUNNING']
+            waiting = [t for t in trains if t.get('state') in ('WAITING_PLAN', 'READY_TO_PROCEED')]
+            faulty = [s for s in network_state.get('network', {}).get('trackSegments', []) if s.get('status') == 'FAULTY']
+            reply_text = f"Network Status: {len(running)} train(s) running, {len(waiting)} waiting for dispatch, {len(faulty)} track segment(s) reported faulty.{quota_note}"
+    else:
+        trains = network_state.get('trains', [])
+        running = [t for t in trains if t.get('state') == 'RUNNING']
+        waiting = [t for t in trains if t.get('state') in ('WAITING_PLAN', 'READY_TO_PROCEED')]
+        reply_text = f"RailOps Local Status: {len(running)} train(s) running, {len(waiting)} waiting. (Add GEMINI_API_KEY to backend/.env to enable generative AI responses)."
+
+    await sio.emit('chatbot:response', {'sender': 'ai', 'text': reply_text}, to=sid)
 
 
 @app.on_event("startup")

@@ -1,5 +1,24 @@
-import time, json, pandas as pd, random
+import sys, os, time, json, pandas as pd, random
 from collections import deque
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+STATION_ALIASES = {
+    'gzb': 'ghaziabad',
+    'ghaziabad': 'ghaziabad',
+    'sbb': 'shahibabad',
+    'shahibabad': 'shahibabad',
+    'anvr': 'anand_vihar',
+    'anand_vihar': 'anand_vihar',
+    'dli': 'dli'
+}
+
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 class Simulation:
     def __init__(self, section_code='DLI'):
@@ -87,11 +106,29 @@ class Simulation:
         self._update_network_state()
         return {"timestamp": self.current_time_seconds, "network": self.network, "trains": self.active_trains}
 
+    def _resolve_data_path(self, suffix):
+        code = self.section_code.lower()
+        candidates = [f"{code}_{suffix}"]
+        alias = STATION_ALIASES.get(code)
+        if alias and alias != code:
+            candidates.append(f"{alias}_{suffix}")
+        
+        for cand in candidates:
+            # Check DATA_DIR
+            p = os.path.join(DATA_DIR, cand)
+            if os.path.exists(p):
+                return p
+            # Check relative data dir
+            p_rel = os.path.join('.', 'data', cand)
+            if os.path.exists(p_rel):
+                return p_rel
+        return os.path.join(DATA_DIR, candidates[0])
+
     def _load_network_layout(self):
-        layout_path = f'./data/{self.section_code.lower()}_layout.json'
+        layout_path = self._resolve_data_path('layout.json')
         print(f"Attempting to load layout from: {layout_path}")
         try:
-            with open(layout_path, 'r') as f:
+            with open(layout_path, 'r', encoding='utf-8') as f:
                 return json.load(f)['network']
         except FileNotFoundError:
             print(f"❌ FATAL ERROR: Layout file not found at {layout_path}")
@@ -111,7 +148,7 @@ class Simulation:
         return adj
 
     def _load_master_schedule(self):
-        csv_path = f'./data/{self.section_code.lower()}_schedule.csv'
+        csv_path = self._resolve_data_path('schedule.csv')
         print(f"Attempting to load schedule from: {csv_path}")
         try:
             df = pd.read_csv(csv_path)

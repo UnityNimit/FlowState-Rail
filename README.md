@@ -168,30 +168,37 @@ This project requires API keys for Google Gemini. You need to create `.env` file
 
     **File: `frontend/.env`**
     ```env
-    # Example for React environment variables
-    REACT_APP_API_URL="http://localhost:8000"
+    # React backend URL
+    REACT_APP_API_URL="http://localhost:8001"
     ```
 
 ---
 
 ## 🕹️ Usage
 
-You need to run both the backend server and the frontend application in separate terminal windows.
+You can launch both services with a single click or run them in separate terminals.
+
+### Quick Start (Windows)
+Double-click **`start_all.bat`** in the root directory. This will start both the backend on port 8001 and frontend on port 3000 in separate windows.
+
+### Manual Start
 
 1.  **Start the Python Backend Server:**
-    -   Make sure you are in the `backend/` directory with your virtual environment activated.
-    -   Run the FastAPI server using Uvicorn.
+    -   Navigate to the `Backend/` directory.
+    -   Run the FastAPI server using Uvicorn on port 8001:
 
     ```sh
-    uvicorn main:socket_app --host 0.0.0.0 --port 8000 --reload
+    cd Backend
+    python -m uvicorn main:socket_app --host 0.0.0.0 --port 8001 --reload
     ```
-    - The server will be running at `http://localhost:8000`.
+    - The server will be running at `http://localhost:8001`.
 
 2.  **Start the React Frontend Application:**
-    -   Open a new terminal and navigate to the `frontend/` directory.
-    -   Run the development server.
+    -   In a separate terminal, navigate to the `frontend/` directory.
+    -   Run the development server:
 
     ```sh
+    cd frontend
     npm start
     ```
     - The application will automatically open in your browser at `http://localhost:3000`.
