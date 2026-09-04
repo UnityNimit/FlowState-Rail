@@ -1,0 +1,10 @@
+const fs = require('fs');
+let code = fs.readFileSync('frontend/src/App.js', 'utf8');
+code = code.replace(/?  START/g, 'START');
+code = code.replace(/? PAUSE/g, 'PAUSE');
+code = code.replace(/?  RESUME/g, 'RESUME');
+code = code.replace(/? STOP/g, 'STOP');
+code = code.replace(/= ASSETS/g, 'ASSETS');
+code = code.replace(/? AI FEED/g, 'INSIGHTS');
+code = code.replace(/?? CHAT/g, 'COPILOT');
+fs.writeFileSync('frontend/src/App.js', code, 'utf8');
