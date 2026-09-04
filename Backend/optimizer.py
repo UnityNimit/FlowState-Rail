@@ -1,4 +1,6 @@
 import sys
+import math
+
 if sys.platform == "win32":
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -7,31 +9,34 @@ if sys.platform == "win32":
         pass
 
 from ortools.sat.python import cp_model
-import math
+
 
 class Optimizer:
     def __init__(self, simulation_instance):
         self.simulation = simulation_instance
         self.priorities = {
-            'Shatabdi':   10,
-            'Rajdhani':   9,
-            'Passenger':  8,
-            'DMU':        7,
-            'MEMU':       6,
-            'SF Express': 5,
-            'Mail':       4,
-            'Express':    3
+            'Vande Bharat': 10,
+            'Rajdhani':     9,
+            'Shatabdi':     8,
+            'SF Express':   7,
+            'Express':      6,
+            'Mail':         5,
+            'MEMU':         4,
+            'DMU':          3,
+            'Passenger':    2,
+            'Freight':      1
         }
-        print("✅ Definitive Optimizer initialized with Dynamic Priority Logic.")
+        print("[OPTIMIZER] Constraint Programming Dispatch Solver (OR-Tools CP-SAT) initialized.")
 
     def generate_plan(self, trains_to_plan, current_state, current_priorities):
-        print(f"🧠 Optimizer: Planning for {len(trains_to_plan)} train(s) with priorities: {current_priorities}")
         if not trains_to_plan:
             return []
 
+        print(f"[OPTIMIZER] Solving time-space pathing for {len(trains_to_plan)} train(s)...")
+
         model = cp_model.CpModel()
-        current_time = current_state['timestamp']
-        all_active_trains = current_state['trains']
+        current_time = int(current_state.get('timestamp', 0))
+        all_active_trains = current_state.get('trains', [])
 
         horizon = 7200
         max_time = int(current_time + horizon)
@@ -40,159 +45,257 @@ class Optimizer:
         route_choices = {}
         resource_intervals = {}
 
-        # --- Step 1: Account for running trains as fixed reservations ---
+        # ---------------------------------------------------------------------
+        # Step 1: Account for active running trains as fixed reservations
+        # ---------------------------------------------------------------------
         for train in all_active_trains:
-            if train['state'] != 'RUNNING' or not train.get('route'):
+            if train.get('state') != 'RUNNING' or not train.get('route'):
                 continue
 
-            segment = self.simulation.segments_map.get(train['currentSegmentId'])
-            if not segment: continue
+            curr_seg_id = train.get('currentSegmentId')
+            if not curr_seg_id:
+                continue
+
+            segment = self.simulation.segments_map.get(curr_seg_id)
+            if not segment:
+                continue
 
             travel_time_per_segment = 14
-            remaining_time_on_segment = int(travel_time_per_segment * (1 - train['positionOnSegment']))
+            pos = max(0.0, min(1.0, float(train.get('positionOnSegment', 0.0))))
+            remaining_time = max(1, int(travel_time_per_segment * (1.0 - pos)))
 
-            start_time = int(current_time)
-            end_time = start_time + remaining_time_on_segment
-            interval = model.NewIntervalVar(start_time, remaining_time_on_segment, end_time, f"fixed_i_{train['id']}_{train['currentSegmentId']}")
-            if train['currentSegmentId'] not in resource_intervals: resource_intervals[train['currentSegmentId']] = []
-            resource_intervals[train['currentSegmentId']].append(interval)
+            start_time = current_time
+            end_time = start_time + remaining_time
 
-            previous_end_time = end_time
-            current_route_index = train['route'].index(train['currentSegmentId'])
-            future_segments = train['route'][current_route_index + 1:]
+            interval = model.NewIntervalVar(
+                start_time,
+                remaining_time,
+                end_time,
+                f"fixed_i_{train['id']}_{curr_seg_id}"
+            )
+            resource_intervals.setdefault(curr_seg_id, []).append(interval)
+
+            prev_end = end_time
+            try:
+                curr_idx = train['route'].index(curr_seg_id)
+            except ValueError:
+                continue
+
+            future_segments = train['route'][curr_idx + 1:]
             node_path = self.simulation._convert_segment_path_to_node_path(train['route'])
 
             for i, segment_id in enumerate(future_segments):
-                junction_occupancy_time = 10
-                j_start = previous_end_time
-                j_end = j_start + junction_occupancy_time
-                junction_node_id = node_path[current_route_index + i + 1]
-                j_interval = model.NewIntervalVar(j_start, junction_occupancy_time, j_end, f"fixed_ji_{train['id']}_{junction_node_id}")
-                if junction_node_id not in resource_intervals: resource_intervals[junction_node_id] = []
-                resource_intervals[junction_node_id].append(j_interval)
+                junction_duration = 10
+                j_start = prev_end
+                j_end = j_start + junction_duration
 
-                start = j_end
-                end = start + travel_time_per_segment
-                interval = model.NewIntervalVar(start, travel_time_per_segment, end, f"fixed_i_{train['id']}_{segment_id}")
-                if segment_id not in resource_intervals: resource_intervals[segment_id] = []
-                resource_intervals[segment_id].append(interval)
-                previous_end_time = end
+                node_idx = curr_idx + i + 1
+                if node_idx < len(node_path):
+                    junction_node_id = node_path[node_idx]
+                    j_interval = model.NewIntervalVar(
+                        j_start,
+                        junction_duration,
+                        j_end,
+                        f"fixed_ji_{train['id']}_{junction_node_id}"
+                    )
+                    resource_intervals.setdefault(junction_node_id, []).append(j_interval)
 
-        # --- Step 2: Decision variables for trains WAITING_PLAN ---
+                seg_start = j_end
+                seg_end = seg_start + travel_time_per_segment
+                seg_interval = model.NewIntervalVar(
+                    seg_start,
+                    travel_time_per_segment,
+                    seg_end,
+                    f"fixed_i_{train['id']}_{segment_id}"
+                )
+                resource_intervals.setdefault(segment_id, []).append(seg_interval)
+                prev_end = seg_end
+
+        # ---------------------------------------------------------------------
+        # Step 2: Decision variables for trains awaiting plan
+        # ---------------------------------------------------------------------
         for train in trains_to_plan:
-            train['possible_routes'] = self.simulation.find_all_possible_routes(train['start_node'], train['end_node'])
+            train['possible_routes'] = self.simulation.find_all_possible_routes(
+                train['start_node'],
+                train['end_node']
+            )
+
             if not train['possible_routes']:
-                print(f"⚠️ No routes found for train {train['id']}. It will remain waiting.")
+                print(f"[WARN] No viable route geometry for Train {train['id']}.")
                 continue
 
             train_id = train['id']
             route_choices[train_id] = []
 
             for i, route in enumerate(train['possible_routes']):
-                choice_var = model.NewBoolVar(f'{train_id}_chooses_route_{i}')
+                choice_var = model.NewBoolVar(f"{train_id}_chooses_route_{i}")
                 route_choices[train_id].append(choice_var)
 
-                previous_end = model.NewIntVar(current_time, max_time, f'{train_id}_r{i}_start')
-
+                previous_end = model.NewIntVar(current_time, max_time, f"{train_id}_r{i}_start")
                 node_path = self.simulation._convert_segment_path_to_node_path(route)
+
                 for seg_idx, segment_id in enumerate(route):
                     travel_time = 14
-                    start = model.NewIntVar(current_time, max_time, f's_{train_id}_{i}_{seg_idx}')
-                    end = model.NewIntVar(current_time, max_time, f'e_{train_id}_{i}_{seg_idx}')
-                    interval = model.NewOptionalIntervalVar(start, travel_time, end, choice_var, f'i_{train_id}_{i}_{seg_idx}')
+                    start = model.NewIntVar(current_time, max_time, f"s_{train_id}_{i}_{seg_idx}")
+                    end = model.NewIntVar(current_time, max_time, f"e_{train_id}_{i}_{seg_idx}")
 
-                    if segment_id not in resource_intervals: resource_intervals[segment_id] = []
-                    resource_intervals[segment_id].append(interval)
-
+                    interval = model.NewOptionalIntervalVar(
+                        start,
+                        travel_time,
+                        end,
+                        choice_var,
+                        f"i_{train_id}_{i}_{seg_idx}"
+                    )
+                    resource_intervals.setdefault(segment_id, []).append(interval)
                     tasks[(train_id, segment_id, i)] = interval
                     model.Add(start >= previous_end)
 
-                    junction_node = node_path[seg_idx + 1]
-                    j_start = end
-                    j_duration = 10
-                    j_end = model.NewIntVar(current_time, max_time, f'je_{train_id}_{i}_{seg_idx}')
-                    j_interval = model.NewOptionalIntervalVar(j_start, j_duration, j_end, choice_var, f'ji_{train_id}_{i}_{seg_idx}')
+                    if (seg_idx + 1) < len(node_path):
+                        junction_node = node_path[seg_idx + 1]
+                        j_duration = 10
+                        j_start = end
+                        j_end = model.NewIntVar(current_time, max_time, f"je_{train_id}_{i}_{seg_idx}")
 
-                    if junction_node not in resource_intervals: resource_intervals[junction_node] = []
-                    resource_intervals[junction_node].append(j_interval)
-
-                    tasks[(train_id, junction_node, i)] = j_interval
-                    previous_end = j_end
+                        j_interval = model.NewOptionalIntervalVar(
+                            j_start,
+                            j_duration,
+                            j_end,
+                            choice_var,
+                            f"ji_{train_id}_{i}_{seg_idx}"
+                        )
+                        resource_intervals.setdefault(junction_node, []).append(j_interval)
+                        tasks[(train_id, junction_node, i)] = j_interval
+                        previous_end = j_end
+                    else:
+                        previous_end = end
 
             if route_choices.get(train_id):
                 model.Add(sum(route_choices[train_id]) == 1)
 
-        # --- Step 3: No-overlap constraints ---
+        # ---------------------------------------------------------------------
+        # Step 3: Mutually exclusive block occupancy constraints (NoOverlap)
+        # ---------------------------------------------------------------------
         for resource_id, intervals in resource_intervals.items():
             if len(intervals) > 1:
                 model.AddNoOverlap(intervals)
 
-        # --- Step 4: Objective - Minimize weighted completion times using dynamic priorities ---
-        total_weighted_completion = []
+        # ---------------------------------------------------------------------
+        # Step 4: Objective: Minimize weighted delay relative to current time
+        # ---------------------------------------------------------------------
+        total_weighted_delay = []
+
         for train in trains_to_plan:
-            if train['id'] not in route_choices: continue
+            t_id = train['id']
+            if t_id not in route_choices or not route_choices[t_id]:
+                continue
 
             train_end_times = []
             for i, route in enumerate(train['possible_routes']):
-                last_node = self.simulation._convert_segment_path_to_node_path(route)[-1]
-                if (train['id'], last_node, i) in tasks:
-                    train_end_times.append(tasks[(train['id'], last_node, i)].EndExpr())
+                node_path = self.simulation._convert_segment_path_to_node_path(route)
+                last_resource = node_path[-1] if (t_id, node_path[-1], i) in tasks else route[-1]
+
+                if (t_id, last_resource, i) in tasks:
+                    train_end_times.append(tasks[(t_id, last_resource, i)].EndExpr())
 
             if train_end_times:
-                train_end = model.NewIntVar(current_time, max_time, f"{train['id']}_end")
+                train_end = model.NewIntVar(current_time, max_time, f"{t_id}_end")
                 model.AddMaxEquality(train_end, train_end_times)
 
-                # determine dynamic priority value
-                # 1) base type priority
                 base_priority = self.priorities.get(train.get('type'), 1) if current_priorities.get('trainType') else 1
-                # 2) traineruntime boost if present (the simulation may pass it in 'dynamic_priority')
                 runtime_boost = int(train.get('dynamic_priority', 0))
-                # 3) punctuality boost if enabled
+
                 punctuality_boost = 0
                 if current_priorities.get('punctuality'):
-                    scheduled = train.get('scheduled_arrival')
-                    if scheduled is not None:
-                        lateness = int(current_time - scheduled)
+                    sched = train.get('scheduled_arrival')
+                    if sched is not None:
+                        lateness = int(current_time - sched)
                         if lateness > 0:
                             punctuality_boost = int(lateness / 60)
 
-                priority = base_priority + runtime_boost + punctuality_boost
+                weight = max(1, base_priority + runtime_boost + punctuality_boost)
+                total_weighted_delay.append((train_end - current_time) * weight)
 
-                # safety clamp
-                if priority < 1: priority = 1
+        if total_weighted_delay:
+            model.Minimize(sum(total_weighted_delay))
 
-                total_weighted_completion.append(train_end * priority)
-
-        if total_weighted_completion:
-            model.Minimize(sum(total_weighted_completion))
-
-        # --- Step 5: Solve ---
+        # ---------------------------------------------------------------------
+        # Step 5: Execute CP-SAT Solver
+        # ---------------------------------------------------------------------
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = 0.8
         solver.parameters.num_search_workers = 4
-        status = solver.Solve(model)
-        print(f"🧠 Optimizer: Solver finished with status: {solver.StatusName(status)}")
 
-        # --- Step 6: Extract plan ---
+        status = solver.Solve(model)
+        status_name = solver.StatusName(status)
+        print(f"[SOLVER] Status: {status_name} (Search wall time: {solver.WallTime():.2f}s)")
+
+        # ---------------------------------------------------------------------
+        # Step 6: Plan extraction with deterministic greedy fallback
+        # ---------------------------------------------------------------------
         if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
             plan = []
             for train in trains_to_plan:
-                if train['id'] not in route_choices: continue
-                for i, choice_var in enumerate(route_choices[train['id']]):
+                t_id = train['id']
+                if t_id not in route_choices:
+                    continue
+
+                for i, choice_var in enumerate(route_choices[t_id]):
                     if solver.Value(choice_var) == 1:
                         chosen_route = train['possible_routes'][i]
                         first_segment = chosen_route[0]
-                        start_time = solver.Value(tasks[(train['id'], first_segment, i)].StartExpr())
-
+                        start_time = int(solver.Value(tasks[(t_id, first_segment, i)].StartExpr()))
                         action = "PROCEED" if start_time <= current_time else "HOLD"
 
                         plan.append({
-                            "trainId": train['id'],
+                            "trainId": t_id,
                             "action": action,
                             "route": chosen_route,
-                            "startTime": start_time
+                            "startTime": start_time,
+                            "priority": self.priorities.get(train.get('type'), 1)
                         })
-                        print(f"  -> Plan for {train['id']}: {action} starting {first_segment} @ {start_time} (priority approx {self.priorities.get(train['type'], 1)})")
+                        print(f"[PLAN] Train {t_id} -> {action} via {first_segment} @ T+{max(0, start_time - current_time)}s.")
                         break
             return plan
-        return []
+
+        print("[WARN] CP-SAT timeout/infeasible. Executing topological sorting fallback...")
+        return self._fallback_priority_dispatch(trains_to_plan, current_time)
+
+    def _fallback_priority_dispatch(self, trains_to_plan, current_time):
+        plan = []
+        sorted_trains = sorted(
+            trains_to_plan,
+            key=lambda t: self.priorities.get(t.get('type'), 1),
+            reverse=True
+        )
+
+        occupied = set(self.simulation.locked_resources)
+
+        for train in sorted_trains:
+            routes = train.get('possible_routes') or self.simulation.find_all_possible_routes(
+                train['start_node'],
+                train['end_node']
+            )
+            if not routes:
+                continue
+
+            chosen_route = routes[0]
+            first_seg = chosen_route[0]
+
+            if first_seg not in occupied:
+                action = "PROCEED"
+                start_time = current_time
+                occupied.add(first_seg)
+            else:
+                action = "HOLD"
+                start_time = current_time + 30
+
+            plan.append({
+                "trainId": train['id'],
+                "action": action,
+                "route": chosen_route,
+                "startTime": start_time,
+                "priority": self.priorities.get(train.get('type'), 1)
+            })
+            print(f"[FALLBACK] Train {train['id']} -> {action} via {first_seg}.")
+
+        return plan

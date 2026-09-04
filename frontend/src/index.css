@@ -1,54 +1,67 @@
-/* Using the Inter font for a modern, clean UI */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* index.css - SCADA Application Shell & Industrial Reset */
 
-:root {
-  /* Harmonized Industrial Palette - derived from theme.css */
-  --bg-dark-1: var(--bg-base);
-  --bg-dark-2: var(--bg-surface-2);
-  --glass: rgba(255, 255, 255, 0.04);
-  --border-color: var(--border-default);
-  --text-primary: var(--text-primary);
-  --text-secondary: var(--text-secondary);
-  --text-tertiary: var(--text-faint);
-  
-  --accent-cyan: var(--train-express);
-  --accent-cyan-dark: #1d4ed8;
-  --accent-orange: #d97706;
-  --accent-yellow: #ca8a04;
-
-  --status-green: var(--sig-green);
-  --status-yellow: var(--sig-amber);
-  --status-red: var(--sig-red);
-
-  --font-main: var(--font-sans);
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-body {
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--bg-dark-1); /* Use the darkest background */
+  overflow: hidden;
+  background-color: var(--bg-base);
   color: var(--text-primary);
-  font-family: var(--font-main);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
 }
 
-/* Custom Scrollbar styled for the dark theme */
+/* Monospace font binding for railway codes and operational numbers */
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+/* Prevent accidental text highlighting during rapid double-click zoom/pan */
+.track-canvas-container,
+.hud-btn,
+.sim-speed-btn,
+.dock-btn,
+.drawer-close {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Industrial Matte Scrollbar (Firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-default) var(--bg-surface-1);
+}
+
+/* Industrial Matte Scrollbar (WebKit / Chromium / Safari) */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark-1);
+  background: var(--bg-surface-1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3e454a; /* A slightly lighter grey for the thumb */
-  border-radius: 4px;
+  background: var(--border-default);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #50585f;
+  background: var(--border-hover);
+}
+
+/* Focus Outline System - High Contrast Blue without blur/glow */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
 }

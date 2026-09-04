@@ -1,9 +1,4 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #1c1d21;
-}
+/* HomePage.css - Industrial Station Controller Launch Terminal */
 
 .minimal-home {
   width: 100vw;
@@ -11,31 +6,120 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1c1d21;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+  background-color: var(--bg-base);
+  font-family: var(--font-mono);
   user-select: none;
+  overflow: hidden;
+  padding: 24px;
 }
 
-.launch-text {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 300;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #d1d5db;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 24px 48px;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  opacity: 0.85;
+.home-panel {
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 48px 36px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
 }
 
-.launch-text:hover {
+.home-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--sig-amber);
+  background: rgba(202, 138, 4, 0.1);
+  border: 1px solid var(--sig-amber);
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.home-title {
+  margin: 0 0 10px 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+}
+
+.home-subtitle {
+  margin: 0 0 32px 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* System Specifications Matrix */
+.specs-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.spec-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 10px 8px;
+  text-align: left;
+}
+
+.spec-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-faint);
+}
+
+.spec-value {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* Console Activation Button */
+.launch-btn {
+  display: inline-block;
+  width: 100%;
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-hover);
   color: #ffffff;
-  opacity: 1;
-  letter-spacing: 0.28em;
-  transform: scale(1.02);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 14px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-.launch-text:active {
-  transform: scale(0.98);
+.launch-btn:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--sig-green);
+}
+
+.launch-btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 600px) {
+  .specs-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-panel {
+    padding: 32px 20px;
+  }
 }

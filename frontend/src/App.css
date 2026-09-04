@@ -1,269 +1,282 @@
-/* App.css - Full-Bleed Minimalist Dashboard Layout */
+/* App.css - Full-Bleed Minimalist SCADA Layout & HUD Controls */
 
 .fullscreen-dashboard {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: #080b11;
-    overflow: hidden;
-    font-family: 'JetBrains Mono', 'Inter', -apple-system, sans-serif;
-    user-select: none;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-base);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  user-select: none;
 }
 
-/* 100% Canvas Viewport */
+/* 100% Canvas Viewport Layer */
 .canvas-viewport {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-/* Floating Top HUD Bar */
+/* Floating Top HUD Console */
 .minimal-floating-hud {
-    position: absolute;
-    top: 14px;
-    left: 18px;
-    right: 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(15, 20, 30, 0.82);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    padding: 7px 14px;
-    z-index: 100;
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 6px 12px;
+  z-index: 100;
 }
 
-.hud-left-group, .hud-center-group, .hud-right-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.hud-left-group,
+.hud-center-group,
+.hud-right-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* Brand Link */
 .hud-brand {
-    color: #f8fafc;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: 2px;
-    padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 4px 8px;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  transition: border-color var(--transition-fast);
 }
 
 .hud-brand:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #f8fafc;
-    border-color: rgba(255, 255, 255, 0.25);
+  border-color: var(--border-hover);
 }
 
+/* Corridor / Station Selector */
 .hud-station-select {
-    background: #111827;
-    color: #e2e8f0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
 }
 
-.hud-station-select:hover {
-    border-color: var(--border-hover);
+.hud-station-select:hover:not(:disabled) {
+  border-color: var(--border-hover);
 }
 
-/* Buttons */
+.hud-station-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Standard HUD Action Buttons */
 .hud-btn {
-    background: #111827;
-    color: #cbd5e1;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    padding: 5px 11px;
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s ease;
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 5px 11px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
 .hud-btn:hover {
-    background: #1e293b;
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.2);
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
 }
 
 .hud-btn.active {
-    background: #0284c7;
-    color: #ffffff;
-    border-color: #0369a1;
+  background: var(--train-vandebharat);
+  color: #ffffff;
+  border-color: var(--border-focus);
 }
 
+/* Primary Trigger (Start / Resume) */
 .hud-btn-primary {
-    background: #059669;
-    color: #ffffff;
-    border-color: #10b981;
+  background: var(--btn-primary-bg);
+  color: #ffffff;
+  border-color: var(--btn-primary-hover);
 }
 
 .hud-btn-primary:hover {
-    background: #10b981;
+  background: var(--btn-primary-hover);
 }
 
+/* Danger Trigger (Stop) */
 .hud-btn-danger {
-    background: #b91c1c;
-    color: #ffffff;
-    border-color: #ef4444;
+  background: var(--btn-danger-bg);
+  color: #ffffff;
+  border-color: var(--btn-danger-hover);
 }
 
 .hud-btn-danger:hover {
-    background: #dc2626;
+  background: var(--btn-danger-hover);
 }
 
-/* Speed Selector Pills */
+/* Speed Multiplier Segmented Control */
 .hud-speed-group {
-    display: flex;
-    background: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    overflow: hidden;
+  display: flex;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .hud-speed-btn {
-    background: transparent;
-    border: none;
-    color: #64748b;
-    padding: 5px 8px;
-    font-family: inherit;
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  padding: 5px 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .hud-speed-btn:hover {
-    color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 .hud-speed-btn.active {
-    background: #2563eb;
-    color: #ffffff;
+  background: var(--train-shatabdi);
+  color: #ffffff;
 }
 
-/* Port Chip */
+/* Backend Status Chip */
 .hud-port-chip {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10.5px;
-    color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--text-muted);
 }
 
 .live-pulse {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #16a34a;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sig-green);
 }
 
-/* Floating Drawers */
+/* Floating SCADA Drawers */
 .floating-drawer {
-    position: absolute;
-    top: 72px;
-    bottom: 18px;
-    background: rgba(11, 15, 23, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    z-index: 200;
-    overflow: hidden;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);
-    animation: drawerSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: absolute;
+  top: 68px;
+  bottom: 18px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+  animation: drawerSlide 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .drawer-left {
-    left: 18px;
-    width: 320px;
+  left: 18px;
+  width: 320px;
+  max-width: calc(100vw - 36px);
 }
 
 .drawer-right {
-    right: 18px;
-    width: 340px;
+  right: 18px;
+  width: 360px;
+  max-width: calc(100vw - 36px);
 }
 
 @keyframes drawerSlide {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .drawer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #94a3b8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border-default);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
 }
 
 .drawer-close {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    color: #94a3b8;
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    padding: 3px 7px;
-    cursor: pointer;
-    line-height: 1;
-    transition: all 0.15s ease;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: 3px;
+  color: var(--text-muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 6px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all var(--transition-fast);
 }
 
 .drawer-close:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.25);
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
 }
 
 .drawer-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
 }
 
-/* Floating Chat Box */
+/* Floating Dispatcher Assistant Box */
 .floating-chat-box {
-    position: absolute;
-    bottom: 18px;
-    right: 18px;
-    width: 380px;
-    height: 480px;
-    background: rgba(11, 15, 23, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    z-index: 200;
-    overflow: hidden;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);
-    animation: drawerSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  width: 380px;
+  max-width: calc(100vw - 36px);
+  height: 480px;
+  max-height: calc(100vh - 90px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+  animation: drawerSlide 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .chat-body {
-    flex: 1;
-    overflow: hidden;
+  flex: 1;
+  overflow: hidden;
 }
