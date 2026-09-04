@@ -110,7 +110,13 @@ const DashboardLayout = () => {
             {/* Minimal Floating Top Bar */}
             <header className="minimal-floating-hud">
                 <div className="hud-left-group">
-                    <Link to="/" className="hud-brand" title="Return to Launch">FLOW</Link>
+                    <Link to="/" className="hud-brand" title="Return to Launch">
+                        <img 
+                            src={process.env.PUBLIC_URL + '/logo.png'} 
+                            alt="Flow Logo" 
+                            style={{ height: '14px', width: 'auto', display: 'block', margin: '2px 0' }} 
+                        />
+                    </Link>
                     <select
                         value={selectedStation}
                         onChange={(e) => setSelectedStation(e.target.value)}
