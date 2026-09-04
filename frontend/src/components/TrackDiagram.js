@@ -4,20 +4,20 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import './TrackDiagram.css';
 
 const trainColorMap = new Map([
-    ['Shatabdi', '#38bdf8'],
-    ['Rajdhani', '#c084fc'],
-    ['Vande Bharat', '#06b6d4'],
-    ['Passenger', '#10b981'],
-    ['DMU', '#f59e0b'],
-    ['MEMU', '#f97316'],
-    ['SF Express', '#f43f5e'],
-    ['Mail', '#6366f1'],
+    ['Shatabdi', '#2563eb'],
+    ['Rajdhani', '#dc2626'],
+    ['Vande Bharat', '#0284c7'],
+    ['Passenger', '#15803d'],
+    ['DMU', '#d97706'],
+    ['MEMU', '#ea580c'],
+    ['SF Express', '#0d9488'],
+    ['Mail', '#b45309'],
     ['Express', '#3b82f6'],
-    ['Freight', '#64748b']
+    ['Freight', '#475569']
 ]);
 
 const getTrainColor = (trainType = '') => {
-    return trainColorMap.get(trainType.trim()) || '#38bdf8';
+    return trainColorMap.get(trainType.trim()) || '#3b82f6';
 };
 
 const TrackDiagram = ({ 
@@ -113,12 +113,12 @@ const TrackDiagram = ({
                         {/* Minimalist Corridor Direction Labels */}
                         <g transform="translate(180, 42)">
                             <text className="corridor-direction-text" x="0" y="0">
-                                ◀ WEST APPROACH (AMBALA / ROHTAK)
+                                WEST APPROACH (AMBALA / ROHTAK)
                             </text>
                         </g>
                         <g transform="translate(3060, 42)">
                             <text className="corridor-direction-text" x="0" y="0">
-                                EAST DEPARTURE (GHAZIABAD / HOWRAH) ▶
+                                EAST DEPARTURE (GHAZIABAD / HOWRAH)
                             </text>
                         </g>
 
@@ -140,7 +140,7 @@ const TrackDiagram = ({
                                         y={pf.y + 3.5} 
                                         className="pf-number-text"
                                     >
-                                        {`PF ${pf.number} ${isUp ? '▲ UP' : '▼ DN'}`}
+                                        {`PF ${pf.number} ${isUp ? 'UP' : 'DN'}`}
                                     </text>
                                 </g>
                             );
@@ -311,7 +311,7 @@ const TrackDiagram = ({
                                         <rect x="12" y="-5" width="8" height="10" rx="3" fill="#0f172a" />
                                         {/* Train ID */}
                                         <text x="-2" y="3" className="train-label-text">
-                                            {train.id} {isBoarding ? '👥' : isHeld ? '⏸' : ''}
+                                            {train.id}{isBoarding ? ' [PAX]' : isHeld ? ' [HOLD]' : ''}
                                         </text>
                                     </g>
                                 );

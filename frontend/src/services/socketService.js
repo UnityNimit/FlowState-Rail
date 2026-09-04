@@ -131,14 +131,14 @@ class SocketService {
         }
 
         // Not connected: queue the emit for when connect occurs
-        console.warn(`SocketService: socket not connected — queuing emit '${event}'`);
+        console.warn(`SocketService: socket not connected - queuing emit '${event}'`);
         this._emitQueue.push({ event, data });
 
         // proactively try to connect if not already connecting
         try {
             this.connect().catch(() => {/* ignore */});
         } catch (e) {
-            // connect may throw in some environments — ignore here
+            // connect may throw in some environments - ignore here
         }
         return false;
     }

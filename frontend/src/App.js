@@ -124,28 +124,28 @@ const DashboardLayout = () => {
                         disabled={simulationStatus !== 'stopped'}
                     >
                         <option value="DLI">Old Delhi Junction (16 Platforms)</option>
-                        <option value="CORRIDOR">Delhi–Ghaziabad Quadruple Corridor</option>
+                        <option value="CORRIDOR">Delhi-Ghaziabad Quadruple Corridor</option>
                     </select>
                 </div>
 
                 <div className="hud-center-group">
                     {simulationStatus === 'stopped' ? (
                         <button onClick={handleStartSimulation} className="hud-btn hud-btn-primary">
-                            ▶ START
+                            START
                         </button>
                     ) : simulationStatus === 'running' ? (
                         <button onClick={() => handleTogglePause(false)} className="hud-btn">
-                            ⏸ PAUSE
+                            PAUSE
                         </button>
                     ) : (
                         <button onClick={() => handleTogglePause(true)} className="hud-btn hud-btn-primary">
-                            ▶ RESUME
+                            RESUME
                         </button>
                     )}
 
                     {simulationStatus !== 'stopped' && (
                         <button onClick={handleStopSimulation} className="hud-btn hud-btn-danger">
-                            ⏹ STOP
+                            STOP
                         </button>
                     )}
 
@@ -175,21 +175,21 @@ const DashboardLayout = () => {
                         className={`hud-btn ${isLeftOpen ? 'active' : ''}`}
                         title="Toggle Station & Assets Panel"
                     >
-                        ☰ ASSETS
+                        ASSETS
                     </button>
                     <button
                         onClick={() => setIsRightOpen(v => !v)}
                         className={`hud-btn ${isRightOpen ? 'active' : ''}`}
                         title="Toggle AI Recommendations & Timeline"
                     >
-                        ⚡ AI FEED
+                        AI FEED
                     </button>
                     <button
                         onClick={() => setIsChatOpen(v => !v)}
                         className={`hud-btn ${isChatOpen ? 'active' : ''}`}
                         title="Toggle AI Section Assistant"
                     >
-                        💬 CHAT
+                        CHAT
                     </button>
                 </div>
             </header>
@@ -209,7 +209,7 @@ const DashboardLayout = () => {
                 <div className="floating-drawer drawer-left">
                     <div className="drawer-header">
                         <span>STATION & INFRASTRUCTURE</span>
-                        <button onClick={() => setIsLeftOpen(false)} className="drawer-close" title="Close Panel">✕</button>
+                        <button onClick={() => setIsLeftOpen(false)} className="drawer-close" title="Close Panel">CLOSE</button>
                     </div>
                     <div className="drawer-body">
                         <LeftSidebar
@@ -228,7 +228,7 @@ const DashboardLayout = () => {
                 <div className="floating-drawer drawer-right">
                     <div className="drawer-header">
                         <span>AI DECISIONS & REVENUE OPTIMIZER</span>
-                        <button onClick={() => setIsRightOpen(false)} className="drawer-close" title="Close Panel">✕</button>
+                        <button onClick={() => setIsRightOpen(false)} className="drawer-close" title="Close Panel">CLOSE</button>
                     </div>
                     <div className="drawer-body">
                         <RightSidebar
@@ -249,7 +249,7 @@ const DashboardLayout = () => {
                 <div className="floating-chat-box">
                     <div className="drawer-header">
                         <span>RAILWAY OPERATIONAL ASSISTANT</span>
-                        <button onClick={() => setIsChatOpen(false)} className="drawer-close" title="Close Chat">✕</button>
+                        <button onClick={() => setIsChatOpen(false)} className="drawer-close" title="Close Chat">CLOSE</button>
                     </div>
                     <div className="chat-body">
                         <Chatbot networkState={simulationStatus !== 'stopped' ? liveData : null} />

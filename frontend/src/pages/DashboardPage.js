@@ -112,7 +112,7 @@ const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
                 <div className="settings-panel" onClick={e => e.stopPropagation()}>
                     <div className="settings-header">
                         <h3>Diagram Settings & Legend</h3>
-                        <button className="close-btn" onClick={() => setIsSettingsOpen(false)} title="Close">&times;</button>
+                        <button className="close-btn" onClick={() => setIsSettingsOpen(false)} title="Close">CLOSE</button>
                     </div>
                     <div className="settings-content">
                         <div className="settings-column">
@@ -131,18 +131,18 @@ const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
                             <LegendItem styleClass="track track-route-locked" label="Route Locked by AI" />
                             <LegendItem styleClass="track track-occupied" label="Occupied by a Train" />
                             <LegendItem styleClass="track track-faulty" label="Manually Blocked (Faulty)" />
-                            <LegendItem styleClass="track track-weather-bad" label="Affected by Bad Weather" />
                             
-                            {/* --- FIX: Train Legend is now accurate --- */}
                             <h4>Train Legend (by Priority)</h4>
-                            <ColorSwatchLegend color="#FF0000" label="Shatabdi" />
-                            <ColorSwatchLegend color="#0000FF" label="Rajdhani" />
-                            <ColorSwatchLegend color="#228B22" label="Passenger" />
-                            <ColorSwatchLegend color="#FFD700" label="DMU" />
-                            <ColorSwatchLegend color="#FF8C00" label="MEMU" />
-                            <ColorSwatchLegend color="#800080" label="SF Express" />
-                            <ColorSwatchLegend color="#A52A2A" label="Mail" />
-                            <ColorSwatchLegend color="#808080" label="Express" />
+                            <ColorSwatchLegend color="#dc2626" label="Rajdhani Express" />
+                            <ColorSwatchLegend color="#2563eb" label="Shatabdi Express" />
+                            <ColorSwatchLegend color="#0284c7" label="Vande Bharat" />
+                            <ColorSwatchLegend color="#0d9488" label="SF Express" />
+                            <ColorSwatchLegend color="#3b82f6" label="Express" />
+                            <ColorSwatchLegend color="#b45309" label="Mail" />
+                            <ColorSwatchLegend color="#15803d" label="Passenger" />
+                            <ColorSwatchLegend color="#d97706" label="DMU" />
+                            <ColorSwatchLegend color="#ea580c" label="MEMU" />
+                            <ColorSwatchLegend color="#475569" label="Freight" />
                         </div>
                     </div>
                 </div>
@@ -187,12 +187,15 @@ const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
                 </div>
 
                 {selectedTrack && (
-                    <div className="track-popup">
-                        <div><strong>{selectedTrack}</strong></div>
-                        <div style={{marginTop:8}}>
-                            <button onClick={() => markTrackFaulty(selectedTrack)} className="popup-btn danger">Mark Damaged</button>
-                            <button onClick={() => markTrackOperational(selectedTrack)} className="popup-btn">Mark OK</button>
-                            <button onClick={() => setSelectedTrack(null)} className="popup-btn">Close</button>
+                    <div className="track-action-dock">
+                        <div className="track-action-label">
+                            <span className="track-action-title">TRACK SEGMENT:</span>
+                            <span className="track-action-id">{selectedTrack}</span>
+                        </div>
+                        <div className="track-action-btns">
+                            <button onClick={() => markTrackFaulty(selectedTrack)} className="dock-btn danger">Block / Faulty</button>
+                            <button onClick={() => markTrackOperational(selectedTrack)} className="dock-btn success">Clear / Operational</button>
+                            <button onClick={() => setSelectedTrack(null)} className="dock-btn">Dismiss</button>
                         </div>
                     </div>
                 )}

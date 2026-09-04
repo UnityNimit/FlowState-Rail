@@ -77,7 +77,7 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
                             className="map-dropdown"
                             disabled={isSimRunning}
                         >
-                            <option value="CORRIDOR">Delhi–Ghaziabad Corridor (Quadruple Line)</option>
+                            <option value="CORRIDOR">Delhi-Ghaziabad Corridor (Quadruple Line)</option>
                             <option value="DLI">Delhi Junction Yard</option>
                             <option value="ANVR">Anand Vihar Terminal</option>
                             <option value="SBB">Sahibabad Junction</option>
@@ -131,8 +131,8 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
                                     <div key={trackId} className="blocked-track-item">
                                         <FiAlertCircle className="faulty-icon" />
                                         <span>{trackId}</span>
-                                        <button className="track-remove-btn" onClick={() => handleRemoveFaultyTrack(trackId)}>
-                                            &times;
+                                        <button className="track-remove-btn" onClick={() => handleRemoveFaultyTrack(trackId)} title="Remove block">
+                                            X
                                         </button>
                                     </div>
                                 ))

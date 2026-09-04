@@ -2,25 +2,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* THEME OVERHAUL: Definitive Modern Dark Palette */
-  --bg-dark-1: #151718;
-  --bg-dark-2: #1f2326;
-  --glass: rgba(255,255,255,0.04);
-  --border-color: rgba(255,255,255,0.06);
-  --text-primary: #e6eef6;
-  --text-secondary: #95a0ad;
-  --text-tertiary: #606a7c;
+  /* Harmonized Industrial Palette - derived from theme.css */
+  --bg-dark-1: var(--bg-base);
+  --bg-dark-2: var(--bg-surface-2);
+  --glass: rgba(255, 255, 255, 0.04);
+  --border-color: var(--border-default);
+  --text-primary: var(--text-primary);
+  --text-secondary: var(--text-secondary);
+  --text-tertiary: var(--text-faint);
   
-  --accent-cyan: #06b6d4;
-  --accent-cyan-dark: #0891b2;
-  --accent-orange: #f39c12;
-  --accent-yellow: #facc15;
+  --accent-cyan: var(--train-express);
+  --accent-cyan-dark: #1d4ed8;
+  --accent-orange: #d97706;
+  --accent-yellow: #ca8a04;
 
-  --status-green: #22c55e;
-  --status-yellow: #f59e0b;
-  --status-red: #ef4444;
+  --status-green: var(--sig-green);
+  --status-yellow: var(--sig-amber);
+  --status-red: var(--sig-red);
 
-  --font-main: 'Inter', sans-serif;
+  --font-main: var(--font-sans);
 }
 
 body {

@@ -58,7 +58,7 @@
 
 /* Steel Rails - Crisp Matte Rendering (No blur / glow) */
 .minimal-rail-base {
-    stroke: #1e293b;
+    stroke: var(--rail-base);
     stroke-width: 2.6px;
     stroke-linecap: round;
     transition: stroke 0.15s ease;
@@ -66,19 +66,19 @@
 }
 
 .minimal-rail-base:hover {
-    stroke: #475569;
+    stroke: var(--rail-hover);
 }
 
 /* Occupied Rail: Clean solid red */
 .minimal-rail-occupied {
-    stroke: #ef4444;
+    stroke: var(--rail-occupied);
     stroke-width: 4.2px;
     stroke-linecap: round;
 }
 
 /* Locked Rail: Clean solid amber */
 .minimal-rail-locked {
-    stroke: #f59e0b;
+    stroke: var(--rail-locked);
     stroke-width: 3.6px;
     stroke-linecap: round;
 }
@@ -117,13 +117,13 @@
 }
 
 .sig-dot-red {
-    fill: #ef4444;
+    fill: var(--sig-red);
     stroke: #020617;
     stroke-width: 1px;
 }
 
 .sig-dot-green {
-    fill: #22c55e;
+    fill: var(--sig-green);
     stroke: #020617;
     stroke-width: 1px;
 }
@@ -142,7 +142,7 @@
 }
 
 .switch-blade-solid {
-    fill: #eab308;
+    fill: var(--sig-amber);
     stroke: #020617;
     stroke-width: 1px;
 }

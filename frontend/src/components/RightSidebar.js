@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RightSidebar.css';
 import { FiInfo, FiPlay, FiPause, FiSquare } from 'react-icons/fi';
 import socketService from '../services/socketService';
@@ -27,28 +27,11 @@ const RouteSummary = ({ route }) => {
     return <div className="meta-item route-summary"><span>Route</span><strong>{segs} seg{segs > 1 ? 's' : ''}</strong></div>;
 };
 
-// Clamp function remains the same
-function clampTooltipPosition(x, y, width, height) {
-    const padding = 8;
-    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-    let left = x - width - 10; // Position to the left
-    let top = y;
-    if (left < padding) left = x + 40; // Flip to the right if no space
-    if (left + width + padding > vw) left = vw - width - padding;
-    if (top + height + padding > vh) top = vh - height - padding;
-    if (top < padding) top = padding;
-    return { left, top };
-}
-
-
 const RightSidebar = ({ simulationStatus, onStart, onTogglePause, onStop, isSimRunning, simSpeed, onSpeedChange }) => {
-    // State and useEffect hooks remain the same as they handle logic, not layout.
     const [recommendations, setRecommendations] = useState([]);
     const [isThinking, setIsThinking] = useState(false);
     const [networkState, setNetworkState] = useState(null);
-    const [tooltip, setTooltip] = useState({ visible: false, left: 0, top: 0, html: null });
-    const tooltipTimeoutRef = useRef(null);
+    const [expandedTrainId, setExpandedTrainId] = useState(null);
 
     useEffect(() => {
         const onThinking = () => setIsThinking(true);
@@ -85,14 +68,14 @@ const RightSidebar = ({ simulationStatus, onStart, onTogglePause, onStop, isSimR
             action: (rec.action || 'PROCEED').toUpperCase(),
             route: rec.route || [],
             startTime: typeof rec.startTime === 'number' ? rec.startTime : null,
-            humanPath: (rec.route || []).join(' → '),
+            humanPath: (rec.route || []).join(' -> '),
             reason: rec.justification || rec.reason || '',
             priority: rec.priority ?? rec.trainType ?? 'N/A'
         };
     }
 
     function computeETA(startTime) {
-        if (startTime == null || !networkState) return '—';
+        if (startTime == null || !networkState) return '--';
         const now = networkState.timestamp ?? 0;
         const dt = startTime - now;
         if (dt <= 0) return 'now';
@@ -101,31 +84,9 @@ const RightSidebar = ({ simulationStatus, onStart, onTogglePause, onStop, isSimR
         return `${m}m`;
     }
 
-    // Tooltip logic updated for better positioning
-    const showTooltip = (event, rec) => {
-        if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
-        const node = event.currentTarget;
-        const rect = node.getBoundingClientRect();
-        const { left, top } = clampTooltipPosition(rect.left, rect.top, 300, 150);
-        setTooltip({ visible: true, left, top, html: buildTooltipContent(rec) });
+    const toggleExpand = (trainId) => {
+        setExpandedTrainId(prev => (prev === trainId ? null : trainId));
     };
-
-    const hideTooltip = () => {
-        tooltipTimeoutRef.current = setTimeout(() => {
-            setTooltip({ visible: false, left: 0, top: 0, html: null });
-        }, 150);
-    };
-
-    function buildTooltipContent(rec) {
-        return (
-            <div className="tooltip-contents">
-                <div className="tooltip-title">Decision Rationale — {rec.trainId}</div>
-                <div><strong>Action:</strong> {rec.action}</div>
-                {rec.reason && <div><strong>Why:</strong> {rec.reason}</div>}
-                {rec.route.length > 0 && <div className="tooltip-route"><strong>Route:</strong> {rec.humanPath}</div>}
-            </div>
-        );
-    }
     
     const handleSpeedClick = (s) => onSpeedChange && onSpeedChange(s);
     
@@ -142,34 +103,51 @@ const RightSidebar = ({ simulationStatus, onStart, onTogglePause, onStop, isSimR
 
         return (
             <div className="cards-list">
-                {recommendations.map((rec, idx) => (
-                    <div key={`${rec.trainId}-${idx}`} className="ai-card">
-                        <div className="left">
-                            <div className="trainId">{rec.trainId}</div>
-                            <div className={`actionBadge ${rec.action.includes('HOLD') ? 'hold' : 'proceed'}`}>{rec.action}</div>
-                        </div>
-                        <div className="center">
-                            <div className="meta">
-                                <div className="meta-item"><span>Priority</span><strong>{rec.priority}</strong></div>
-                                <div className="meta-item"><span>ETA</span><strong>{computeETA(rec.startTime)}</strong></div>
-                                <RouteSummary route={rec.route} />
+                {recommendations.map((rec, idx) => {
+                    const isExpanded = expandedTrainId === rec.trainId;
+                    return (
+                        <div key={`${rec.trainId}-${idx}`} className={`ai-card ${isExpanded ? 'expanded' : ''}`}>
+                            <div className="ai-card-main">
+                                <div className="left">
+                                    <div className="trainId">{rec.trainId}</div>
+                                    <div className={`actionBadge ${rec.action.includes('HOLD') ? 'hold' : 'proceed'}`}>{rec.action}</div>
+                                </div>
+                                <div className="center">
+                                    <div className="meta">
+                                        <div className="meta-item"><span>Priority</span><strong>{rec.priority}</strong></div>
+                                        <div className="meta-item"><span>ETA</span><strong>{computeETA(rec.startTime)}</strong></div>
+                                        <RouteSummary route={rec.route} />
+                                    </div>
+                                    <div className="muted-line">{rec.route.length ? `First segment: ${rec.route[0]}` : 'No route assigned'}</div>
+                                </div>
+                                <div className="right">
+                                    <button 
+                                        className={`info-btn ${isExpanded ? 'active' : ''}`}
+                                        onClick={() => toggleExpand(rec.trainId)}
+                                        aria-label={`Toggle details for ${rec.trainId}`}
+                                        title="Toggle details"
+                                    >
+                                        <FiInfo />
+                                    </button>
+                                </div>
                             </div>
-                            <div className="muted-line">{rec.route.length ? `First segment: ${rec.route[0]}` : 'No route assigned'}</div>
+                            {isExpanded && (
+                                <div className="card-inline-details">
+                                    <div className="inline-detail-title">Decision Rationale: {rec.trainId}</div>
+                                    <div className="inline-detail-row"><strong>Action:</strong> {rec.action}</div>
+                                    {rec.reason && <div className="inline-detail-row"><strong>Why:</strong> {rec.reason}</div>}
+                                    {rec.route.length > 0 && <div className="inline-detail-route"><strong>Route:</strong> {rec.humanPath}</div>}
+                                </div>
+                            )}
                         </div>
-                        <div className="right">
-                            <button className="info-btn" onMouseEnter={(e) => showTooltip(e, rec)} onMouseLeave={hideTooltip} aria-label={`Details for ${rec.trainId}`}>
-                                <FiInfo />
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         );
     };
 
     return (
         <aside className="right-sidebar enhanced fixed-width">
-            {/* THIS IS THE CORRECTED STRUCTURE */}
             <div className="main-panel">
                 <div className="panel-header">
                     <h3>Simulation & AI Decisions</h3>
@@ -178,7 +156,7 @@ const RightSidebar = ({ simulationStatus, onStart, onTogglePause, onStop, isSimR
                 <div className="panel-body">
                     <div className="status-row">
                         <div className={`status-pill ${simulationStatus}`}>{(simulationStatus || '').toUpperCase()}</div>
-                        <div className="thinking-pill">{isThinking ? 'AI: Thinking…' : 'AI: Idle'}</div>
+                        <div className="thinking-pill">{isThinking ? 'AI: Thinking...' : 'AI: Idle'}</div>
                     </div>
                     {renderCards()}
                 </div>
@@ -196,12 +174,6 @@ const RightSidebar = ({ simulationStatus, onStart, onTogglePause, onStop, isSimR
                     </div>
                 </div>
             </div>
-
-            {tooltip.visible && (
-                <div className="tooltip-popup" style={{ left: tooltip.left, top: tooltip.top }} role="dialog" onMouseEnter={() => clearTimeout(tooltipTimeoutRef.current)} onMouseLeave={hideTooltip}>
-                    <div className="tooltip-inner">{tooltip.html}</div>
-                </div>
-            )}
         </aside>
     );
 };
