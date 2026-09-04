@@ -23,6 +23,7 @@ import {
   ToneMappingMode,
   BlendFunction,
   KernelSize,
+  ChromaticAberrationEffect,
 } from 'postprocessing';
 
 import { frame, damp, smoothstep, REVEAL_ON_LAUNCH } from './splashSequence';
@@ -698,6 +699,8 @@ const X_MIN = X_MAX - SPAN;
 const CX = (X_MIN + X_MAX) / 2;
 const BED_HW = 4.6;
 const POLE_PITCH = 45;
+/** Baseline haze. Thinned during the reveal so the world sharpens with it. */
+const FOG_DENSITY = 0.0014;
 
 /** Coarse capability probe — not a benchmark, just enough to avoid handing a
  *  4-pass composer to an integrated GPU on a phone. */
@@ -733,7 +736,7 @@ export function createTrainScene(container) {
   scene.background = new THREE.Color('#000000');
   // Lighter than the night grade: heavy haze against a bright sky washes the
   // ground pale within a few hundred metres, and the dark ground is the point.
-  scene.fog = new THREE.FogExp2(new THREE.Color('#000000'), 0.0014);
+  scene.fog = new THREE.FogExp2(new THREE.Color('#000000'), FOG_DENSITY);
   const FOG_DARK = new THREE.Color('#000000');
   const FOG_LIT = new THREE.Color(P.fog);
 
@@ -968,6 +971,7 @@ export function createTrainScene(container) {
    * inside the app's boot path. */
   let composer = null;
   let bloom = null;
+  let ca = null;
   try {
     composer = new EffectComposer(renderer, {
       frameBufferType: THREE.HalfFloatType,
@@ -990,6 +994,17 @@ export function createTrainScene(container) {
     } else {
       effects.push(new VignetteEffect({ darkness: 0.62, offset: 0.3 }));
     }
+    // Lens character. Sits at a barely-there baseline and spikes as the
+    // livery wavefront passes, so the reveal feels like it costs the optics
+    // something. Must come BEFORE tone mapping — it displaces colour
+    // channels, and doing that to already-tone-mapped values crushes the
+    // fringe into banding.
+    ca = new ChromaticAberrationEffect({
+      offset: new THREE.Vector2(0.00007, 0.00003),
+      radialModulation: false,
+      modulationOffset: 0,
+    });
+    effects.push(ca);
     effects.push(new ToneMappingEffect({ mode: ToneMappingMode.ACES_FILMIC }));
     composer.addPass(new EffectPass(camera, ...effects));
     composer.setSize(container.clientWidth || window.innerWidth, container.clientHeight || window.innerHeight);
@@ -1015,6 +1030,19 @@ export function createTrainScene(container) {
   const camTgt = POSE.dark.t.clone();
   const wantP = new THREE.Vector3();
   const wantT = new THREE.Vector3();
+
+  /* --- pointer parallax --------------------------------------------
+   * A fixed camera over a moving world still reads as a video. Coupling the
+   * camera to the pointer by a couple of units is what makes it read as a
+   * space you are standing in. Deliberately tiny, and damped hard, so it
+   * never competes with the choreography. */
+  const ptr = { x: 0, y: 0 };
+  const ptrTarget = { x: 0, y: 0 };
+  const onPointer = (e) => {
+    ptrTarget.x = (e.clientX / window.innerWidth) * 2 - 1;
+    ptrTarget.y = -((e.clientY / window.innerHeight) * 2 - 1);
+  };
+  window.addEventListener('pointermove', onPointer, { passive: true });
 
   /* --- resize --- */
   const onResize = () => {
@@ -1043,17 +1071,30 @@ export function createTrainScene(container) {
     const w = frame.worldMix;
     const h = smoothstep(0.15, 1, frame.reveal);
 
+    /* THE LAUNCH MOMENT.
+     * `surge` is a single 0 -> 1 -> 0 bell across the livery sweep, and every
+     * environment effect below hangs off it. Driving them all from one curve
+     * is what makes the moment land as one event rather than as five effects
+     * that happen to fire near each other. */
+    const surge = Math.sin(Math.min(frame.reveal, 1) * Math.PI);
+
     worldU.uWorld.value = w;
     revealU.uReveal.value = frame.reveal;
 
-    key.intensity = 0.25 + w * 1.5;
-    rim.intensity = 0.14 + w * 0.6;
-    amb.intensity = 0.05 + w * 0.28;
+    // Key light flares as the wavefront runs, as though the train's own lamps
+    // are lighting the formation.
+    key.intensity = 0.25 + w * 1.5 + surge * 0.55;
+    rim.intensity = 0.14 + w * 0.6 + surge * 0.3;
+    amb.intensity = 0.05 + w * 0.28 + surge * 0.08;
 
     /* The haze has to come up WITH the world. A light fog colour applied at
      * worldMix 0 would wash the far cars pale grey while the screen is still
      * meant to be black, so the fog is lerped from black to its target. */
     scene.fog.color.copy(FOG_DARK).lerp(FOG_LIT, w);
+    /* ...and it thins as the livery lands, so the distance sharpens at the
+     * exact moment the train does. The world coming into focus reads as the
+     * system waking up, which is the point of the whole screen. */
+    scene.fog.density = FOG_DENSITY * (1 - 0.42 * h);
 
     // Treadmills: one float each, for any number of elements.
     for (const r of ridgeGroups) r.g.position.x = -(frame.distance % r.period);
@@ -1064,10 +1105,11 @@ export function createTrainScene(container) {
     bedMatB.opacity = Math.min(1, frame.speedMix * 1.15);
     earthTex.offset.x = (frame.distance / 55) % 1;
 
+    // Streaks burst as the livery lands, then settle back to the cruise value.
     const vis = Math.max(0, frame.speedMix - 0.12) * w;
-    slMat.opacity = vis * 0.15;
+    slMat.opacity = vis * (0.15 + surge * 0.5);
     if (vis > 0.001) {
-      const len = 4 + frame.speedMix * 22;
+      const len = 4 + frame.speedMix * 22 + surge * 26;
       for (let i = 0; i < SL_COUNT; i++) {
         const s = slSeeds[i];
         const x = ((((s.x - frame.distance) % SL_RANGE) + SL_RANGE) % SL_RANGE) - SL_RANGE * 0.35;
@@ -1083,9 +1125,11 @@ export function createTrainScene(container) {
       // Cabin lights and the headlight surge in behind the wavefront. The
       // head car is driven harder than the trailers so the lamp reads as a
       // lamp; bloom does the rest.
-      const surge = 1 + 0.55 * Math.sin(Math.min(frame.reveal, 1) * Math.PI);
-      matMid.emissiveIntensity = frame.reveal * surge * 1.15;
-      matHead.emissiveIntensity = frame.reveal * surge * 1.45;
+      // Named apart from the outer `surge` on purpose: this one is an
+      // overshoot multiplier (1 -> 1.55 -> 1), not the 0 -> 1 -> 0 bell.
+      const emissiveSurge = 1 + 0.55 * surge;
+      matMid.emissiveIntensity = frame.reveal * emissiveSurge * 1.15;
+      matHead.emissiveIntensity = frame.reveal * emissiveSurge * 1.45;
     }
 
     // Idle life — centimetres, deliberately. You should feel it, not see it.
@@ -1103,6 +1147,23 @@ export function createTrainScene(container) {
     wantP.y += (Math.sin(t * 2.3) * 0.09 + Math.sin(t * 5.1) * 0.035) * spd;
     wantP.z += Math.sin(t * 1.7 + 0.6) * 0.11 * spd;
 
+    /* Dolly in on the launch, then back out. Pushing toward the target rather
+     * than narrowing the FOV keeps the perspective honest — a zoom would
+     * flatten the nose at the exact moment it is worth looking at. */
+    if (surge > 0.001) {
+      wantP.lerp(wantT, surge * 0.085);
+      wantP.y += surge * 0.9;
+    }
+
+    /* Pointer parallax, faded in with the world so it never fights the
+     * opening move. */
+    if (!frame.reducedMotion) {
+      ptr.x = damp(ptr.x, ptrTarget.x * w, 2.2, dt);
+      ptr.y = damp(ptr.y, ptrTarget.y * w, 2.2, dt);
+      wantP.x += ptr.x * 2.2;
+      wantP.y += ptr.y * 1.5;
+    }
+
     camPos.x = damp(camPos.x, wantP.x, 2.6, dt);
     camPos.y = damp(camPos.y, wantP.y, 2.6, dt);
     camPos.z = damp(camPos.z, wantP.z, 2.6, dt);
@@ -1110,6 +1171,14 @@ export function createTrainScene(container) {
     camTgt.y = damp(camTgt.y, wantT.y, 2.2, dt);
     camTgt.z = damp(camTgt.z, wantT.z, 2.2, dt);
     camera.position.copy(camPos);
+    /* A whisper of roll. lookAt() rebuilds the camera basis from `up`, so
+     * tilting `up` is the only way to get roll without fighting it every
+     * frame. Two slow sines that never repeat together, plus a lean into the
+     * launch — under a third of a degree, felt rather than seen. */
+    const roll =
+      (Math.sin(t * 0.23) * 0.0026 + Math.sin(t * 0.37 + 1.7) * 0.0014) * spd +
+      surge * 0.004;
+    camera.up.set(Math.sin(roll), Math.cos(roll), 0);
     camera.lookAt(camTgt);
 
     const fov = POSE.dark.fov + (POSE.world.fov - POSE.dark.fov) * w + (POSE.hero.fov - POSE.world.fov) * h;
@@ -1122,8 +1191,16 @@ export function createTrainScene(container) {
       camera.updateProjectionMatrix();
     }
 
-    if (bloom) {
-      bloom.intensity = 0.3 + w * 0.16 + Math.sin(Math.min(frame.reveal, 1) * Math.PI) * 0.6;
+    if (bloom) bloom.intensity = 0.3 + w * 0.16 + surge * 0.6;
+    if (ca) {
+      // Peaks around a pixel of fringing at 1080p — enough to feel, not
+      // enough to name.
+      // Baseline is almost nothing on purpose. Thin high-contrast geometry —
+      // catenary masts against a bright sky, the rail glint — fringes visibly
+      // at values that look negligible on paper, so the effect lives almost
+      // entirely in the surge.
+      const k = 0.00007 + surge * 0.001;
+      ca.offset.set(k, k * 0.45);
     }
 
     if (composer) composer.render();
@@ -1140,6 +1217,7 @@ export function createTrainScene(container) {
     disposed = true;
     cancelAnimationFrame(raf);
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('pointermove', onPointer);
     if (composer) { try { composer.dispose(); } catch (e) { /* noop */ } }
     scene.traverse((o) => {
       if (o.isMesh || o.isInstancedMesh || o.isSprite) {

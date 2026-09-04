@@ -162,3 +162,17 @@ function tick(now) {
 
   raf = requestAnimationFrame(tick);
 }
+/**
+ * Status copy for the readout under the progress bar, in the control-room
+ * vocabulary of the app this fronts. Purely cosmetic, but an unlabelled bar
+ * reads as a spinner — this makes the wait feel like work being done.
+ */
+export function statusFor(p) {
+  if (p < 0.16) return 'INITIALIZING';
+  if (p < 0.33) return 'LOADING TRACK TOPOLOGY';
+  if (p < 0.5) return 'RESOLVING SIGNAL STATE';
+  if (p < 0.66) return 'RELEASING BRAKES';
+  if (p < 0.84) return 'SPOOLING TRACTION';
+  if (p < 0.999) return 'CLEARING SECTION';
+  return 'SECTION CLEAR';
+}
