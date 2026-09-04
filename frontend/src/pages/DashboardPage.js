@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './DashboardPage.css';
 import TrackDiagram from '../components/TrackDiagram';
-import Chatbot from '../components/Chatbot';
 import socketService from '../services/socketService';
 // NEW: Importing an icon for the new settings button
 import { FiSettings } from 'react-icons/fi';
@@ -10,7 +9,7 @@ import { FiSettings } from 'react-icons/fi';
 const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
     const [previewData, setPreviewData] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-    const [showNames, setShowNames] = useState(false);
+    const [showNames, setShowNames] = useState(true);
     const [showSpeeds, setShowSpeeds] = useState(false);
     const [selectedTrack, setSelectedTrack] = useState(null);
     const [signalClickBlocked, setSignalClickBlocked] = useState(false);
@@ -185,9 +184,6 @@ const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
                         showNames={showNames}
                         showSpeeds={showSpeeds}
                     />
-                </div>
-                <div className="panel" id="panel-chat">
-                    <Chatbot networkState={simulationStatus !== 'stopped' ? displayData : null} />
                 </div>
 
                 {selectedTrack && (

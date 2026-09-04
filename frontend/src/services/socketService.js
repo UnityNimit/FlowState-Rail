@@ -1,29 +1,70 @@
 // socketService.js
 import { io } from 'socket.io-client';
 
-// Backend URL — configured via REACT_APP_API_URL with port 8001 default
-const SOCKET_URL = process.env.REACT_APP_API_URL || 'http://localhost:8002';
+// Dynamic URL resolution with query parameter and localStorage support
+const getActiveSocketUrl = () => {
+    if (typeof window !== 'undefined' && window.location) {
+        const params = new URLSearchParams(window.location.search);
+        const urlParam = params.get('api');
+        if (urlParam) return urlParam;
+        const portParam = params.get('port');
+        if (portParam) return `http://${window.location.hostname || 'localhost'}:${portParam}`;
+        
+        const stored = localStorage.getItem('flow_backend_port');
+        if (stored) return `http://${window.location.hostname || 'localhost'}:${stored}`;
+        
+        const storedUrl = localStorage.getItem('flow_backend_url');
+        if (storedUrl) return storedUrl;
+    }
+    return process.env.REACT_APP_API_URL || 'http://localhost:8002';
+};
+
+let currentSocketUrl = getActiveSocketUrl();
 
 class SocketService {
     constructor() {
         this.socket = null;
         this._connected = false;
-        this._emitQueue = [];   // queue of {event, data}
-        this._listenerQueue = []; // queue of {event, func, once}
+        this._emitQueue = [];
+        this._listenerQueue = [];
         this._connectPromise = null;
         this._reconnectionAttempts = 5;
         this._reconnectionDelay = 1000;
+        this._candidatePorts = [8002, 8001, 8000, 5000, 8080];
+        this._probeIndex = 0;
+    }
+
+    getUrl() {
+        return currentSocketUrl;
+    }
+
+    getPort() {
+        try {
+            const u = new URL(currentSocketUrl);
+            return u.port || '80';
+        } catch (e) {
+            return '8002';
+        }
+    }
+
+    changePort(newPort) {
+        if (!newPort) return;
+        const host = (typeof window !== 'undefined' && window.location.hostname) ? window.location.hostname : 'localhost';
+        currentSocketUrl = `http://${host}:${newPort}`;
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('flow_backend_port', String(newPort));
+        }
+        this.disconnect();
+        return this.connect();
     }
 
     connect() {
-        // idempotent
         if (this.socket) {
-            console.log('SocketService: socket already created. connected=', this.isConnected());
             return this._connectPromise || Promise.resolve();
         }
 
-        console.log(`SocketService: Attempting to connect to socket server at ${SOCKET_URL}...`);
-        this.socket = io(SOCKET_URL, {
+        console.log(`SocketService: Connecting to ${currentSocketUrl}...`);
+        this.socket = io(currentSocketUrl, {
             reconnection: true,
             reconnectionAttempts: this._reconnectionAttempts,
             reconnectionDelay: this._reconnectionDelay,

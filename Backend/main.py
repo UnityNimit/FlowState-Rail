@@ -754,3 +754,13 @@ Instructions:
 @app.on_event("startup")
 async def startup_event():
     print("🚀 Server starting up... waiting for client to start simulation.")
+
+if __name__ == "__main__":
+    import uvicorn
+    import argparse
+    parser = argparse.ArgumentParser(description="Flow Backend Server")
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", 8002)), help="Port to listen on")
+    parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind to")
+    args = parser.parse_args()
+    print(f"🚄 Starting Flow Backend on {args.host}:{args.port}...")
+    uvicorn.run("main:socket_app", host=args.host, port=args.port, reload=False)

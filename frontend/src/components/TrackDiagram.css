@@ -1,574 +1,177 @@
-/* TrackDiagram.css - Authentic Indian Railways Electronic Interlocking (EI) VDU */
+/* TrackDiagram.css - Ultra-Minimalist High-Contrast Vector Digital Twin */
 
-.vdu-screen-container {
+.track-canvas-container {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: #000000;
-    font-family: 'JetBrains Mono', 'Inter', -apple-system, sans-serif;
+    position: relative;
+    background: #080b11;
     overflow: hidden;
     user-select: none;
-    container-type: inline-size;
 }
 
-.vdu-screen-container:fullscreen {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-}
-
-/* Authentic Top Operational Header Bar */
-.vdu-top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #06090e;
-    border-bottom: 2px solid rgba(0, 240, 255, 0.25);
-    min-height: 42px;
-    padding: 5px 12px;
-    gap: 12px;
-    z-index: 10;
-}
-
-.vdu-header-left, .vdu-header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 0 1 auto;
-}
-
-.ei-system-badge {
-    background: #0f172a;
-    color: #38bdf8;
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-}
-
-.ei-doc-badge {
-    background: #1e293b;
-    color: #94a3b8;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 9.5px;
-}
-
-.ei-clock {
-    color: #f8fafc;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.vdu-station-titleplate {
-    text-align: center;
-    min-width: 0;
-    flex: 1;
-}
-
-.title-hindi {
-    font-size: 10.5px;
-    color: #94a3b8;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-.title-main {
-    font-size: 13.5px;
-    color: #f8fafc;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    white-space: nowrap;
-}
-
-.title-sub {
-    font-size: 8.5px;
-    color: #00f0ff;
-    font-weight: 600;
-    letter-spacing: 0.6px;
-}
-
-.north-arrow {
-    color: #38bdf8;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-.system-health-ok {
-    color: #22c55e;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.block-status-tag {
-    background: #111827;
-    color: #e2e8f0;
-    border: 1px solid #374151;
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 9.5px;
-    font-weight: 600;
-}
-
-/* Hardware Push-Buttons Row (Exact match to real station VDU!) */
-.vdu-buttons-strip {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 6px;
-    background: #090d14;
-    border-bottom: 1px solid #1e293b;
-    padding: 5px 12px;
-    z-index: 10;
-    overflow-x: auto;
-    scrollbar-width: thin;
-}
-
-.vdu-btn {
-    background: #111827;
-    color: #e2e8f0;
-    border: 1px solid #374151;
-    border-radius: 3px;
-    padding: 4px 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    cursor: pointer;
-    transition: all 0.15s ease-in-out;
-    white-space: nowrap;
-    flex: 0 0 auto;
-}
-
-.vdu-btn:hover {
-    background: #1f2937;
-    border-color: #00f0ff;
-    color: #ffffff;
-    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
-}
-
-.btn-sig-clear {
-    border-color: rgba(34, 197, 94, 0.5);
-    color: #4ade80;
-}
-
-.btn-sig-cancel {
-    border-color: rgba(239, 68, 68, 0.5);
-    color: #f87171;
-}
-
-.btn-err {
-    border-color: rgba(239, 68, 68, 0.7);
-    color: #fca5a5;
-    background: #251010;
-}
-
-.timer-tag {
-    color: #fef08a;
-    font-weight: 800;
-}
-
-.btn-bdms-active {
-    border-color: rgba(245, 158, 11, 0.7);
-    color: #fbbf24;
-    background: #241a0b;
-}
-
-/* Track Canvas Container */
-.track-diagram-wrapper {
-    flex: 1;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    min-height: 0;
-    isolation: isolate;
-    background-color: #020408;
-    background-image:
-        linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
-    background-size: 32px 32px;
-}
-
-.track-diagram-wrapper .react-transform-wrapper,
-.track-diagram-wrapper .react-transform-component {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-.diagram-view-controls {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 30;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px;
-    border: 1px solid rgba(148, 163, 184, 0.22);
-    border-radius: 6px;
-    background: rgba(3, 7, 13, 0.9);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-}
-
-.diagram-view-controls button {
-    width: 30px;
-    height: 30px;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    color: #cbd5e1;
-    background: #0f1724;
-    border: 1px solid #273449;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.diagram-view-controls button:hover {
-    color: #ffffff;
-    border-color: #22d3ee;
-    background: #132235;
-}
-
-.view-control-divider {
-    width: 1px;
-    height: 22px;
-    margin: 0 2px;
-    background: #273449;
-}
-
-.diagram-state-legend {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    z-index: 25;
-    display: flex;
-    gap: 12px;
-    padding: 6px 9px;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    border-radius: 5px;
-    color: #94a3b8;
-    background: rgba(3, 7, 13, 0.88);
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.35px;
-    pointer-events: none;
-}
-
-.diagram-state-legend span {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.legend-line {
-    width: 20px;
-    height: 0;
-    border-top: 3px solid #94a3b8;
-}
-
-.legend-line.locked { border-color: #eab308; }
-.legend-line.occupied { border-color: #ff0033; }
-.legend-line.blocked { border-color: #f59e0b; border-top-style: dashed; }
-
-.ctc-svg-canvas {
+.minimal-svg-canvas {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-@container (max-width: 850px) {
-    .vdu-top-bar {
-        justify-content: flex-start;
-    }
-
-    .vdu-header-left {
-        order: 2;
-        margin-left: auto;
-    }
-
-    .vdu-header-right {
-        order: 3;
-    }
-
-    .vdu-station-titleplate {
-        order: 1;
-        text-align: left;
-    }
-
-    .title-hindi,
-    .title-sub,
-    .ei-doc-badge,
-    .north-arrow,
-    .block-status-tag {
-        display: none;
-    }
-
-    .title-main {
-        font-size: 11px;
-        letter-spacing: 0.65px;
-    }
-
-    .ei-system-badge,
-    .ei-clock,
-    .system-health-ok {
-        font-size: 8px;
-    }
-
-    .system-health-ok {
-        max-width: 56px;
-        line-height: 1.1;
-    }
-}
-
-/* Corridor Banner Plates */
-.vdu-corridor-plate-bg {
-    fill: #0b111e;
-    stroke: rgba(56, 189, 248, 0.35);
-    stroke-width: 1px;
-}
-
-.vdu-corridor-plate-text {
-    text-anchor: middle;
-    fill: #94a3b8;
+/* Direction Text */
+.corridor-direction-text {
+    fill: #475569;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
+    font-size: 8.5px;
     font-weight: 700;
     letter-spacing: 0.8px;
 }
 
-/* Platforms 1 to 16 */
-.vdu-platform-bay-up {
-    fill: rgba(56, 189, 248, 0.035);
-    stroke: rgba(56, 189, 248, 0.22);
+/* Platform Islands */
+.pf-island-up {
+    fill: rgba(56, 189, 248, 0.025);
+    stroke: rgba(56, 189, 248, 0.16);
     stroke-width: 1px;
     stroke-dasharray: 4 4;
 }
 
-.vdu-platform-bay-dn {
-    fill: rgba(34, 197, 94, 0.035);
-    stroke: rgba(34, 197, 94, 0.22);
+.pf-island-dn {
+    fill: rgba(34, 197, 94, 0.025);
+    stroke: rgba(34, 197, 94, 0.16);
     stroke-width: 1px;
     stroke-dasharray: 4 4;
 }
 
-.vdu-pf-badge-bg {
-    fill: #060a12;
-    stroke: rgba(56, 189, 248, 0.5);
-    stroke-width: 1px;
-}
-
-.vdu-pf-badge-text {
-    text-anchor: middle;
-    fill: #38bdf8;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 0.6px;
-}
-
-/* Left Line HUD Labels */
-.vdu-line-label-bg {
-    fill: #080d16;
-    stroke: rgba(255, 255, 255, 0.08);
-    stroke-width: 1px;
-}
-
-.vdu-line-label-text {
-    fill: #94a3b8;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5px;
-    font-weight: 600;
-}
-
-/* Track Circuits */
-.vdu-track-base {
-    stroke: #94a3b8;
-    stroke-width: 2.8px;
-    stroke-linecap: square;
-    transition: stroke 0.15s ease;
-    cursor: pointer;
-}
-
-.vdu-track-base:hover {
-    stroke: #ffffff;
-}
-
-.vdu-track-locked {
-    stroke: #eab308;
-    stroke-width: 4.2px;
-    stroke-linecap: square;
-    filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.85));
-}
-
-/* SOLID GLOWING RED (Authentic Indian Railways VDU Track Occupied) */
-.vdu-track-occupied {
-    stroke: #ff0033;
-    stroke-width: 5px;
-    stroke-linecap: square;
-    filter: drop-shadow(0 0 10px rgba(255, 0, 51, 0.95));
-}
-
-.vdu-track-blocked {
-    stroke-linecap: square;
-    animation: hazardPulse 2s infinite ease-in-out;
-}
-
-@keyframes hazardPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.vdu-tc-name {
-    text-anchor: middle;
-    fill: #475569;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7px;
-    font-weight: 600;
-    pointer-events: none;
-}
-
-/* Signals */
-.vdu-signal-mast {
-    cursor: pointer;
-}
-
-.vdu-signal-mast:hover circle {
-    r: 6.5px;
-    filter: drop-shadow(0 0 8px #ffffff);
-}
-
-.vdu-signal-red {
-    fill: #ef4444;
-    stroke: #020617;
-    stroke-width: 1.5px;
-}
-
-.vdu-signal-green {
-    fill: #22c55e;
-    stroke: #020617;
-    stroke-width: 1.5px;
-}
-
-.vdu-device-id {
+.pf-number-text {
     text-anchor: middle;
     fill: #64748b;
     font-family: 'JetBrains Mono', monospace;
     font-size: 7.5px;
-    pointer-events: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-/* Points / Switches */
-.vdu-switch-point {
+/* Left Margin Line Identifiers */
+.minimal-line-text {
+    fill: #475569;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 600;
+}
+
+/* Steel Rails - Crisp Matte Rendering (No blur / glow) */
+.minimal-rail-base {
+    stroke: #1e293b;
+    stroke-width: 2.6px;
+    stroke-linecap: round;
+    transition: stroke 0.15s ease;
     cursor: pointer;
 }
 
-.vdu-switch-blade {
-    fill: #facc15;
+.minimal-rail-base:hover {
+    stroke: #475569;
+}
+
+/* Occupied Rail: Clean solid red */
+.minimal-rail-occupied {
+    stroke: #ef4444;
+    stroke-width: 4.2px;
+    stroke-linecap: round;
+}
+
+/* Locked Rail: Clean solid amber */
+.minimal-rail-locked {
+    stroke: #f59e0b;
+    stroke-width: 3.6px;
+    stroke-linecap: round;
+}
+
+/* Maintenance Block */
+.minimal-rail-hazard {
+    stroke-linecap: round;
+}
+
+.minimal-block-badge {
+    pointer-events: none;
+}
+
+.block-badge-bg {
+    fill: #18181b;
+    stroke: #f59e0b;
+    stroke-width: 1px;
+}
+
+.block-badge-text {
+    text-anchor: middle;
+    fill: #f59e0b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* Signals */
+.minimal-signal {
+    cursor: pointer;
+}
+
+.minimal-signal:hover circle {
+    r: 6px;
+}
+
+.sig-dot-red {
+    fill: #ef4444;
     stroke: #020617;
     stroke-width: 1px;
 }
 
-.vdu-point-label {
+.sig-dot-green {
+    fill: #22c55e;
+    stroke: #020617;
+    stroke-width: 1px;
+}
+
+.sig-name-text {
     text-anchor: middle;
-    fill: #eab308;
+    fill: #475569;
     font-family: 'JetBrains Mono', monospace;
     font-size: 7px;
-    font-weight: 700;
+    pointer-events: none;
+}
+
+/* Turnout Switches */
+.minimal-switch {
+    cursor: pointer;
+}
+
+.switch-blade-solid {
+    fill: #eab308;
+    stroke: #020617;
+    stroke-width: 1px;
 }
 
 /* Train Capsules */
-.vdu-train-capsule {
+.minimal-train {
     cursor: pointer;
     transition: transform 0.4s linear;
 }
 
-.vdu-train-hull {
-    stroke: rgba(255, 255, 255, 0.4);
+.train-capsule-body {
+    stroke: rgba(255, 255, 255, 0.25);
     stroke-width: 1px;
-    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.9));
 }
 
-.vdu-train-id-text {
+.train-label-text {
     text-anchor: middle;
     fill: #ffffff;
     font-family: 'JetBrains Mono', monospace;
     font-size: 7.5px;
     font-weight: 800;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
     pointer-events: none;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
 }
 
-/* Bottom Telemetry Bar */
-.vdu-bottom-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #06090e;
-    border-top: 1px solid #1e293b;
-    padding: 6px 12px;
-    z-index: 10;
-    gap: 14px;
-    overflow-x: auto;
-}
-
-.telemetry-block {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-}
-
-.telemetry-label {
-    color: #64748b;
-    font-size: 9.5px;
-    font-weight: 600;
-}
-
-.telemetry-value-clear {
-    color: #22c55e;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.telemetry-value-tol {
-    color: #ef4444;
-    font-size: 10px;
-    font-weight: 800;
-    animation: blinkRed 1.2s infinite;
-}
-
-@keyframes blinkRed {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-}
-
-.telemetry-value-auto {
-    color: #00f0ff;
-    font-size: 9.5px;
-    font-weight: 700;
-}
-
-.telemetry-value-count {
-    background: #1e293b;
-    color: #38bdf8;
-    padding: 2px 7px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.telemetry-value-warn {
-    color: #f59e0b;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.btn-bdms-idle {
-    border-color: rgba(100, 116, 139, 0.55);
-    color: #94a3b8;
-    background: #0b111a;
+.minimal-speed-text {
+    text-anchor: middle;
+    fill: #475569;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    pointer-events: none;
 }
