@@ -3,11 +3,13 @@ services:
     name: flow-backend
     runtime: python
     rootDir: Backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: uvicorn main:socket_app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHONIOENCODING
         value: utf-8
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: PORT
         value: 10000
     healthCheckPath: /health
