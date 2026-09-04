@@ -83,6 +83,13 @@
     stroke-linecap: round;
 }
 
+/* Crossover Rail: Distinctive divergence indicator */
+.minimal-rail-crossover {
+    stroke: var(--accent-orange, #f97316);
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
 /* Maintenance Block */
 .minimal-rail-hazard {
     stroke-linecap: round;

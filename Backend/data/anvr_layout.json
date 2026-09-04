@@ -1,0 +1,2550 @@
+{
+  "network": {
+    "schemaVersion": 2,
+    "metadata": {
+      "networkId": "ANVR",
+      "name": "Anand Vihar Terminal",
+      "hindiName": "आनंद विहार टर्मिनल",
+      "topologyType": "station-schematic",
+      "source": [
+        "OpenStreetMap",
+        "OpenRailwayMap-compatible tags",
+        "representative operational layer"
+      ],
+      "attribution": "© OpenStreetMap contributors · ODbL 1.0",
+      "snapshotDate": "2026-09-04",
+      "licenseUrl": "https://www.openstreetmap.org/copyright",
+      "disclaimer": "Geography is derived from OpenStreetMap. Signals, routes, track circuits, speeds, OHE groups and maintenance resources are representative demonstration assumptions, not an authorised Station Working Rule or Signal Interlocking Plan.",
+      "movementTimeScale": 0.16
+    },
+    "station": {
+      "code": "ANVR",
+      "name": "Anand Vihar Terminal",
+      "hindiName": "आनंद विहार टर्मिनल",
+      "kind": "terminal",
+      "platformCount": 7,
+      "osmId": 2833971686,
+      "geoPosition": {
+        "lat": 28.6468336,
+        "lon": 77.3158749
+      },
+      "westConnection": "TILAK BRIDGE / DELHI",
+      "eastConnection": "SAHIBABAD / GHAZIABAD",
+      "platforms": [
+        {
+          "number": 1,
+          "name": "Platform 1",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 125,
+          "direction": "EAST"
+        },
+        {
+          "number": 2,
+          "name": "Platform 2",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 173,
+          "direction": "EAST"
+        },
+        {
+          "number": 3,
+          "name": "Platform 3",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 221,
+          "direction": "EAST"
+        },
+        {
+          "number": 4,
+          "name": "Platform 4",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 269,
+          "direction": "EAST"
+        },
+        {
+          "number": 5,
+          "name": "Platform 5",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 317,
+          "direction": "WEST"
+        },
+        {
+          "number": 6,
+          "name": "Platform 6",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 365,
+          "direction": "WEST"
+        },
+        {
+          "number": 7,
+          "name": "Platform 7",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 413,
+          "direction": "WEST"
+        }
+      ],
+      "tracksMeta": [
+        {
+          "index": 1,
+          "name": "PF 1 · UP LOOP",
+          "y": 125
+        },
+        {
+          "index": 2,
+          "name": "PF 2 · UP LOOP",
+          "y": 173
+        },
+        {
+          "index": 3,
+          "name": "PF 3 · UP LOOP",
+          "y": 221
+        },
+        {
+          "index": 4,
+          "name": "PF 4 · UP LOOP",
+          "y": 269
+        },
+        {
+          "index": 5,
+          "name": "PF 5 · DOWN LOOP",
+          "y": 317
+        },
+        {
+          "index": 6,
+          "name": "PF 6 · DOWN LOOP",
+          "y": 365
+        },
+        {
+          "index": 7,
+          "name": "PF 7 · DOWN LOOP",
+          "y": 413
+        },
+        {
+          "index": "E1",
+          "name": "TERMINAL TURNBACK",
+          "y": 430
+        },
+        {
+          "index": "E2",
+          "name": "COACHING STABLING",
+          "y": 480
+        }
+      ]
+    },
+    "nodes": [
+      {
+        "id": "ANVR-WEST-UP-ENTRY",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 120,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-WEST-UP-ENTRY",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "EAST"
+      },
+      {
+        "id": "ANVR-EAST-UP-EXIT",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 2380,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-EAST-UP-EXIT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "EAST"
+      },
+      {
+        "id": "ANVR-EAST-DN-ENTRY",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 2380,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-EAST-DN-ENTRY",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "WEST"
+      },
+      {
+        "id": "ANVR-WEST-DN-EXIT",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 120,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-WEST-DN-EXIT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "WEST"
+      },
+      {
+        "id": "ANVR-W-UP-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 420,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-W-UP-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-E-UP-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 2080,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-E-UP-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-E-DN-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 2080,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-E-DN-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-W-DN-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 420,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-W-DN-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF1-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF1-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF1-BERTH",
+        "osmId": 2833971686,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 1",
+        "provenance": {
+          "geoPosition": "osm",
+          "type": "osm",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF1-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF1-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF2-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 173
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF2-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF2-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 173
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 2",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF2-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 173
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF2-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF3-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 221
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF3-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF3-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 221
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 3",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF3-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 221
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF3-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF4-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 269
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF4-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF4-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 269
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 4",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF4-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 269
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF4-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF5-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 317
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF5-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF5-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 317
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 5",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF5-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 317
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF5-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF6-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 365
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF6-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF6-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 365
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 6",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF6-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 365
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF6-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF7-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF7-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-PF7-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "Platform 7",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-PF7-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 413
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-PF7-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-TURNBACK-1-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 720,
+          "y": 430
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-TURNBACK-1-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-TURNBACK-1-E",
+        "osmId": null,
+        "type": "BUFFER_STOP",
+        "position": {
+          "x": 1800,
+          "y": 430
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-TURNBACK-1-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "ANVR-STABLING-2-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 720,
+          "y": 480
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-STABLING-2-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "ANVR-STABLING-2-E",
+        "osmId": null,
+        "type": "BUFFER_STOP",
+        "position": {
+          "x": 1800,
+          "y": 480
+        },
+        "geoPosition": {
+          "lat": 28.6468336,
+          "lon": 77.3158749
+        },
+        "label": "ANVR-STABLING-2-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      }
+    ],
+    "trackSegments": [
+      {
+        "id": "ANVR-APP-W-UP",
+        "osmId": null,
+        "startNodeId": "ANVR-WEST-UP-ENTRY",
+        "endNodeId": "ANVR-W-UP-THROAT",
+        "lineId": "UP",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "EAST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-ANVR-APP-1",
+        "blockSection": "ANVR-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 8,
+        "scheduledTrainIds": [
+          "12000",
+          "12001",
+          "12002",
+          "12003",
+          "12007",
+          "12008",
+          "12009",
+          "12010"
+        ]
+      },
+      {
+        "id": "ANVR-APP-E-UP",
+        "osmId": null,
+        "startNodeId": "ANVR-E-UP-THROAT",
+        "endNodeId": "ANVR-EAST-UP-EXIT",
+        "lineId": "UP",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "EAST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-ANVR-APP-2",
+        "blockSection": "ANVR-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 8,
+        "scheduledTrainIds": [
+          "12000",
+          "12001",
+          "12002",
+          "12003",
+          "12007",
+          "12008",
+          "12009",
+          "12010"
+        ]
+      },
+      {
+        "id": "ANVR-APP-E-DN",
+        "osmId": null,
+        "startNodeId": "ANVR-EAST-DN-ENTRY",
+        "endNodeId": "ANVR-E-DN-THROAT",
+        "lineId": "DN",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "WEST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-ANVR-APP-3",
+        "blockSection": "ANVR-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 4,
+        "scheduledTrainIds": [
+          "12004",
+          "12005",
+          "12006",
+          "12011"
+        ]
+      },
+      {
+        "id": "ANVR-APP-W-DN",
+        "osmId": null,
+        "startNodeId": "ANVR-W-DN-THROAT",
+        "endNodeId": "ANVR-WEST-DN-EXIT",
+        "lineId": "DN",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "WEST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-ANVR-APP-4",
+        "blockSection": "ANVR-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 4,
+        "scheduledTrainIds": [
+          "12004",
+          "12005",
+          "12006",
+          "12011"
+        ]
+      },
+      {
+        "id": "ANVR-PF1-A",
+        "osmId": null,
+        "startNodeId": "ANVR-W-UP-THROAT",
+        "endNodeId": "ANVR-PF1-W",
+        "lineId": "PF1",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF1-1",
+        "blockSection": "ANVR",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12007"
+        ]
+      },
+      {
+        "id": "ANVR-PF1-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF1-W",
+        "endNodeId": "ANVR-PF1-BERTH",
+        "lineId": "PF1",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF1-2",
+        "blockSection": "ANVR",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12007"
+        ]
+      },
+      {
+        "id": "ANVR-PF1-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF1-BERTH",
+        "endNodeId": "ANVR-PF1-E",
+        "lineId": "PF1",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF1-3",
+        "blockSection": "ANVR",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12007"
+        ]
+      },
+      {
+        "id": "ANVR-PF1-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF1-E",
+        "endNodeId": "ANVR-E-UP-THROAT",
+        "lineId": "PF1",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF1-4",
+        "blockSection": "ANVR",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12007"
+        ]
+      },
+      {
+        "id": "ANVR-PF2-A",
+        "osmId": null,
+        "startNodeId": "ANVR-W-UP-THROAT",
+        "endNodeId": "ANVR-PF2-W",
+        "lineId": "PF2",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF2-1",
+        "blockSection": "ANVR",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12008"
+        ]
+      },
+      {
+        "id": "ANVR-PF2-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF2-W",
+        "endNodeId": "ANVR-PF2-BERTH",
+        "lineId": "PF2",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF2-2",
+        "blockSection": "ANVR",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12008"
+        ]
+      },
+      {
+        "id": "ANVR-PF2-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF2-BERTH",
+        "endNodeId": "ANVR-PF2-E",
+        "lineId": "PF2",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF2-3",
+        "blockSection": "ANVR",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12008"
+        ]
+      },
+      {
+        "id": "ANVR-PF2-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF2-E",
+        "endNodeId": "ANVR-E-UP-THROAT",
+        "lineId": "PF2",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF2-4",
+        "blockSection": "ANVR",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12008"
+        ]
+      },
+      {
+        "id": "ANVR-PF3-A",
+        "osmId": null,
+        "startNodeId": "ANVR-W-UP-THROAT",
+        "endNodeId": "ANVR-PF3-W",
+        "lineId": "PF3",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF3-1",
+        "blockSection": "ANVR",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12009"
+        ]
+      },
+      {
+        "id": "ANVR-PF3-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF3-W",
+        "endNodeId": "ANVR-PF3-BERTH",
+        "lineId": "PF3",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF3-2",
+        "blockSection": "ANVR",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12009"
+        ]
+      },
+      {
+        "id": "ANVR-PF3-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF3-BERTH",
+        "endNodeId": "ANVR-PF3-E",
+        "lineId": "PF3",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF3-3",
+        "blockSection": "ANVR",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12009"
+        ]
+      },
+      {
+        "id": "ANVR-PF3-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF3-E",
+        "endNodeId": "ANVR-E-UP-THROAT",
+        "lineId": "PF3",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF3-4",
+        "blockSection": "ANVR",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12009"
+        ]
+      },
+      {
+        "id": "ANVR-PF4-A",
+        "osmId": null,
+        "startNodeId": "ANVR-W-UP-THROAT",
+        "endNodeId": "ANVR-PF4-W",
+        "lineId": "PF4",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF4-1",
+        "blockSection": "ANVR",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12010"
+        ]
+      },
+      {
+        "id": "ANVR-PF4-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF4-W",
+        "endNodeId": "ANVR-PF4-BERTH",
+        "lineId": "PF4",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF4-2",
+        "blockSection": "ANVR",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12010"
+        ]
+      },
+      {
+        "id": "ANVR-PF4-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF4-BERTH",
+        "endNodeId": "ANVR-PF4-E",
+        "lineId": "PF4",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF4-3",
+        "blockSection": "ANVR",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12010"
+        ]
+      },
+      {
+        "id": "ANVR-PF4-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF4-E",
+        "endNodeId": "ANVR-E-UP-THROAT",
+        "lineId": "PF4",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF4-4",
+        "blockSection": "ANVR",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12010"
+        ]
+      },
+      {
+        "id": "ANVR-PF5-A",
+        "osmId": null,
+        "startNodeId": "ANVR-E-DN-THROAT",
+        "endNodeId": "ANVR-PF5-E",
+        "lineId": "PF5",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF5-1",
+        "blockSection": "ANVR",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12011"
+        ]
+      },
+      {
+        "id": "ANVR-PF5-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF5-E",
+        "endNodeId": "ANVR-PF5-BERTH",
+        "lineId": "PF5",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF5-2",
+        "blockSection": "ANVR",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12011"
+        ]
+      },
+      {
+        "id": "ANVR-PF5-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF5-BERTH",
+        "endNodeId": "ANVR-PF5-W",
+        "lineId": "PF5",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF5-3",
+        "blockSection": "ANVR",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12011"
+        ]
+      },
+      {
+        "id": "ANVR-PF5-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF5-W",
+        "endNodeId": "ANVR-W-DN-THROAT",
+        "lineId": "PF5",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF5-4",
+        "blockSection": "ANVR",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12011"
+        ]
+      },
+      {
+        "id": "ANVR-PF6-A",
+        "osmId": null,
+        "startNodeId": "ANVR-E-DN-THROAT",
+        "endNodeId": "ANVR-PF6-E",
+        "lineId": "PF6",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF6-1",
+        "blockSection": "ANVR",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12005"
+        ]
+      },
+      {
+        "id": "ANVR-PF6-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF6-E",
+        "endNodeId": "ANVR-PF6-BERTH",
+        "lineId": "PF6",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF6-2",
+        "blockSection": "ANVR",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12005"
+        ]
+      },
+      {
+        "id": "ANVR-PF6-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF6-BERTH",
+        "endNodeId": "ANVR-PF6-W",
+        "lineId": "PF6",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF6-3",
+        "blockSection": "ANVR",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12005"
+        ]
+      },
+      {
+        "id": "ANVR-PF6-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF6-W",
+        "endNodeId": "ANVR-W-DN-THROAT",
+        "lineId": "PF6",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF6-4",
+        "blockSection": "ANVR",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12005"
+        ]
+      },
+      {
+        "id": "ANVR-PF7-A",
+        "osmId": null,
+        "startNodeId": "ANVR-E-DN-THROAT",
+        "endNodeId": "ANVR-PF7-E",
+        "lineId": "PF7",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF7-1",
+        "blockSection": "ANVR",
+        "platform": 7,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12006"
+        ]
+      },
+      {
+        "id": "ANVR-PF7-B",
+        "osmId": null,
+        "startNodeId": "ANVR-PF7-E",
+        "endNodeId": "ANVR-PF7-BERTH",
+        "lineId": "PF7",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF7-2",
+        "blockSection": "ANVR",
+        "platform": 7,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12006"
+        ]
+      },
+      {
+        "id": "ANVR-PF7-C",
+        "osmId": null,
+        "startNodeId": "ANVR-PF7-BERTH",
+        "endNodeId": "ANVR-PF7-W",
+        "lineId": "PF7",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-ANVR-PF7-3",
+        "blockSection": "ANVR",
+        "platform": 7,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12006"
+        ]
+      },
+      {
+        "id": "ANVR-PF7-D",
+        "osmId": null,
+        "startNodeId": "ANVR-PF7-W",
+        "endNodeId": "ANVR-W-DN-THROAT",
+        "lineId": "PF7",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-PF7-4",
+        "blockSection": "ANVR",
+        "platform": 7,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 1,
+        "scheduledTrainIds": [
+          "12006"
+        ]
+      },
+      {
+        "id": "ANVR-TURNBACK-1",
+        "osmId": null,
+        "startNodeId": "ANVR-TURNBACK-1-W",
+        "endNodeId": "ANVR-TURNBACK-1-E",
+        "lineId": "TURNBACK",
+        "length": 650,
+        "lengthMeters": 650,
+        "direction": "BI",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-ANVR-TURNBACK-1",
+        "blockSection": "ANVR",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-YARD",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      },
+      {
+        "id": "ANVR-STABLING-2",
+        "osmId": null,
+        "startNodeId": "ANVR-STABLING-2-W",
+        "endNodeId": "ANVR-STABLING-2-E",
+        "lineId": "STABLING",
+        "length": 650,
+        "lengthMeters": 650,
+        "direction": "BI",
+        "permissibleSpeedKph": 15,
+        "maxSpeed": 15,
+        "trackCircuit": "TC-ANVR-STABLING-2",
+        "blockSection": "ANVR",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-ANVR-YARD",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      }
+    ],
+    "routes": [
+      {
+        "id": "R-ANVR-PF1-UP",
+        "entrySignalId": "ANVR-WEST-UP-ENTRY",
+        "exitSignalId": "ANVR-EAST-UP-EXIT",
+        "segments": [
+          "ANVR-APP-W-UP",
+          "ANVR-PF1-A",
+          "ANVR-PF1-B",
+          "ANVR-PF1-C",
+          "ANVR-PF1-D",
+          "ANVR-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "ANVR-W-UP-THROAT": "NORMAL",
+          "ANVR-E-UP-THROAT": "NORMAL"
+        },
+        "overlapSegments": [
+          "ANVR-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-ANVR-PF2-UP",
+          "R-ANVR-PF3-UP",
+          "R-ANVR-PF4-UP"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-ANVR-PF2-UP",
+        "entrySignalId": "ANVR-WEST-UP-ENTRY",
+        "exitSignalId": "ANVR-EAST-UP-EXIT",
+        "segments": [
+          "ANVR-APP-W-UP",
+          "ANVR-PF2-A",
+          "ANVR-PF2-B",
+          "ANVR-PF2-C",
+          "ANVR-PF2-D",
+          "ANVR-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "ANVR-W-UP-THROAT": "REVERSE",
+          "ANVR-E-UP-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "ANVR-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-ANVR-PF1-UP",
+          "R-ANVR-PF3-UP",
+          "R-ANVR-PF4-UP"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-ANVR-PF3-UP",
+        "entrySignalId": "ANVR-WEST-UP-ENTRY",
+        "exitSignalId": "ANVR-EAST-UP-EXIT",
+        "segments": [
+          "ANVR-APP-W-UP",
+          "ANVR-PF3-A",
+          "ANVR-PF3-B",
+          "ANVR-PF3-C",
+          "ANVR-PF3-D",
+          "ANVR-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "ANVR-W-UP-THROAT": "REVERSE",
+          "ANVR-E-UP-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "ANVR-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-ANVR-PF1-UP",
+          "R-ANVR-PF2-UP",
+          "R-ANVR-PF4-UP"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-ANVR-PF4-UP",
+        "entrySignalId": "ANVR-WEST-UP-ENTRY",
+        "exitSignalId": "ANVR-EAST-UP-EXIT",
+        "segments": [
+          "ANVR-APP-W-UP",
+          "ANVR-PF4-A",
+          "ANVR-PF4-B",
+          "ANVR-PF4-C",
+          "ANVR-PF4-D",
+          "ANVR-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "ANVR-W-UP-THROAT": "REVERSE",
+          "ANVR-E-UP-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "ANVR-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-ANVR-PF1-UP",
+          "R-ANVR-PF2-UP",
+          "R-ANVR-PF3-UP"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-ANVR-PF5-DN",
+        "entrySignalId": "ANVR-EAST-DN-ENTRY",
+        "exitSignalId": "ANVR-WEST-DN-EXIT",
+        "segments": [
+          "ANVR-APP-E-DN",
+          "ANVR-PF5-A",
+          "ANVR-PF5-B",
+          "ANVR-PF5-C",
+          "ANVR-PF5-D",
+          "ANVR-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "ANVR-E-DN-THROAT": "REVERSE",
+          "ANVR-W-DN-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "ANVR-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-ANVR-PF6-DN",
+          "R-ANVR-PF7-DN"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-ANVR-PF6-DN",
+        "entrySignalId": "ANVR-EAST-DN-ENTRY",
+        "exitSignalId": "ANVR-WEST-DN-EXIT",
+        "segments": [
+          "ANVR-APP-E-DN",
+          "ANVR-PF6-A",
+          "ANVR-PF6-B",
+          "ANVR-PF6-C",
+          "ANVR-PF6-D",
+          "ANVR-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "ANVR-E-DN-THROAT": "REVERSE",
+          "ANVR-W-DN-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "ANVR-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-ANVR-PF5-DN",
+          "R-ANVR-PF7-DN"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-ANVR-PF7-DN",
+        "entrySignalId": "ANVR-EAST-DN-ENTRY",
+        "exitSignalId": "ANVR-WEST-DN-EXIT",
+        "segments": [
+          "ANVR-APP-E-DN",
+          "ANVR-PF7-A",
+          "ANVR-PF7-B",
+          "ANVR-PF7-C",
+          "ANVR-PF7-D",
+          "ANVR-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "ANVR-E-DN-THROAT": "NORMAL",
+          "ANVR-W-DN-THROAT": "NORMAL"
+        },
+        "overlapSegments": [
+          "ANVR-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-ANVR-PF5-DN",
+          "R-ANVR-PF6-DN"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      }
+    ],
+    "maintenanceZones": [
+      {
+        "id": "MZ-ANVR-UP",
+        "name": "ANVR UP-side integrated block",
+        "affectedSegments": [
+          "ANVR-APP-W-UP",
+          "ANVR-APP-E-UP",
+          "ANVR-PF1-A",
+          "ANVR-PF1-B",
+          "ANVR-PF1-C",
+          "ANVR-PF1-D",
+          "ANVR-PF2-A",
+          "ANVR-PF2-B",
+          "ANVR-PF2-C",
+          "ANVR-PF2-D",
+          "ANVR-PF3-A",
+          "ANVR-PF3-B",
+          "ANVR-PF3-C",
+          "ANVR-PF3-D",
+          "ANVR-PF4-A",
+          "ANVR-PF4-B",
+          "ANVR-PF4-C",
+          "ANVR-PF4-D"
+        ],
+        "affectedPoints": [
+          "ANVR-W-UP-THROAT",
+          "ANVR-E-UP-THROAT"
+        ],
+        "oheGroups": [
+          "OHE-ANVR-UP"
+        ],
+        "kilometreLimits": [
+          10.4,
+          11.200000000000001
+        ],
+        "compatibleDepartments": [
+          "ENG",
+          "S&T",
+          "TRD"
+        ],
+        "provenance": "representative"
+      },
+      {
+        "id": "MZ-ANVR-DN",
+        "name": "ANVR DOWN-side integrated block",
+        "affectedSegments": [
+          "ANVR-APP-E-DN",
+          "ANVR-APP-W-DN",
+          "ANVR-PF5-A",
+          "ANVR-PF5-B",
+          "ANVR-PF5-C",
+          "ANVR-PF5-D",
+          "ANVR-PF6-A",
+          "ANVR-PF6-B",
+          "ANVR-PF6-C",
+          "ANVR-PF6-D",
+          "ANVR-PF7-A",
+          "ANVR-PF7-B",
+          "ANVR-PF7-C",
+          "ANVR-PF7-D"
+        ],
+        "affectedPoints": [
+          "ANVR-E-DN-THROAT",
+          "ANVR-W-DN-THROAT"
+        ],
+        "oheGroups": [
+          "OHE-ANVR-DN"
+        ],
+        "kilometreLimits": [
+          10.4,
+          11.200000000000001
+        ],
+        "compatibleDepartments": [
+          "ENG",
+          "S&T",
+          "TRD"
+        ],
+        "provenance": "representative"
+      }
+    ],
+    "maintenanceTasks": [
+      {
+        "id": "ANVR-TMS-01",
+        "sourceSystem": "TMS",
+        "department": "ENG",
+        "assetType": "rail/track geometry",
+        "description": "Rail/Track Geometry maintenance in ANVR UP-side integrated block",
+        "maintenanceZoneId": "MZ-ANVR-UP",
+        "criticality": 5,
+        "urgency": 5,
+        "overdueDays": 16,
+        "durationMinutes": 180,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "ANVR-SMMS-01",
+        "sourceSystem": "SMMS",
+        "department": "S&T",
+        "assetType": "track circuit and point detection",
+        "description": "Track Circuit And Point Detection maintenance in ANVR UP-side integrated block",
+        "maintenanceZoneId": "MZ-ANVR-UP",
+        "criticality": 5,
+        "urgency": 4,
+        "overdueDays": 17,
+        "durationMinutes": 120,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "ANVR-TDMS-01",
+        "sourceSystem": "TDMS",
+        "department": "TRD",
+        "assetType": "25 kV OHE inspection",
+        "description": "25 Kv Ohe Inspection maintenance in ANVR UP-side integrated block",
+        "maintenanceZoneId": "MZ-ANVR-UP",
+        "criticality": 5,
+        "urgency": 3,
+        "overdueDays": 18,
+        "durationMinutes": 150,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "ANVR-TMS-02",
+        "sourceSystem": "TMS",
+        "department": "ENG",
+        "assetType": "rail/track geometry",
+        "description": "Rail/Track Geometry maintenance in ANVR DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-ANVR-DN",
+        "criticality": 4,
+        "urgency": 5,
+        "overdueDays": 19,
+        "durationMinutes": 180,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "ANVR-SMMS-02",
+        "sourceSystem": "SMMS",
+        "department": "S&T",
+        "assetType": "track circuit and point detection",
+        "description": "Track Circuit And Point Detection maintenance in ANVR DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-ANVR-DN",
+        "criticality": 4,
+        "urgency": 4,
+        "overdueDays": 20,
+        "durationMinutes": 120,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "ANVR-TDMS-02",
+        "sourceSystem": "TDMS",
+        "department": "TRD",
+        "assetType": "25 kV OHE inspection",
+        "description": "25 Kv Ohe Inspection maintenance in ANVR DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-ANVR-DN",
+        "criticality": 4,
+        "urgency": 3,
+        "overdueDays": 21,
+        "durationMinutes": 150,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      }
+    ]
+  }
+}

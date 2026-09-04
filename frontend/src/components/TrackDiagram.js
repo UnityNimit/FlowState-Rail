@@ -46,9 +46,22 @@ const TrackDiagram = ({
     const originX = Math.max(0, minX - 100);
 
     const lockedSegmentIds = new Set();
+    const activeCrossoverSegments = new Set();
     if (trains) {
         trains.forEach(train => {
-            if (train.route) train.route.forEach(id => lockedSegmentIds.add(id));
+            const route = train.route || [];
+            const routeIndex = route.indexOf(train.currentSegmentId);
+            if (routeIndex >= 0) {
+                lockedSegmentIds.add(route[routeIndex]);
+                if (['RUNNING', 'STOPPED_AWAITING_CLEARANCE'].includes(train.state) && route[routeIndex + 1]) {
+                    lockedSegmentIds.add(route[routeIndex + 1]);
+                }
+            }
+            if (train.route) {
+                train.route.forEach(id => {
+                    if (id.includes('-XO-')) activeCrossoverSegments.add(id);
+                });
+            }
         });
     }
 
@@ -78,13 +91,22 @@ const TrackDiagram = ({
         const posFraction = Math.max(0, Math.min(1, train.positionOnSegment || 0));
         const x = startNode.position.x + (endNode.position.x - startNode.position.x) * posFraction;
         const y = startNode.position.y + (endNode.position.y - startNode.position.y) * posFraction;
-        const angle = Math.atan2(endNode.position.y - startNode.position.y, endNode.position.x - startNode.position.x) * (180 / Math.PI);
+        let angle = Math.atan2(endNode.position.y - startNode.position.y, endNode.position.x - startNode.position.x) * (180 / Math.PI);
+        if (angle > 90) angle -= 180;
+        if (angle < -90) angle += 180;
         return { x, y, angle };
     };
 
     const stationMeta = network.station || null;
+    const corridorMeta = network.corridor || null;
     const platforms = stationMeta?.platforms || [];
-    const tracksMeta = stationMeta?.tracksMeta || [];
+    const tracksMeta = stationMeta?.tracksMeta || (corridorMeta?.lines || []).map((line, index) => ({
+        index: line.id,
+        name: `${line.name} · ${line.direction}`,
+        y: [135, 205, 295, 365][index] || (130 + index * 70)
+    }));
+    const westConnection = stationMeta?.westConnection || corridorMeta?.westConnection || 'WESTERN APPROACH';
+    const eastConnection = stationMeta?.eastConnection || corridorMeta?.eastConnection || 'EASTERN APPROACH';
 
     return (
         <div className="track-canvas-container">
@@ -110,15 +132,60 @@ const TrackDiagram = ({
                             </pattern>
                         </defs>
 
+                        {/* Corridor Infrastructure Landmarks (e.g. Yamuna Bridge, Flyovers) */}
+                        {corridorMeta?.infrastructure?.map(item => (
+                            <g key={item.id} className="minimal-corridor-infra">
+                                <rect 
+                                    x={item.x - item.width / 2} 
+                                    y="92" 
+                                    width={item.width} 
+                                    height="325" 
+                                    rx="4" 
+                                    fill="rgba(148, 163, 184, 0.04)"
+                                    stroke="var(--border-default, #253347)"
+                                    strokeDasharray="3 3"
+                                />
+                                <text 
+                                    x={item.x} 
+                                    y="108" 
+                                    textAnchor="middle" 
+                                    fill="var(--text-dim, #64748b)" 
+                                    fontSize="9.5" 
+                                    fontFamily="var(--font-mono)"
+                                    letterSpacing="1px"
+                                >
+                                    {item.name.toUpperCase()}
+                                </text>
+                            </g>
+                        ))}
+
+                        {/* Corridor Station Boundaries & Chainages */}
+                        {corridorMeta?.stations?.map(station => (
+                            <g
+                                key={station.code}
+                                transform={`translate(${station.x}, 58)`}
+                                className="minimal-station-boundary"
+                            >
+                                <line x1="0" y1="22" x2="0" y2="360" stroke="var(--border-default, #253347)" strokeDasharray="2 3" />
+                                <rect x="-50" y="-12" width="100" height="24" rx="4" fill="var(--bg-elevated, #131b26)" stroke="var(--border-default, #253347)" />
+                                <text x="0" y="0" textAnchor="middle" fill="var(--text-bright, #f8fafc)" fontSize="10.5" fontWeight="700" fontFamily="var(--font-mono)">
+                                    {station.code}
+                                </text>
+                                <text x="0" y="9" textAnchor="middle" fill="var(--text-dim, #64748b)" fontSize="7.5" fontFamily="var(--font-mono)">
+                                    KM {station.chainageKm !== undefined ? station.chainageKm.toFixed(1) : ''}
+                                </text>
+                            </g>
+                        ))}
+
                         {/* Minimalist Corridor Direction Labels */}
                         <g transform="translate(180, 42)">
                             <text className="corridor-direction-text" x="0" y="0">
-                                WEST APPROACH (AMBALA / ROHTAK)
+                                WEST APPROACH · {westConnection.toUpperCase()}
                             </text>
                         </g>
                         <g transform="translate(3060, 42)">
                             <text className="corridor-direction-text" x="0" y="0">
-                                EAST DEPARTURE (GHAZIABAD / HOWRAH)
+                                EAST DEPARTURE · {eastConnection.toUpperCase()}
                             </text>
                         </g>
 
@@ -213,13 +280,13 @@ const TrackDiagram = ({
                                                 className="minimal-rail-occupied"
                                             />
                                         ) : isLocked ? (
-                                            /* Solid Amber (Route Locked) */
+                                            /* Solid Amber / Crossover Diverge */
                                             <line
                                                 x1={startNode.position.x}
                                                 y1={startNode.position.y}
                                                 x2={endNode.position.x}
                                                 y2={endNode.position.y}
-                                                className="minimal-rail-locked"
+                                                className={activeCrossoverSegments.has(segment.id) ? "minimal-rail-crossover" : "minimal-rail-locked"}
                                             />
                                         ) : null}
 

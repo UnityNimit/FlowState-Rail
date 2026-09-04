@@ -10,7 +10,7 @@ import socketService from './services/socketService';
 
 const DashboardLayout = () => {
   const [selectedStation, setSelectedStation] = useState(
-    () => sessionStorage.getItem('selectedStation') || 'DLI'
+    () => sessionStorage.getItem('selectedStation') || 'CORRIDOR'
   );
   const [simulationStatus, setSimulationStatus] = useState(
     () => sessionStorage.getItem('simulationStatus') || 'stopped'
@@ -132,8 +132,8 @@ const DashboardLayout = () => {
             className="hud-station-select"
             disabled={simulationStatus !== 'stopped'}
           >
+            <option value="CORRIDOR">Delhi–Ghaziabad Quadruple Line Corridor (Master Digital Twin)</option>
             <option value="DLI">Old Delhi Junction (DLI - 16 Platforms)</option>
-            <option value="CORRIDOR">Delhi-Ghaziabad Quadruple Line Corridor</option>
             <option value="ANVR">Anand Vihar Terminal (ANVR)</option>
             <option value="SBB">Sahibabad Junction (SBB)</option>
             <option value="GZB">Ghaziabad Junction (GZB)</option>

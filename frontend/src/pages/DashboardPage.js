@@ -21,18 +21,46 @@ const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
     useEffect(() => {
         if (simulationStatus === 'stopped') {
             const fetchPreviewLayout = async () => {
+                const stationCode = selectedStation.toLowerCase();
                 try {
-                    const response = await fetch(`/data/${selectedStation.toLowerCase()}_layout.json`);
-                    if (!response.ok) throw new Error(`Layout for ${selectedStation} not found.`);
+                    const backendUrl = socketService.getUrl();
+                    const response = await fetch(`${backendUrl}/api/network/${stationCode}`);
+                    if (!response.ok) throw new Error(`Layout for ${selectedStation} not found on backend.`);
                     const data = await response.json();
-                    setPreviewData({ network: data.network, trains: [] });
+                    if (data.error) throw new Error(data.error);
+                    const net = data.network || data;
+                    setPreviewData({ network: net, trains: [] });
                     setErrorMessage('');
                 } catch (error) {
-                    setErrorMessage(error.message);
-                    setPreviewData(null);
+                    try {
+                        const relResp = await fetch(`/api/network/${stationCode}`);
+                        if (relResp.ok) {
+                            const relData = await relResp.json();
+                            const net = relData.network || relData;
+                            setPreviewData({ network: net, trains: [] });
+                            setErrorMessage('');
+                            return;
+                        }
+                    } catch (e) { /* ignore */ }
+                    setErrorMessage(`Connecting to backend at ${socketService.getUrl()} for track network...`);
                 }
             };
             fetchPreviewLayout();
+
+            const handleNetworkLayout = (data) => {
+                if (data && (data.station?.toUpperCase() === selectedStation.toUpperCase() || !data.station)) {
+                    const net = data.network || data;
+                    setPreviewData({ network: net, trains: [] });
+                    setErrorMessage('');
+                }
+            };
+
+            socketService.on('network-layout', handleNetworkLayout);
+            socketService.emit('get-network', { station: selectedStation });
+
+            return () => {
+                socketService.off('network-layout', handleNetworkLayout);
+            };
         }
     }, [selectedStation, simulationStatus]);
 
