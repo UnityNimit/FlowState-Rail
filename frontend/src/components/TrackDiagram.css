@@ -246,7 +246,7 @@
 /* Rolling Stock Train Capsules */
 .minimal-train {
   cursor: pointer;
-  transition: transform 0.35s linear;
+  /* CHANGED: Removed CSS transition so GSAP can take over smoothly! */
 }
 
 .train-light-beam {

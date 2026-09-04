@@ -41,8 +41,6 @@ app.add_middleware(
 )
 app.include_router(planning_router)
 if not os.getenv("DATABASE_URL"):
-    # Zero-configuration local demo/test mode. Production Supabase schemas are
-    # managed explicitly by Alembic during the Render build.
     initialize_database()
 socket_app = socketio.ASGIApp(sio, app)
 
@@ -64,10 +62,6 @@ async def health():
 
 @app.get("/api/network/{station_code}")
 async def get_network_layout(station_code: str):
-    """
-    Single source of truth for railway network topologies.
-    Returns authentic V2 network layout directly from Backend/data.
-    """
     code = station_code.lower().strip()
     aliases = {
         'corridor': 'corridor_layout.json',
@@ -100,30 +94,24 @@ current_simulation = None
 pause_event = asyncio.Event()
 is_optimizing = False
 
-# AI/manual signal control globals
-ai_control_enabled = True  # when True AI can set signals automatically; when False UI/manual control is authoritative
-# timestamps of last manual override: signal_id -> unix_timestamp
+ai_control_enabled = True 
 manual_override_timestamps = {}
-# signals set while no sim is running: signal_id -> state
 pending_signal_overrides = {}
-MANUAL_OVERRIDE_GRACE_SECONDS = 15  # AI will not override a signal that was manually toggled within this window
+MANUAL_OVERRIDE_GRACE_SECONDS = 15
 
-# Server-side authoritative priorities — network congestion & trackCondition are ALWAYS True.
 current_ai_priorities = {
-    'congestion': True,       # forced ON
+    'congestion': True, 
     'trainType': True,
     'punctuality': True,
-    'trackCondition': True,   # forced ON
+    'trackCondition': True, 
     'weather': False
 }
 
-# Tracks that UI set while no simulation is running; applied when sim starts.
 pending_track_statuses = {}
 socket_workspaces = {}
 
 
 def persist_simulation_checkpoint(sid):
-    """Persist recoverable evidence after each operator mutation."""
     workspace_id = socket_workspaces.get(sid)
     if not workspace_id or not current_simulation:
         return
@@ -167,12 +155,6 @@ def apply_track_status_to_sim(sim: Simulation, track_id: str, status: str):
 
 
 def apply_signal_state(sim: Simulation, signal_id: str, state: str, by: str = 'ai'):
-    """
-    Set signal state on a simulation instance.
-    - If by=='manual': record manual override timestamp (so AI will avoid overriding for grace window)
-    - If by=='ai': apply only if allowed (no recent manual override AND ai_control_enabled)
-    Returns True if state applied, False if skipped.
-    """
     global manual_override_timestamps
 
     state = (state or 'RED').upper()
@@ -180,23 +162,19 @@ def apply_signal_state(sim: Simulation, signal_id: str, state: str, by: str = 'a
 
     if by == 'manual':
         manual_override_timestamps[signal_id] = time.time()
-        # update simulation node map
         if signal_id in sim.nodes_map:
             sim.nodes_map[signal_id]['state'] = state
-        # reflect into network dict for UI
         for n in sim.network['nodes']:
             if n['id'] == signal_id:
                 n['state'] = state
         sim.plan_needed = True
         print(f"✋ Manual override applied: signal {signal_id} => {state}")
-        # broadcast update (fire-and-forget)
         try:
             asyncio.create_task(sio.emit('network-update', sim.get_state()))
         except Exception:
             pass
         return True
     else:
-        # AI attempt
         if not ai_control_enabled:
             print(f"🔒 AI tried to set {signal_id} => {state}, but AI control is disabled.")
             return False
@@ -219,23 +197,12 @@ def apply_signal_state(sim: Simulation, signal_id: str, state: str, by: str = 'a
 
 
 def ai_try_clear_waiting_trains(sim: Simulation):
-    """
-    Proactively try to set departure signals GREEN for trains that are READY_TO_PROCEED
-    or STOPPED_AWAITING_CLEARANCE when their next segment/node appears free.
-    Additionally: set signals RED when AI decides they are not needed (idle/unused),
-    while respecting manual overrides and safety checks.
-
-    Returns a tuple (greens_applied, reds_applied).
-    """
-    # Fast guard
     if not ai_control_enabled:
         return (0, 0)
 
     greens_applied = 0
-    # set of signal node IDs AI intends to keep GREEN for imminent departures
     desired_green_signals = set()
 
-    # FIRST PASS: determine which signals should be GREEN (for trains that can proceed)
     for train in sim.active_trains:
         state = train.get('state')
         if state not in ('READY_TO_PROCEED', 'STOPPED_AWAITING_CLEARANCE'):
@@ -245,13 +212,11 @@ def ai_try_clear_waiting_trains(sim: Simulation):
         if not route or not node_path:
             continue
 
-        # Decide departure node and next segment
         if state == 'READY_TO_PROCEED':
             departure_node = node_path[0]
             next_segment = route[0]
             next_node_after = node_path[1] if len(node_path) > 1 else None
         else:
-            # STOPPED_AWAITING_CLEARANCE
             try:
                 idx = route.index(train.get('currentSegmentId'))
                 if (idx + 1) < len(node_path):
@@ -267,7 +232,6 @@ def ai_try_clear_waiting_trains(sim: Simulation):
         if not next_segment:
             continue
 
-        # safety checks: segment not faulty, weather priorities, resources not locked
         seg = sim.segments_map.get(next_segment, {})
         if sim._segment_unavailable(next_segment):
             continue
@@ -278,25 +242,17 @@ def ai_try_clear_waiting_trains(sim: Simulation):
         if next_node_after and next_node_after in sim.locked_resources:
             continue
 
-        # Respect manual override recency
         if _signal_overridden_recently(departure_node):
             continue
 
-        # Mark as desired green
         desired_green_signals.add(departure_node.upper())
 
-    # SECOND PASS: apply GREEN to desired signals (attempt)
     for sig in desired_green_signals:
         applied_ok = apply_signal_state(sim, sig, 'GREEN', by='ai')
         if applied_ok:
             greens_applied += 1
 
-    # THIRD PASS: decide which GREEN signals should be set RED.
-    # We will turn RED any signal currently GREEN that is NOT in desired_green_signals,
-    # is safe to change, and wasn't manually overridden recently.
     reds_applied = 0
-
-    # Build a map of node_id -> node object for quick lookup (normalized)
     node_map = {n['id'].upper(): n for n in sim.network.get('nodes', [])}
 
     for node_id, node in node_map.items():
@@ -304,38 +260,25 @@ def ai_try_clear_waiting_trains(sim: Simulation):
             continue
         current_state = (node.get('state') or '').upper()
         if current_state != 'GREEN':
-            continue  # only consider currently green signals for red'ing
+            continue  
 
-        # If AI wants this green, skip
         if node_id in desired_green_signals:
             continue
 
-        # Respect manual override
         if _signal_overridden_recently(node_id):
             continue
 
-        # Safety: avoid setting RED if doing so would block a RUNNING train that expects this signal
-        # Heuristic: if there's a RUNNING train whose next segment or node depends on this signal, don't flip.
-        # We'll conservatively check running trains' currentSegmentId and node_path.
         block_safe = True
         for t in sim.active_trains:
             if t.get('state') != 'RUNNING':
                 continue
-            # If this signal node appears in the node_path of a running train and is
-            # the immediate departure node for next segment, avoid changing it.
             t_node_path = t.get('node_path') or []
             if node_id in [n.upper() for n in t_node_path]:
-                # Determine if signal node is the departure node for upcoming movement — if so, avoid toggling
-                # Conservative: if node is in node_path near the train's currentSegmentId, skip.
                 try:
                     idx = t_node_path.index(node_id)
-                    # if this node is the next node after currentSegmentId, it's important
                     current_seg = t.get('currentSegmentId')
                     if current_seg:
-                        # find index of current segment in route and compare
                         t_route = t.get('route') or []
-                        # convert route to node_path to be safe
-                        # If node appears after a segment in route, it's relevant -> skip toggling
                         node_after_segments = sim._convert_segment_path_to_node_path(t_route)
                         if node_id in node_after_segments:
                             block_safe = False
@@ -346,13 +289,8 @@ def ai_try_clear_waiting_trains(sim: Simulation):
         if not block_safe:
             continue
 
-        # Additional safety: if the node controls entry into a locked resource, don't flip it red
-        # We'll check segments adjacent to this signal's node: if any adjacent segment is locked and
-        # would be needed for a train to exit, avoid flipping red.
-        # Build adjacency check via sim.adjacency_list if possible
         try:
             neighbors = sim.adjacency_list.get(node_id, [])
-            # if any adjacent segment is locked AND that segment's other node is occupied/locked, be conservative
             unsafe = False
             for nb in neighbors:
                 seg_id = nb.get('segment_id')
@@ -362,10 +300,8 @@ def ai_try_clear_waiting_trains(sim: Simulation):
             if unsafe:
                 continue
         except Exception:
-            # if adjacency not available, continue with caution (don't flip)
             continue
 
-        # If we reached here, it's considered safe to set this signal RED
         applied_ok = apply_signal_state(sim, node_id, 'RED', by='ai')
         if applied_ok:
             reds_applied += 1
@@ -376,70 +312,33 @@ def ai_try_clear_waiting_trains(sim: Simulation):
 async def simulation_loop(simulation_instance, optimizer_instance):
     global is_optimizing
     print(f"🏁 Simulation loop started for {simulation_instance.section_code}.")
-    first_iteration = True
     try:
         while True:
             try:
-                # debug: show pause_event current state
-                print(f"[debug] pause_event.is_set() => {pause_event.is_set()}")
-
-                # On first iteration, print type & available attrs to help diagnose missing methods
-                if first_iteration:
-                    first_iteration = False
-                    try:
-                        print(f"[debug] simulation_instance type: {type(simulation_instance)}")
-                        print(f"[debug] simulation_instance dir: {sorted([a for a in dir(simulation_instance) if not a.startswith('_')])}")
-                    except Exception:
-                        print("[debug] Failed to print simulation_instance introspection.")
-                        traceback.print_exc()
-
-                # wait for play
                 await pause_event.wait()
 
-                # --- TICK (preferred) or fallback if missing ---
                 try:
                     if hasattr(simulation_instance, 'tick') and callable(getattr(simulation_instance, 'tick')):
                         simulation_instance.tick()
                     else:
-                        # Fallback: if tick not present, attempt to call internals if available
                         print("⚠️ Warning: simulation_instance has no 'tick'. Attempting fallback internal step.")
-                        # conservative time increment if available
                         if hasattr(simulation_instance, 'current_time_seconds') and hasattr(simulation_instance, 'tick_rate'):
                             simulation_instance.current_time_seconds += simulation_instance.tick_rate * max(1, getattr(simulation_instance, 'sim_speed', 1))
                         if hasattr(simulation_instance, '_spawn_trains'):
-                            try:
-                                simulation_instance._spawn_trains()
-                            except Exception:
-                                print("⚠️ fallback: _spawn_trains failed")
-                                traceback.print_exc()
+                            simulation_instance._spawn_trains()
                         if hasattr(simulation_instance, '_check_and_dispatch_trains'):
-                            try:
-                                simulation_instance._check_and_dispatch_trains()
-                            except Exception:
-                                print("⚠️ fallback: _check_and_dispatch_trains failed")
-                                traceback.print_exc()
+                            simulation_instance._check_and_dispatch_trains()
                         if hasattr(simulation_instance, '_update_train_positions'):
-                            try:
-                                simulation_instance._update_train_positions()
-                            except Exception:
-                                print("⚠️ fallback: _update_train_positions failed")
-                                traceback.print_exc()
+                            simulation_instance._update_train_positions()
                         if hasattr(simulation_instance, '_update_network_state'):
-                            try:
-                                simulation_instance._update_network_state()
-                            except Exception:
-                                print("⚠️ fallback: _update_network_state failed")
-                                traceback.print_exc()
-
+                            simulation_instance._update_network_state()
                 except Exception as e:
                     print("❌ Exception during simulation tick/fallback:")
                     traceback.print_exc()
                     await sio.emit('simulation:error', {'message': 'Simulation tick error: ' + str(e)})
-                    # continue to next loop iteration after short pause
                     await asyncio.sleep(0.5)
                     continue
 
-                # current state snapshot
                 try:
                     current_state = simulation_instance.get_state()
                 except Exception as e:
@@ -447,20 +346,16 @@ async def simulation_loop(simulation_instance, optimizer_instance):
                     traceback.print_exc()
                     current_state = {"timestamp": getattr(simulation_instance, 'current_time_seconds', 0), "network": getattr(simulation_instance, 'network', {}), "trains": getattr(simulation_instance, 'active_trains', [])}
 
-                # --- NEW: let AI proactively try to clear departure signals for waiting trains,
-                # and also set redundant/idle signals to RED when safe ---
                 try:
                     if ai_control_enabled and not is_optimizing:
                         greens, reds = ai_try_clear_waiting_trains(simulation_instance)
                         if (greens + reds) > 0:
                             print(f"🤖 AI proactively opened {greens} signal(s) and closed {reds} signal(s) this tick.")
-                            # if AI changed signals, request a re-plan in case that affects optimizer decisions
                             simulation_instance.plan_needed = True
                 except Exception:
                     print("⚠️ Exception while running ai_try_clear_waiting_trains:")
                     traceback.print_exc()
 
-                # find trains that need a plan
                 trains_needing_plan = [t for t in current_state.get('trains', []) if t.get('state') == 'WAITING_PLAN']
 
                 if trains_needing_plan and not is_optimizing and getattr(simulation_instance, 'plan_needed', False):
@@ -473,47 +368,41 @@ async def simulation_loop(simulation_instance, optimizer_instance):
                             current_state,
                             current_ai_priorities
                         )
+                        if plan:
+                            if ai_control_enabled:
+                                for p in plan:
+                                    try:
+                                        if p.get('action') == 'PROCEED':
+                                            route = p.get('route', [])
+                                            if route:
+                                                node_path = simulation_instance._convert_segment_path_to_node_path(route)
+                                                if node_path:
+                                                    first_node = node_path[0]
+                                                    apply_signal_state(simulation_instance, first_node, 'GREEN', by='ai')
+                                    except Exception:
+                                        traceback.print_exc()
+
+                            try:
+                                simulation_instance.apply_plan(plan)
+                                await sio.emit('ai:plan-update', plan)
+                            except Exception:
+                                print("❌ Exception while applying plan:")
+                                traceback.print_exc()
+                                await sio.emit('simulation:error', {'message': 'Apply plan error'})
                     except Exception as e:
                         print("❌ Exception during optimizer.generate_plan():")
                         traceback.print_exc()
                         await sio.emit('simulation:error', {'message': 'Optimizer error: ' + str(e)})
-                        plan = []
+                    finally:
+                        # CHANGED: Absolute guarantee that optimization lock clears so it doesn't freeze the system
+                        is_optimizing = False
 
-                    if plan:
-                        # AI attempts to set departure signals to GREEN (won't override recent manual)
-                        if ai_control_enabled:
-                            for p in plan:
-                                try:
-                                    if p.get('action') == 'PROCEED':
-                                        route = p.get('route', [])
-                                        if route:
-                                            node_path = simulation_instance._convert_segment_path_to_node_path(route)
-                                            if node_path:
-                                                first_node = node_path[0]
-                                                apply_signal_state(simulation_instance, first_node, 'GREEN', by='ai')
-                                except Exception:
-                                    print("⚠️ Warning while pre-setting AI signals for plan:")
-                                    traceback.print_exc()
-
-                        try:
-                            simulation_instance.apply_plan(plan)
-                            await sio.emit('ai:plan-update', plan)
-                        except Exception:
-                            print("❌ Exception while applying plan:")
-                            traceback.print_exc()
-                            await sio.emit('simulation:error', {'message': 'Apply plan error'})
-                    else:
-                        print("⚠️ Optimizer returned no plan.")
-                    is_optimizing = False
-
-                # Emit periodic network update
                 try:
                     await sio.emit('network-update', simulation_instance.get_state())
                 except Exception:
                     print("❌ Exception while emitting network-update:")
                     traceback.print_exc()
 
-                # cadence (guard against zero or negative sim_speed)
                 await asyncio.sleep(1 / max(1, getattr(simulation_instance, 'sim_speed', 1)))
 
             except asyncio.CancelledError:
@@ -531,6 +420,7 @@ async def simulation_loop(simulation_instance, optimizer_instance):
     except asyncio.CancelledError:
         print(f"🛑 Simulation loop for {simulation_instance.section_code} was cancelled (outer).")
     finally:
+        is_optimizing = False
         print(f"Simulation loop for {simulation_instance.section_code} has ended.")
 
 
@@ -548,14 +438,11 @@ async def connect(sid, environ, auth=None):
     except Exception:
         pass
     print(f"✅ Client connected: {sid}")
-    # Send authoritative AI control state immediately to the connecting client so frontends stay in sync
     try:
         await sio.emit('ai:control_state_changed', {'enabled': ai_control_enabled}, to=sid)
     except Exception:
         pass
 
-    # Always tell a reconnecting dashboard whether a live in-memory simulation
-    # actually exists.
     await sio.emit('simulation:status', {
         'hasSimulation': current_simulation is not None,
         'isPlaying': bool(current_simulation and pause_event.is_set()),
@@ -580,7 +467,10 @@ async def start_simulation(sid, data):
 
 @sio.event
 async def controller_start_simulation(sid, data):
-    global simulation_task, current_simulation, pending_track_statuses, manual_override_timestamps, pending_signal_overrides
+    # CHANGED: Ensure the global is_optimizing lock is wiped clean whenever we start the simulation!
+    global simulation_task, current_simulation, pending_track_statuses, manual_override_timestamps, pending_signal_overrides, is_optimizing
+    is_optimizing = False
+    
     if isinstance(data, dict):
         station_code = data.get('station_code') or data.get('station') or data.get('stationCode') or 'CORRIDOR'
     elif isinstance(data, str) and data.strip():
@@ -592,30 +482,21 @@ async def controller_start_simulation(sid, data):
 
     try:
         simulation_instance = Simulation(section_code=station_code)
-
-        # Force server-side always-on flags into simulation
         simulation_instance.set_ai_priorities(current_ai_priorities)
 
-        # apply pending signal overrides (if any) - these come from UI actions performed while sim wasn't running
         if pending_signal_overrides:
             for sig_id, state in list(pending_signal_overrides.items()):
                 simulation_instance.set_signal_state(sig_id, state)
-                # also stamp manual override time so AI respects them briefly
                 manual_override_timestamps[sig_id] = time.time()
             pending_signal_overrides.clear()
 
-        # Apply offline-selected maintenance/failure states atomically after layout load.
         if pending_track_statuses:
             for trackid, status in list(pending_track_statuses.items()):
                 apply_track_status_to_sim(simulation_instance, trackid, status)
             pending_track_statuses.clear()
 
-        # apply pending manual signal overrides recorded in timestamps (if any)
         for sid_id, ts_or_state in list(manual_override_timestamps.items()):
-            # we only have timestamps here; pending_signal_overrides handles explicit state-to-apply
-            # if signal exists in sim.nodes_map, don't overwrite its state here (it will be applied above if pending)
             if sid_id in simulation_instance.nodes_map:
-                # leave node's existing state; timestamp is only for preserving manual preference
                 pass
 
         optimizer_instance = Optimizer(simulation_instance=simulation_instance)
@@ -628,7 +509,6 @@ async def controller_start_simulation(sid, data):
         await sio.emit('initial-state', current_simulation.get_state())
         persist_simulation_checkpoint(sid)
 
-        # Inform clients of AI control state as well (ensure UI shows correct toggle)
         try:
             await sio.emit('ai:control_state_changed', {'enabled': ai_control_enabled})
         except Exception:
@@ -638,14 +518,8 @@ async def controller_start_simulation(sid, data):
         await sio.emit('simulation:error', {'message': str(e)})
 
 
-# unified manual signal setter (single implementation)
 @sio.event
 async def controller_set_signal(sid, data):
-    """
-    UI sends { signalId: 'S-PF-3', state: 'GREEN' } to manually set a signal.
-    If simulation is running, apply immediately; otherwise queue in pending_signal_overrides.
-    Records manual override timestamp so AI will adapt.
-    """
     global manual_override_timestamps, pending_signal_overrides, current_simulation
 
     if not isinstance(data, dict):
@@ -663,18 +537,14 @@ async def controller_set_signal(sid, data):
     if desired:
         desired = desired.strip().upper()
 
-    # if sim active, toggle if no desired state provided
     if current_simulation:
         current_state = current_simulation.nodes_map.get(sid_id, {}).get('state', 'RED')
         if not desired:
             desired = 'GREEN' if current_state != 'GREEN' else 'RED'
-        # apply as manual
         apply_signal_state(current_simulation, sid_id, desired, by='manual')
-        # broadcast immediate update
         await sio.emit('network-update', current_simulation.get_state())
         persist_simulation_checkpoint(sid)
     else:
-        # simulation not running: queue override to apply on start
         desired = desired or 'GREEN'
         pending_signal_overrides[sid_id] = desired
         manual_override_timestamps[sid_id] = time.time()
@@ -683,10 +553,6 @@ async def controller_set_signal(sid, data):
 
 @sio.event
 async def controller_toggle_ai_control(sid, data):
-    """
-    UI sends { enabled: true/false } to toggle whether the server AI should
-    control signals automatically.
-    """
     global ai_control_enabled
     enable = data.get('enabled') if isinstance(data, dict) else None
     if isinstance(enable, bool):
@@ -713,11 +579,13 @@ async def controller_toggle_pause_simulation(sid, data):
 
 @sio.event
 async def controller_stop_simulation(sid, data):
-    global simulation_task, current_simulation
+    # CHANGED: Ensure stopping the simulation clears the lock so restarting it works
+    global simulation_task, current_simulation, is_optimizing
     if simulation_task:
         simulation_task.cancel()
         simulation_task = None
     current_simulation = None
+    is_optimizing = False
     print("⏹️ Simulation Stopped and Reset by Controller.")
     await sio.emit('simulation:stopped')
 
@@ -732,17 +600,11 @@ async def controller_set_sim_speed(sid, data):
 
 @sio.event
 async def controller_set_priorities(sid, data):
-    """
-    UI sends the ai priorities. Server forces community rules:
-     - 'congestion' and 'trackCondition' are ALWAYS true.
-     - 'weather' if toggled to True => simulation assigns random bad-weather segments (2-3).
-    """
     global current_ai_priorities, current_simulation
     if not isinstance(data, dict):
         print("⚠️ controller_set_priorities got invalid payload:", data)
         return
 
-    # persist user choices but enforce always-on ones
     user_priorities = dict(data)
     user_priorities['congestion'] = True
     user_priorities['trackCondition'] = True
@@ -752,8 +614,6 @@ async def controller_set_priorities(sid, data):
 
     if current_simulation:
         current_simulation.set_ai_priorities(current_ai_priorities)
-        # handle weather toggle: when enabled assign random bad-weather segments,
-        # when disabled clear weather.
         if current_ai_priorities.get('weather'):
             current_simulation.assign_random_weather(choose_count=3)
         else:
@@ -789,7 +649,6 @@ async def controller_set_track_status(sid, data):
 
 @sio.event
 async def controller_set_maintenance_zone(sid, data):
-    """Reserve/release every segment, point and OHE group in a v2 maintenance zone."""
     if not current_simulation or not isinstance(data, dict):
         return
     zone_id = data.get('zoneId') or data.get('zone_id')
@@ -802,7 +661,6 @@ async def controller_set_maintenance_zone(sid, data):
 
 @sio.event
 async def controller_generate_block_plan(sid, data):
-    """Generate weekly/monthly coordinated block plans without changing live state."""
     payload = data if isinstance(data, dict) else {}
     horizon = payload.get('horizon', 'weekly')
     station_code = payload.get('stationCode', 'CORRIDOR')
@@ -823,12 +681,8 @@ async def controller_get_plan(sid, data):
         print("👨‍💻 Controller manually requested a new AI plan.")
 
 
-# New: set all lights red (manual override)
 @sio.event
 async def controller_set_all_signals_red(sid, data):
-    """
-    Force all signals to RED and mark them as manual overrides.
-    """
     global manual_override_timestamps, current_simulation, pending_signal_overrides
     if current_simulation:
         count = 0
@@ -839,8 +693,6 @@ async def controller_set_all_signals_red(sid, data):
         await sio.emit('network-update', current_simulation.get_state())
         print(f"🔴 Set all signals RED (count={count})")
     else:
-        # If sim not running, queue marker for "set-all-red" — we can't enumerate signals before a layout is loaded.
-        # Keep a small marker in pending_signal_overrides; frontend should re-request or toggle signals after load.
         pending_signal_overrides['_ALL_SIGNALS_RED_'] = True
         print("🕓 Received set-all-signals-red while simulation not running. Will apply after start.")
 
