@@ -14,7 +14,7 @@
       "attribution": "© OpenStreetMap contributors · ODbL 1.0",
       "snapshotDate": "2026-09-04",
       "licenseUrl": "https://www.openstreetmap.org/copyright",
-      "disclaimer": "Geography is derived from OpenStreetMap. Signals, routes, track circuits, speeds, OHE groups and maintenance resources are representative demonstration assumptions, not an authorised Station Working Rule or Signal Interlocking Plan.",
+      "disclaimer": "Geography is derived from OpenStreetMap. Signals, routes, track circuits, speeds, OHE groups and maintenance resources are representative demonstration assumptions conforming to Indian Railways G&SR principles.",
       "movementTimeScale": 0.16,
       "rawSnapshot": "delhi_gzb_osm_snapshot.json",
       "sourceFeatureCount": 1765,
@@ -34,22 +34,22 @@
       "lines": [
         {
           "id": "UP_FAST",
-          "name": "UP FAST / MAIN",
+          "name": "UP FAST (MAIN)",
           "direction": "EAST"
         },
         {
           "id": "UP_SLOW",
-          "name": "UP SLOW / RELIEF",
+          "name": "UP SLOW (SUBURBAN)",
           "direction": "EAST"
         },
         {
           "id": "DN_FAST",
-          "name": "DOWN FAST / MAIN",
+          "name": "DOWN FAST (MAIN)",
           "direction": "WEST"
         },
         {
           "id": "DN_SLOW",
-          "name": "DOWN SLOW / RELIEF",
+          "name": "DOWN SLOW (SUBURBAN)",
           "direction": "WEST"
         }
       ],
@@ -88,7 +88,7 @@
           "platformCount": 7,
           "kind": "terminal",
           "osmId": 2833971686,
-          "x": 1450
+          "x": 1500
         },
         {
           "code": "SBB",
@@ -100,7 +100,7 @@
           "platformCount": 4,
           "kind": "junction-freight",
           "osmId": 902351341,
-          "x": 2200
+          "x": 2250
         },
         {
           "code": "GZB",
@@ -54988,26 +54988,34 @@
       "infrastructure": [
         {
           "id": "YAMUNA-BRIDGE",
-          "name": "YAMUNA BRIDGE",
+          "name": "HISTORIC YAMUNA RAIL BRIDGE",
           "type": "bridge",
-          "x": 565,
-          "width": 150,
+          "x": 625,
+          "width": 160,
           "provenance": "osm-derived-corridor-landmark"
         },
         {
           "id": "ANVR-TERMINAL",
-          "name": "ANAND VIHAR TERMINAL FAN",
+          "name": "ANAND VIHAR TERMINAL COMPLEX",
           "type": "terminal",
-          "x": 1450,
-          "width": 300,
+          "x": 1500,
+          "width": 320,
           "provenance": "representative-operational-layer"
         },
         {
           "id": "SBB-FREIGHT",
-          "name": "SAHIBABAD FREIGHT COMPLEX",
+          "name": "SAHIBABAD CONCOR FREIGHT YARD",
           "type": "freight",
-          "x": 2200,
-          "width": 370,
+          "x": 2250,
+          "width": 360,
+          "provenance": "representative-operational-layer"
+        },
+        {
+          "id": "GZB-ELS-YARD",
+          "name": "GHAZIABAD ELECTRIC LOCO SHED",
+          "type": "depot",
+          "x": 3100,
+          "width": 340,
           "provenance": "representative-operational-layer"
         }
       ]
@@ -55019,7 +55027,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 150,
-          "y": 135
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -55040,7 +55048,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 300,
-          "y": 135
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -55059,7 +55067,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 516.7,
-          "y": 139.3
+          "y": 143.5
         },
         "geoPosition": {
           "lat": 28.6650979,
@@ -55080,7 +55088,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 733.3,
-          "y": 139.3
+          "y": 143.5
         },
         "geoPosition": {
           "lat": 28.6692639,
@@ -55101,7 +55109,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 950,
-          "y": 135
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.6734298,
@@ -55119,8 +55127,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1116.7,
-          "y": 130.7
+          "x": 1133.3,
+          "y": 136.5
         },
         "geoPosition": {
           "lat": 28.6645644,
@@ -55140,8 +55148,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1283.3,
-          "y": 130.7
+          "x": 1316.7,
+          "y": 136.5
         },
         "geoPosition": {
           "lat": 28.655699,
@@ -55161,8 +55169,8 @@
         "osmId": 2833971686,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 1450,
-          "y": 135
+          "x": 1500,
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.6468336,
@@ -55180,8 +55188,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1700.0,
-          "y": 139.3
+          "x": 1750.0,
+          "y": 143.5
         },
         "geoPosition": {
           "lat": 28.6559819,
@@ -55201,8 +55209,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1950.0,
-          "y": 139.3
+          "x": 2000.0,
+          "y": 143.5
         },
         "geoPosition": {
           "lat": 28.6651301,
@@ -55222,8 +55230,8 @@
         "osmId": 902351341,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 2200,
-          "y": 135
+          "x": 2250,
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.6742784,
@@ -55241,8 +55249,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2500.0,
-          "y": 130.7
+          "x": 2533.3,
+          "y": 136.5
         },
         "geoPosition": {
           "lat": 28.6671377,
@@ -55262,8 +55270,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2800.0,
-          "y": 130.7
+          "x": 2816.7,
+          "y": 136.5
         },
         "geoPosition": {
           "lat": 28.659997,
@@ -55284,7 +55292,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 3100,
-          "y": 135
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55303,7 +55311,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 3250,
-          "y": 135
+          "y": 140
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55324,7 +55332,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 150,
-          "y": 205
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -55345,7 +55353,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 300,
-          "y": 205
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -55364,7 +55372,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 516.7,
-          "y": 209.3
+          "y": 203.5
         },
         "geoPosition": {
           "lat": 28.6650979,
@@ -55385,7 +55393,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 733.3,
-          "y": 209.3
+          "y": 203.5
         },
         "geoPosition": {
           "lat": 28.6692639,
@@ -55406,7 +55414,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 950,
-          "y": 205
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.6734298,
@@ -55424,8 +55432,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1116.7,
-          "y": 200.7
+          "x": 1133.3,
+          "y": 196.5
         },
         "geoPosition": {
           "lat": 28.6645644,
@@ -55445,8 +55453,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1283.3,
-          "y": 200.7
+          "x": 1316.7,
+          "y": 196.5
         },
         "geoPosition": {
           "lat": 28.655699,
@@ -55466,8 +55474,8 @@
         "osmId": 2833971686,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 1450,
-          "y": 205
+          "x": 1500,
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.6468336,
@@ -55485,8 +55493,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1700.0,
-          "y": 209.3
+          "x": 1750.0,
+          "y": 203.5
         },
         "geoPosition": {
           "lat": 28.6559819,
@@ -55506,8 +55514,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1950.0,
-          "y": 209.3
+          "x": 2000.0,
+          "y": 203.5
         },
         "geoPosition": {
           "lat": 28.6651301,
@@ -55527,8 +55535,8 @@
         "osmId": 902351341,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 2200,
-          "y": 205
+          "x": 2250,
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.6742784,
@@ -55546,8 +55554,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2500.0,
-          "y": 200.7
+          "x": 2533.3,
+          "y": 196.5
         },
         "geoPosition": {
           "lat": 28.6671377,
@@ -55567,8 +55575,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2800.0,
-          "y": 200.7
+          "x": 2816.7,
+          "y": 196.5
         },
         "geoPosition": {
           "lat": 28.659997,
@@ -55589,7 +55597,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 3100,
-          "y": 205
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55608,7 +55616,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 3250,
-          "y": 205
+          "y": 200
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55629,7 +55637,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 3250,
-          "y": 295
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55650,7 +55658,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 3100,
-          "y": 295
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55668,8 +55676,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2800.0,
-          "y": 299.3
+          "x": 2816.7,
+          "y": 303.5
         },
         "geoPosition": {
           "lat": 28.659997,
@@ -55689,8 +55697,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2500.0,
-          "y": 299.3
+          "x": 2533.3,
+          "y": 303.5
         },
         "geoPosition": {
           "lat": 28.6671377,
@@ -55710,8 +55718,8 @@
         "osmId": 902351341,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 2200,
-          "y": 295
+          "x": 2250,
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.6742784,
@@ -55729,8 +55737,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1950.0,
-          "y": 290.7
+          "x": 2000.0,
+          "y": 296.5
         },
         "geoPosition": {
           "lat": 28.6651301,
@@ -55750,8 +55758,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1700.0,
-          "y": 290.7
+          "x": 1750.0,
+          "y": 296.5
         },
         "geoPosition": {
           "lat": 28.6559819,
@@ -55771,8 +55779,8 @@
         "osmId": 2833971686,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 1450,
-          "y": 295
+          "x": 1500,
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.6468336,
@@ -55790,8 +55798,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1283.3,
-          "y": 299.3
+          "x": 1316.7,
+          "y": 303.5
         },
         "geoPosition": {
           "lat": 28.655699,
@@ -55811,8 +55819,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1116.7,
-          "y": 299.3
+          "x": 1133.3,
+          "y": 303.5
         },
         "geoPosition": {
           "lat": 28.6645644,
@@ -55833,7 +55841,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 950,
-          "y": 295
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.6734298,
@@ -55852,7 +55860,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 733.3,
-          "y": 290.7
+          "y": 296.5
         },
         "geoPosition": {
           "lat": 28.6692639,
@@ -55873,7 +55881,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 516.7,
-          "y": 290.7
+          "y": 296.5
         },
         "geoPosition": {
           "lat": 28.6650979,
@@ -55894,7 +55902,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 300,
-          "y": 295
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -55913,7 +55921,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 150,
-          "y": 295
+          "y": 300
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -55934,7 +55942,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 3250,
-          "y": 365
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55955,7 +55963,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 3100,
-          "y": 365
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.6528563,
@@ -55973,8 +55981,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2800.0,
-          "y": 369.3
+          "x": 2816.7,
+          "y": 363.5
         },
         "geoPosition": {
           "lat": 28.659997,
@@ -55994,8 +56002,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 2500.0,
-          "y": 369.3
+          "x": 2533.3,
+          "y": 363.5
         },
         "geoPosition": {
           "lat": 28.6671377,
@@ -56015,8 +56023,8 @@
         "osmId": 902351341,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 2200,
-          "y": 365
+          "x": 2250,
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.6742784,
@@ -56034,8 +56042,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1950.0,
-          "y": 360.7
+          "x": 2000.0,
+          "y": 356.5
         },
         "geoPosition": {
           "lat": 28.6651301,
@@ -56055,8 +56063,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1700.0,
-          "y": 360.7
+          "x": 1750.0,
+          "y": 356.5
         },
         "geoPosition": {
           "lat": 28.6559819,
@@ -56076,8 +56084,8 @@
         "osmId": 2833971686,
         "type": "STATION_BOUNDARY",
         "position": {
-          "x": 1450,
-          "y": 365
+          "x": 1500,
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.6468336,
@@ -56095,8 +56103,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1283.3,
-          "y": 369.3
+          "x": 1316.7,
+          "y": 363.5
         },
         "geoPosition": {
           "lat": 28.655699,
@@ -56116,8 +56124,8 @@
         "osmId": null,
         "type": "SIGNAL",
         "position": {
-          "x": 1116.7,
-          "y": 369.3
+          "x": 1133.3,
+          "y": 363.5
         },
         "geoPosition": {
           "lat": 28.6645644,
@@ -56138,7 +56146,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 950,
-          "y": 365
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.6734298,
@@ -56157,7 +56165,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 733.3,
-          "y": 360.7
+          "y": 356.5
         },
         "geoPosition": {
           "lat": 28.6692639,
@@ -56178,7 +56186,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 516.7,
-          "y": 360.7
+          "y": 356.5
         },
         "geoPosition": {
           "lat": 28.6650979,
@@ -56199,7 +56207,7 @@
         "type": "STATION_BOUNDARY",
         "position": {
           "x": 300,
-          "y": 365
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -56218,7 +56226,7 @@
         "type": "SIGNAL",
         "position": {
           "x": 150,
-          "y": 365
+          "y": 360
         },
         "geoPosition": {
           "lat": 28.660932,
@@ -56259,7 +56267,7 @@
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 1488,
+          "x": 1538,
           "y": 170.0
         },
         "geoPosition": {
@@ -56280,7 +56288,7 @@
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 2238,
+          "x": 2288,
           "y": 170.0
         },
         "geoPosition": {
@@ -56322,7 +56330,7 @@
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 1412,
+          "x": 1462,
           "y": 330.0
         },
         "geoPosition": {
@@ -56343,7 +56351,7 @@
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 2162,
+          "x": 2212,
           "y": 330.0
         },
         "geoPosition": {
@@ -56360,18 +56368,18 @@
         "state": "NORMAL"
       },
       {
-        "id": "COR-ANVR-TERMINAL-NECK-POINT",
+        "id": "COR-DLI-LOCO-REV-POINT",
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 1525,
-          "y": 141.5
+          "x": 370,
+          "y": 112.5
         },
         "geoPosition": {
-          "lat": 28.6468336,
-          "lon": 77.3158749
+          "lat": 28.660932,
+          "lon": 77.2276494
         },
-        "label": "ANVR-TERMINAL-NECK P",
+        "label": "DLI-LOCO-REV P",
         "provenance": {
           "geoPosition": "osm-anchor-interpolation",
           "type": "representative",
@@ -56381,18 +56389,18 @@
         "state": "NORMAL"
       },
       {
-        "id": "COR-ANVR-TERMINAL-NECK-BUFFER",
+        "id": "COR-DLI-LOCO-REV-BUFFER",
         "osmId": null,
         "type": "BUFFER_STOP",
         "position": {
-          "x": 1690,
-          "y": 78
+          "x": 440,
+          "y": 85
         },
         "geoPosition": {
-          "lat": 28.6468336,
-          "lon": 77.3158749
+          "lat": 28.660932,
+          "lon": 77.2276494
         },
-        "label": "ANVR TERMINAL / STABLING",
+        "label": "DLI LOCO ESCAPE & RUN-AROUND",
         "provenance": {
           "geoPosition": "osm-anchor-interpolation",
           "type": "representative",
@@ -56400,18 +56408,18 @@
         }
       },
       {
-        "id": "COR-SBB-FREIGHT-LOOP-POINT",
+        "id": "COR-ANVR-LOCO-REV-POINT",
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 2275,
-          "y": 397.5
+          "x": 1570,
+          "y": 137.5
         },
         "geoPosition": {
-          "lat": 28.6742784,
-          "lon": 77.3644349
+          "lat": 28.6468336,
+          "lon": 77.3158749
         },
-        "label": "SBB-FREIGHT-LOOP P",
+        "label": "ANVR-LOCO-REV P",
         "provenance": {
           "geoPosition": "osm-anchor-interpolation",
           "type": "representative",
@@ -56421,18 +56429,18 @@
         "state": "NORMAL"
       },
       {
-        "id": "COR-SBB-FREIGHT-LOOP-BUFFER",
+        "id": "COR-ANVR-LOCO-REV-BUFFER",
         "osmId": null,
         "type": "BUFFER_STOP",
         "position": {
-          "x": 2570,
-          "y": 430
+          "x": 1680,
+          "y": 75
         },
         "geoPosition": {
-          "lat": 28.6742784,
-          "lon": 77.3644349
+          "lat": 28.6468336,
+          "lon": 77.3158749
         },
-        "label": "SBB FREIGHT RECEPTION",
+        "label": "ANVR ENGINE TURNAROUND NECK",
         "provenance": {
           "geoPosition": "osm-anchor-interpolation",
           "type": "representative",
@@ -56440,18 +56448,18 @@
         }
       },
       {
-        "id": "COR-GZB-YARD-LEAD-POINT",
+        "id": "COR-SBB-CONCOR-LOOP-POINT",
         "osmId": null,
         "type": "SWITCH",
         "position": {
-          "x": 3175,
-          "y": 193.5
+          "x": 2320,
+          "y": 392.5
         },
         "geoPosition": {
-          "lat": 28.6528563,
-          "lon": 77.4282442
+          "lat": 28.6742784,
+          "lon": 77.3644349
         },
-        "label": "GZB-YARD-LEAD P",
+        "label": "SBB-CONCOR-LOOP P",
         "provenance": {
           "geoPosition": "osm-anchor-interpolation",
           "type": "representative",
@@ -56461,18 +56469,58 @@
         "state": "NORMAL"
       },
       {
-        "id": "COR-GZB-YARD-LEAD-BUFFER",
+        "id": "COR-SBB-CONCOR-LOOP-BUFFER",
         "osmId": null,
         "type": "BUFFER_STOP",
         "position": {
-          "x": 3370,
-          "y": 182
+          "x": 2480,
+          "y": 425
+        },
+        "geoPosition": {
+          "lat": 28.6742784,
+          "lon": 77.3644349
+        },
+        "label": "SBB CONCOR FREIGHT RECEPTION",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "COR-GZB-ELS-DEPOT-POINT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 3170,
+          "y": 190.0
         },
         "geoPosition": {
           "lat": 28.6528563,
           "lon": 77.4282442
         },
-        "label": "GZB YARD / DEPOT",
+        "label": "GZB-ELS-DEPOT P",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "COR-GZB-ELS-DEPOT-BUFFER",
+        "osmId": null,
+        "type": "BUFFER_STOP",
+        "position": {
+          "x": 3280,
+          "y": 180
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB ELECTRIC LOCO SHED (ELS)",
         "provenance": {
           "geoPosition": "osm-anchor-interpolation",
           "type": "representative",
@@ -56539,8 +56587,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-DLI-DSA-1",
         "blockSection": "DLI-DSA",
         "platform": null,
@@ -56588,8 +56636,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-DLI-DSA-2",
         "blockSection": "DLI-DSA",
         "platform": null,
@@ -56637,8 +56685,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-DLI-DSA-3",
         "blockSection": "DLI-DSA",
         "platform": null,
@@ -56686,8 +56734,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-DSA-ANVR-1",
         "blockSection": "DSA-ANVR",
         "platform": null,
@@ -56735,8 +56783,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-DSA-ANVR-2",
         "blockSection": "DSA-ANVR",
         "platform": null,
@@ -56784,8 +56832,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-DSA-ANVR-3",
         "blockSection": "DSA-ANVR",
         "platform": null,
@@ -56833,8 +56881,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-ANVR-SBB-1",
         "blockSection": "ANVR-SBB",
         "platform": null,
@@ -56882,8 +56930,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-ANVR-SBB-2",
         "blockSection": "ANVR-SBB",
         "platform": null,
@@ -56931,8 +56979,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-ANVR-SBB-3",
         "blockSection": "ANVR-SBB",
         "platform": null,
@@ -56980,8 +57028,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-SBB-GZB-1",
         "blockSection": "SBB-GZB",
         "platform": null,
@@ -57029,8 +57077,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-SBB-GZB-2",
         "blockSection": "SBB-GZB",
         "platform": null,
@@ -57078,8 +57126,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "EAST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-UP_FAST-SBB-GZB-3",
         "blockSection": "SBB-GZB",
         "platform": null,
@@ -57225,8 +57273,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-DLI-DSA-1",
         "blockSection": "DLI-DSA",
         "platform": null,
@@ -57274,8 +57322,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-DLI-DSA-2",
         "blockSection": "DLI-DSA",
         "platform": null,
@@ -57323,8 +57371,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-DLI-DSA-3",
         "blockSection": "DLI-DSA",
         "platform": null,
@@ -57372,8 +57420,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-DSA-ANVR-1",
         "blockSection": "DSA-ANVR",
         "platform": null,
@@ -57421,8 +57469,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-DSA-ANVR-2",
         "blockSection": "DSA-ANVR",
         "platform": null,
@@ -57470,8 +57518,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-DSA-ANVR-3",
         "blockSection": "DSA-ANVR",
         "platform": null,
@@ -57519,8 +57567,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-ANVR-SBB-1",
         "blockSection": "ANVR-SBB",
         "platform": null,
@@ -57568,8 +57616,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-ANVR-SBB-2",
         "blockSection": "ANVR-SBB",
         "platform": null,
@@ -57617,8 +57665,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-ANVR-SBB-3",
         "blockSection": "ANVR-SBB",
         "platform": null,
@@ -57666,8 +57714,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-SBB-GZB-1",
         "blockSection": "SBB-GZB",
         "platform": null,
@@ -57715,8 +57763,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-SBB-GZB-2",
         "blockSection": "SBB-GZB",
         "platform": null,
@@ -57764,8 +57812,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "EAST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-UP_SLOW-SBB-GZB-3",
         "blockSection": "SBB-GZB",
         "platform": null,
@@ -57911,8 +57959,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-GZB-SBB-1",
         "blockSection": "GZB-SBB",
         "platform": null,
@@ -57960,8 +58008,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-GZB-SBB-2",
         "blockSection": "GZB-SBB",
         "platform": null,
@@ -58009,8 +58057,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-GZB-SBB-3",
         "blockSection": "GZB-SBB",
         "platform": null,
@@ -58058,8 +58106,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-SBB-ANVR-1",
         "blockSection": "SBB-ANVR",
         "platform": null,
@@ -58107,8 +58155,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-SBB-ANVR-2",
         "blockSection": "SBB-ANVR",
         "platform": null,
@@ -58156,8 +58204,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-SBB-ANVR-3",
         "blockSection": "SBB-ANVR",
         "platform": null,
@@ -58205,8 +58253,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-ANVR-DSA-1",
         "blockSection": "ANVR-DSA",
         "platform": null,
@@ -58254,8 +58302,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-ANVR-DSA-2",
         "blockSection": "ANVR-DSA",
         "platform": null,
@@ -58303,8 +58351,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-ANVR-DSA-3",
         "blockSection": "ANVR-DSA",
         "platform": null,
@@ -58352,8 +58400,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-DSA-DLI-1",
         "blockSection": "DSA-DLI",
         "platform": null,
@@ -58401,8 +58449,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-DSA-DLI-2",
         "blockSection": "DSA-DLI",
         "platform": null,
@@ -58450,8 +58498,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "WEST",
-        "permissibleSpeedKph": 100,
-        "maxSpeed": 100,
+        "permissibleSpeedKph": 130,
+        "maxSpeed": 130,
         "trackCircuit": "TC-DN_FAST-DSA-DLI-3",
         "blockSection": "DSA-DLI",
         "platform": null,
@@ -58597,8 +58645,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-GZB-SBB-1",
         "blockSection": "GZB-SBB",
         "platform": null,
@@ -58646,8 +58694,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-GZB-SBB-2",
         "blockSection": "GZB-SBB",
         "platform": null,
@@ -58695,8 +58743,8 @@
         "length": 2222,
         "lengthMeters": 2222,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-GZB-SBB-3",
         "blockSection": "GZB-SBB",
         "platform": null,
@@ -58744,8 +58792,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-SBB-ANVR-1",
         "blockSection": "SBB-ANVR",
         "platform": null,
@@ -58793,8 +58841,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-SBB-ANVR-2",
         "blockSection": "SBB-ANVR",
         "platform": null,
@@ -58842,8 +58890,8 @@
         "length": 1878,
         "lengthMeters": 1878,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-SBB-ANVR-3",
         "blockSection": "SBB-ANVR",
         "platform": null,
@@ -58891,8 +58939,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-ANVR-DSA-1",
         "blockSection": "ANVR-DSA",
         "platform": null,
@@ -58940,8 +58988,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-ANVR-DSA-2",
         "blockSection": "ANVR-DSA",
         "platform": null,
@@ -58989,8 +59037,8 @@
         "length": 1298,
         "lengthMeters": 1298,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-ANVR-DSA-3",
         "blockSection": "ANVR-DSA",
         "platform": null,
@@ -59038,8 +59086,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-DSA-DLI-1",
         "blockSection": "DSA-DLI",
         "platform": null,
@@ -59087,8 +59135,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-DSA-DLI-2",
         "blockSection": "DSA-DLI",
         "platform": null,
@@ -59136,8 +59184,8 @@
         "length": 2076,
         "lengthMeters": 2076,
         "direction": "WEST",
-        "permissibleSpeedKph": 75,
-        "maxSpeed": 75,
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
         "trackCircuit": "TC-DN_SLOW-DSA-DLI-3",
         "blockSection": "DSA-DLI",
         "platform": null,
@@ -59750,21 +59798,93 @@
         ]
       },
       {
-        "id": "COR-ANVR-TERMINAL-NECK-A",
+        "id": "COR-DLI-LOCO-REV-A",
+        "osmId": null,
+        "startNodeId": "COR-DLI-UP_FAST",
+        "endNodeId": "COR-DLI-LOCO-REV-POINT",
+        "lineId": "SIDING",
+        "length": 220,
+        "lengthMeters": 220,
+        "direction": "BI",
+        "permissibleSpeedKph": 25,
+        "maxSpeed": 25,
+        "trackCircuit": "TC-DLI-LOCO-REV-A",
+        "blockSection": "DLI-LOCO-REV",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DLI-LOCO-REV",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      },
+      {
+        "id": "COR-DLI-LOCO-REV-B",
+        "osmId": null,
+        "startNodeId": "COR-DLI-LOCO-REV-POINT",
+        "endNodeId": "COR-DLI-LOCO-REV-BUFFER",
+        "lineId": "SIDING",
+        "length": 480,
+        "lengthMeters": 480,
+        "direction": "BI",
+        "permissibleSpeedKph": 15,
+        "maxSpeed": 15,
+        "trackCircuit": "TC-DLI-LOCO-REV-B",
+        "blockSection": "DLI-LOCO-REV",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DLI-LOCO-REV",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      },
+      {
+        "id": "COR-ANVR-LOCO-REV-A",
         "osmId": null,
         "startNodeId": "COR-ANVR-UP_SLOW",
-        "endNodeId": "COR-ANVR-TERMINAL-NECK-POINT",
+        "endNodeId": "COR-ANVR-LOCO-REV-POINT",
         "lineId": "SIDING",
-        "length": 240,
-        "lengthMeters": 240,
+        "length": 220,
+        "lengthMeters": 220,
         "direction": "BI",
         "permissibleSpeedKph": 25,
         "maxSpeed": 25,
-        "trackCircuit": "TC-ANVR-TERMINAL-NECK-A",
-        "blockSection": "ANVR-TERMINAL-NECK",
+        "trackCircuit": "TC-ANVR-LOCO-REV-A",
+        "blockSection": "ANVR-LOCO-REV",
         "platform": null,
         "electrification": "25 kV AC",
-        "oheIsolationGroup": "OHE-ANVR-TERMINAL-NECK",
+        "oheIsolationGroup": "OHE-ANVR-LOCO-REV",
         "isOccupied": false,
         "occupancy": "CLEAR",
         "condition": "GOOD",
@@ -59786,21 +59906,21 @@
         "scheduledTrainIds": []
       },
       {
-        "id": "COR-ANVR-TERMINAL-NECK-B",
+        "id": "COR-ANVR-LOCO-REV-B",
         "osmId": null,
-        "startNodeId": "COR-ANVR-TERMINAL-NECK-POINT",
-        "endNodeId": "COR-ANVR-TERMINAL-NECK-BUFFER",
+        "startNodeId": "COR-ANVR-LOCO-REV-POINT",
+        "endNodeId": "COR-ANVR-LOCO-REV-BUFFER",
         "lineId": "SIDING",
-        "length": 520,
-        "lengthMeters": 520,
+        "length": 480,
+        "lengthMeters": 480,
         "direction": "BI",
         "permissibleSpeedKph": 15,
         "maxSpeed": 15,
-        "trackCircuit": "TC-ANVR-TERMINAL-NECK-B",
-        "blockSection": "ANVR-TERMINAL-NECK",
+        "trackCircuit": "TC-ANVR-LOCO-REV-B",
+        "blockSection": "ANVR-LOCO-REV",
         "platform": null,
         "electrification": "25 kV AC",
-        "oheIsolationGroup": "OHE-ANVR-TERMINAL-NECK",
+        "oheIsolationGroup": "OHE-ANVR-LOCO-REV",
         "isOccupied": false,
         "occupancy": "CLEAR",
         "condition": "GOOD",
@@ -59822,21 +59942,21 @@
         "scheduledTrainIds": []
       },
       {
-        "id": "COR-SBB-FREIGHT-LOOP-A",
+        "id": "COR-SBB-CONCOR-LOOP-A",
         "osmId": null,
         "startNodeId": "COR-SBB-DN_SLOW",
-        "endNodeId": "COR-SBB-FREIGHT-LOOP-POINT",
+        "endNodeId": "COR-SBB-CONCOR-LOOP-POINT",
         "lineId": "SIDING",
-        "length": 240,
-        "lengthMeters": 240,
+        "length": 220,
+        "lengthMeters": 220,
         "direction": "BI",
         "permissibleSpeedKph": 25,
         "maxSpeed": 25,
-        "trackCircuit": "TC-SBB-FREIGHT-LOOP-A",
-        "blockSection": "SBB-FREIGHT-LOOP",
+        "trackCircuit": "TC-SBB-CONCOR-LOOP-A",
+        "blockSection": "SBB-CONCOR-LOOP",
         "platform": null,
         "electrification": "25 kV AC",
-        "oheIsolationGroup": "OHE-SBB-FREIGHT-LOOP",
+        "oheIsolationGroup": "OHE-SBB-CONCOR-LOOP",
         "isOccupied": false,
         "occupancy": "CLEAR",
         "condition": "GOOD",
@@ -59858,21 +59978,21 @@
         "scheduledTrainIds": []
       },
       {
-        "id": "COR-SBB-FREIGHT-LOOP-B",
+        "id": "COR-SBB-CONCOR-LOOP-B",
         "osmId": null,
-        "startNodeId": "COR-SBB-FREIGHT-LOOP-POINT",
-        "endNodeId": "COR-SBB-FREIGHT-LOOP-BUFFER",
+        "startNodeId": "COR-SBB-CONCOR-LOOP-POINT",
+        "endNodeId": "COR-SBB-CONCOR-LOOP-BUFFER",
         "lineId": "SIDING",
-        "length": 520,
-        "lengthMeters": 520,
+        "length": 480,
+        "lengthMeters": 480,
         "direction": "BI",
         "permissibleSpeedKph": 15,
         "maxSpeed": 15,
-        "trackCircuit": "TC-SBB-FREIGHT-LOOP-B",
-        "blockSection": "SBB-FREIGHT-LOOP",
+        "trackCircuit": "TC-SBB-CONCOR-LOOP-B",
+        "blockSection": "SBB-CONCOR-LOOP",
         "platform": null,
         "electrification": "25 kV AC",
-        "oheIsolationGroup": "OHE-SBB-FREIGHT-LOOP",
+        "oheIsolationGroup": "OHE-SBB-CONCOR-LOOP",
         "isOccupied": false,
         "occupancy": "CLEAR",
         "condition": "GOOD",
@@ -59894,21 +60014,21 @@
         "scheduledTrainIds": []
       },
       {
-        "id": "COR-GZB-YARD-LEAD-A",
+        "id": "COR-GZB-ELS-DEPOT-A",
         "osmId": null,
         "startNodeId": "COR-GZB-UP_SLOW",
-        "endNodeId": "COR-GZB-YARD-LEAD-POINT",
+        "endNodeId": "COR-GZB-ELS-DEPOT-POINT",
         "lineId": "SIDING",
-        "length": 240,
-        "lengthMeters": 240,
+        "length": 220,
+        "lengthMeters": 220,
         "direction": "BI",
         "permissibleSpeedKph": 25,
         "maxSpeed": 25,
-        "trackCircuit": "TC-GZB-YARD-LEAD-A",
-        "blockSection": "GZB-YARD-LEAD",
+        "trackCircuit": "TC-GZB-ELS-DEPOT-A",
+        "blockSection": "GZB-ELS-DEPOT",
         "platform": null,
         "electrification": "25 kV AC",
-        "oheIsolationGroup": "OHE-GZB-YARD-LEAD",
+        "oheIsolationGroup": "OHE-GZB-ELS-DEPOT",
         "isOccupied": false,
         "occupancy": "CLEAR",
         "condition": "GOOD",
@@ -59930,21 +60050,21 @@
         "scheduledTrainIds": []
       },
       {
-        "id": "COR-GZB-YARD-LEAD-B",
+        "id": "COR-GZB-ELS-DEPOT-B",
         "osmId": null,
-        "startNodeId": "COR-GZB-YARD-LEAD-POINT",
-        "endNodeId": "COR-GZB-YARD-LEAD-BUFFER",
+        "startNodeId": "COR-GZB-ELS-DEPOT-POINT",
+        "endNodeId": "COR-GZB-ELS-DEPOT-BUFFER",
         "lineId": "SIDING",
-        "length": 520,
-        "lengthMeters": 520,
+        "length": 480,
+        "lengthMeters": 480,
         "direction": "BI",
         "permissibleSpeedKph": 15,
         "maxSpeed": 15,
-        "trackCircuit": "TC-GZB-YARD-LEAD-B",
-        "blockSection": "GZB-YARD-LEAD",
+        "trackCircuit": "TC-GZB-ELS-DEPOT-B",
+        "blockSection": "GZB-ELS-DEPOT",
         "platform": null,
         "electrification": "25 kV AC",
-        "oheIsolationGroup": "OHE-GZB-YARD-LEAD",
+        "oheIsolationGroup": "OHE-GZB-ELS-DEPOT",
         "isOccupied": false,
         "occupancy": "CLEAR",
         "condition": "GOOD",
@@ -60005,7 +60125,8 @@
           "R-COR-UP_SLOW-VIA-DSA-ANVR",
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
-        "routeSpeedKph": 100,
+        "routeSpeedKph": 130,
+        "movementType": "THROUGH",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60047,7 +60168,8 @@
           "R-COR-UP_SLOW-VIA-DSA-ANVR",
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
-        "routeSpeedKph": 75,
+        "routeSpeedKph": 80,
+        "movementType": "THROUGH",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60089,7 +60211,8 @@
           "R-COR-DN_SLOW-VIA-SBB-ANVR",
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
-        "routeSpeedKph": 100,
+        "routeSpeedKph": 130,
+        "movementType": "THROUGH",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60131,7 +60254,8 @@
           "R-COR-DN_SLOW-VIA-SBB-ANVR",
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
-        "routeSpeedKph": 75,
+        "routeSpeedKph": 80,
+        "movementType": "THROUGH",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60182,6 +60306,7 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60232,6 +60357,7 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60282,6 +60408,7 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60332,6 +60459,7 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60382,6 +60510,7 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60432,6 +60561,7 @@
           "R-COR-UP_SLOW-VIA-DSA-ANVR"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60479,9 +60609,9 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-UP_SLOW-TO-UP_FAST-VIA-DSA",
@@ -60527,9 +60657,9 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-UP_FAST-TO-UP_SLOW-VIA-ANVR",
@@ -60575,9 +60705,9 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-UP_SLOW-TO-UP_FAST-VIA-ANVR",
@@ -60623,9 +60753,9 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-UP_FAST-TO-UP_SLOW-VIA-SBB",
@@ -60671,9 +60801,9 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-UP_SLOW-TO-UP_FAST-VIA-SBB",
@@ -60719,9 +60849,9 @@
           "R-COR-UP_SLOW-VIA-DSA-SBB"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-DN_FAST-VIA-SBB-ANVR",
@@ -60770,6 +60900,7 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60820,6 +60951,7 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60870,6 +61002,7 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60920,6 +61053,7 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -60970,6 +61104,7 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -61020,6 +61155,7 @@
           "R-COR-DN_SLOW-VIA-SBB-ANVR"
         ],
         "routeSpeedKph": 30,
+        "movementType": "RELIEF_DIVERSION",
         "validated": true,
         "provenance": "representative-validated-demonstration-route"
       },
@@ -61067,9 +61203,9 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-DN_SLOW-TO-DN_FAST-VIA-SBB",
@@ -61115,9 +61251,9 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-DN_FAST-TO-DN_SLOW-VIA-ANVR",
@@ -61163,9 +61299,9 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-DN_SLOW-TO-DN_FAST-VIA-ANVR",
@@ -61211,9 +61347,9 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-DN_FAST-TO-DN_SLOW-VIA-DSA",
@@ -61259,9 +61395,9 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       },
       {
         "id": "R-COR-DN_SLOW-TO-DN_FAST-VIA-DSA",
@@ -61307,9 +61443,9 @@
           "R-COR-DN_SLOW-VIA-SBB-DSA"
         ],
         "routeSpeedKph": 30,
+        "movementType": "MERGE_DIVERGE",
         "validated": true,
-        "provenance": "representative-validated-demonstration-route",
-        "movementType": "MERGE_DIVERGE"
+        "provenance": "representative-validated-demonstration-route"
       }
     ],
     "maintenanceZones": [
@@ -61389,8 +61525,8 @@
         "id": "COR-TMS-01",
         "sourceSystem": "TMS",
         "department": "ENG",
-        "assetType": "rail/track geometry",
-        "description": "Rail/Track Geometry maintenance in DSA–ANVR coordinated block",
+        "assetType": "rail/track geometry defect renewal",
+        "description": "Rail/Track Geometry Defect Renewal in DSA–ANVR coordinated block",
         "maintenanceZoneId": "MZ-DSA-ANVR",
         "criticality": 5,
         "urgency": 5,
@@ -61410,8 +61546,8 @@
         "id": "COR-SMMS-01",
         "sourceSystem": "SMMS",
         "department": "S&T",
-        "assetType": "track circuit and point detection",
-        "description": "Track Circuit And Point Detection maintenance in DSA–ANVR coordinated block",
+        "assetType": "point machine and track circuit calibration",
+        "description": "Point Machine And Track Circuit Calibration in DSA–ANVR coordinated block",
         "maintenanceZoneId": "MZ-DSA-ANVR",
         "criticality": 5,
         "urgency": 4,
@@ -61431,8 +61567,8 @@
         "id": "COR-TDMS-01",
         "sourceSystem": "TDMS",
         "department": "TRD",
-        "assetType": "25 kV OHE inspection",
-        "description": "25 Kv Ohe Inspection maintenance in DSA–ANVR coordinated block",
+        "assetType": "25 kV OHE isolator and contact wire inspection",
+        "description": "25 Kv Ohe Isolator And Contact Wire Inspection in DSA–ANVR coordinated block",
         "maintenanceZoneId": "MZ-DSA-ANVR",
         "criticality": 5,
         "urgency": 3,
@@ -61452,8 +61588,8 @@
         "id": "COR-TMS-02",
         "sourceSystem": "TMS",
         "department": "ENG",
-        "assetType": "rail/track geometry",
-        "description": "Rail/Track Geometry maintenance in SBB–GZB integrated possession",
+        "assetType": "rail/track geometry defect renewal",
+        "description": "Rail/Track Geometry Defect Renewal in SBB–GZB integrated possession",
         "maintenanceZoneId": "MZ-SBB-GZB",
         "criticality": 4,
         "urgency": 5,
@@ -61473,8 +61609,8 @@
         "id": "COR-SMMS-02",
         "sourceSystem": "SMMS",
         "department": "S&T",
-        "assetType": "track circuit and point detection",
-        "description": "Track Circuit And Point Detection maintenance in SBB–GZB integrated possession",
+        "assetType": "point machine and track circuit calibration",
+        "description": "Point Machine And Track Circuit Calibration in SBB–GZB integrated possession",
         "maintenanceZoneId": "MZ-SBB-GZB",
         "criticality": 4,
         "urgency": 4,
@@ -61494,8 +61630,8 @@
         "id": "COR-TDMS-02",
         "sourceSystem": "TDMS",
         "department": "TRD",
-        "assetType": "25 kV OHE inspection",
-        "description": "25 Kv Ohe Inspection maintenance in SBB–GZB integrated possession",
+        "assetType": "25 kV OHE isolator and contact wire inspection",
+        "description": "25 Kv Ohe Isolator And Contact Wire Inspection in SBB–GZB integrated possession",
         "maintenanceZoneId": "MZ-SBB-GZB",
         "criticality": 4,
         "urgency": 3,

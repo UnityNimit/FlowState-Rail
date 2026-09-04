@@ -1,7 +1,12 @@
 fastapi
 uvicorn[standard]
 python-socketio
+python-multipart
+sqlalchemy
 pandas
 ortools
 python-dotenv
+itsdangerous
+scikit-learn
 google-generativeai
+httpx

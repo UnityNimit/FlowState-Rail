@@ -1,33 +1,33 @@
 /* theme.css - Industrial Railway Signalling & Dispatch Console Design System
    Conforms to Siemens Vicos / Trainguard & Indian Railways Panel Interlocking (PI/EI) standards.
-   Strict rules: Solid matte colors, zero glow, zero blur blooms, zero purple, zero neon.
+   Palette: Pure carbon-black, graphite, neutral charcoal, crisp white. Zero blue tint, zero glow.
 */
 
 :root {
   /* ==========================================================================
-     1. Surfaces & Backgrounds (Matte Slate-Black)
+     1. Surfaces & Backgrounds (Pure Carbon-Black & Neutral Graphite)
      ========================================================================== */
-  --bg-base: #080c14;            /* Main viewport canvas background */
-  --bg-surface-1: #0f172a;       /* Outer panels & card backgrounds */
-  --bg-surface-2: #162032;       /* Inner sections, docked bars, modals */
-  --bg-surface-3: #1e293b;       /* Active card state, input fields, hover fills */
-  --bg-glass: rgba(15, 23, 42, 0.88); /* Backdrop blur containers */
+  --bg-base: #0a0c0e;            /* Main viewport canvas background */
+  --bg-surface-1: #121417;       /* Outer panels & card backgrounds */
+  --bg-surface-2: #1a1d20;       /* Inner sections, docked bars, modals */
+  --bg-surface-3: #24282c;       /* Active card state, input fields, hover fills */
+  --bg-glass: rgba(14, 16, 18, 0.94); /* Backdrop blur containers */
 
   /* ==========================================================================
-     2. Borders & Dividers (Zero Glow Solid Edges)
+     2. Borders & Dividers (Neutral Matte Solid Edges)
      ========================================================================== */
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-default: #243044;
-  --border-hover: #3b4c68;
-  --border-focus: #2563eb;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: #282c30;
+  --border-hover: #3e444a;
+  --border-focus: #e2e8f0;
 
   /* ==========================================================================
-     3. Typography & Readability
+     3. Typography & High-Contrast Monochrome Readability
      ========================================================================== */
   --text-primary: #f8fafc;       /* Headers, active values, train labels */
   --text-secondary: #cbd5e1;     /* Secondary descriptions, active states */
-  --text-muted: #94a3b8;         /* Labels, units, metadata keys */
-  --text-faint: #64748b;         /* Disabled text, line identifiers */
+  --text-muted: #8e969f;         /* Labels, units, metadata keys */
+  --text-faint: #5a6067;         /* Disabled text, line identifiers */
 
   /* ==========================================================================
      4. Railway Signalling (IR MACLS 4-Aspect Standards - Crisp & Solid)
@@ -40,8 +40,8 @@
   /* ==========================================================================
      5. Track Circuits, Interlocking & Block States
      ========================================================================== */
-  --rail-base: #334155;          /* Clear / Unoccupied track circuit */
-  --rail-hover: #475569;         /* Track mouseover inspection highlight */
+  --rail-base: #35393d;          /* Clear / Unoccupied track circuit */
+  --rail-hover: #4d5358;         /* Track mouseover inspection highlight */
   --rail-occupied: #dc2626;      /* Occupied (Wheelset shunts track circuit) */
   --rail-locked: #ca8a04;        /* Route-Locked (Interlocking reservation active) */
   --rail-blocked: #b45309;       /* Maintenance block */
@@ -49,24 +49,24 @@
   --rail-hazard-2: #18181b;      /* Hazard hatch color B */
 
   /* Platform Island Geometries */
-  --pf-island-up-stroke: rgba(56, 189, 248, 0.22);
-  --pf-island-up-fill: rgba(56, 189, 248, 0.03);
-  --pf-island-dn-stroke: rgba(34, 197, 94, 0.22);
-  --pf-island-dn-fill: rgba(34, 197, 94, 0.03);
+  --pf-island-up-stroke: rgba(255, 255, 255, 0.22);
+  --pf-island-up-fill: rgba(255, 255, 255, 0.025);
+  --pf-island-dn-stroke: rgba(200, 205, 210, 0.22);
+  --pf-island-dn-fill: rgba(200, 205, 210, 0.025);
 
   /* ==========================================================================
      6. Rolling Stock Hierarchy (Authentic IR Consist Color Codes)
      ========================================================================== */
   --train-rajdhani: #dc2626;     /* IR Crimson Red (Priority Weight = 100) */
   --train-vandebharat: #0284c7;  /* Cobalt Sky Blue (Priority Weight = 100) */
-  --train-shatabdi: #2563eb;     /* Deep Royal Blue (Priority Weight = 90) */
-  --train-superfast: #0d9488;    /* Industrial Teal Slate (Priority Weight = 50) */
+  --train-shatabdi: #2563eb;     /* Royal Blue (Priority Weight = 90) */
+  --train-superfast: #0d9488;    /* Teal Slate (Priority Weight = 50) */
   --train-express: #3b82f6;      /* Steel Blue (Priority Weight = 40) */
   --train-mail: #b45309;         /* Warm Amber / Rust (Priority Weight = 30) */
   --train-passenger: #15803d;    /* Forest Green (Priority Weight = 20) */
   --train-dmu: #d97706;          /* Ochre Yellow (Priority Weight = 20) */
   --train-memu: #ea580c;         /* Industrial Orange (Priority Weight = 20) */
-  --train-freight: #475569;      /* Industrial Slate (Priority Weight = 10) */
+  --train-freight: #525860;      /* Industrial Slate (Priority Weight = 10) */
 
   /* ==========================================================================
      7. UI Controls & Action Buttons
@@ -87,15 +87,15 @@
   --transition-normal: 0.25s ease;
 
   /* ==========================================================================
-     9. Backward-Compatibility Aliases (Prevents style breakages across older CSS)
+     9. Backward-Compatibility Aliases
      ========================================================================== */
   --bg-dark-1: var(--bg-base);
   --bg-dark-2: var(--bg-surface-2);
   --glass: var(--bg-glass);
   --border-color: var(--border-default);
   --text-tertiary: var(--text-faint);
-  --accent-cyan: var(--train-express);
-  --accent-cyan-dark: #1d4ed8;
+  --accent-cyan: var(--text-primary);
+  --accent-cyan-dark: var(--bg-surface-3);
   --status-green: var(--sig-green);
   --status-yellow: var(--sig-amber);
   --status-red: var(--sig-red);

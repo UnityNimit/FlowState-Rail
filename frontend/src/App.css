@@ -1,4 +1,4 @@
-/* App.css - Full-Bleed Minimalist SCADA Layout & HUD Controls */
+/* App.css - Full-Bleed SCADA Viewport & Borderless Floating Top Bar */
 
 .fullscreen-dashboard {
   position: relative;
@@ -19,225 +19,229 @@
   z-index: 1;
 }
 
-/* Floating Top HUD Console */
-.minimal-floating-hud {
+/* Zero-Box Top Layout Header */
+.minimal-top-hud {
   position: absolute;
-  top: 14px;
-  left: 18px;
-  right: 18px;
+  top: 16px;
+  left: 24px;
+  right: 24px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-default);
-  border-radius: 8px;
-  padding: 6px 12px;
+  justify-content: space-between;
+  pointer-events: none;
   z-index: 100;
 }
 
-.hud-left-group,
-.hud-center-group,
-.hud-right-group {
+/* Left: Naked Logo & Corridor Title (No Box) */
+.hud-left-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
+  pointer-events: auto;
 }
 
-/* Brand Link */
-.hud-brand {
+.hud-logo-link {
   display: flex;
   align-items: center;
   text-decoration: none;
-  padding: 4px 8px;
-  background: var(--bg-surface-1);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  transition: border-color var(--transition-fast);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 
-.hud-brand:hover {
-  border-color: var(--border-hover);
+.hud-logo-link:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
 }
 
-/* Corridor / Station Selector & Master Badge */
-.hud-station-badge {
+.hud-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.hud-corridor-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* Center: Completely Borderless Floating Playback & Speed Controls (No Capsule) */
+.hud-center-pod {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--bg-surface-2);
-  border: 1px solid var(--border-default);
+  gap: 10px;
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Playback Control Trigger */
+.hud-play-btn {
+  border: 1px solid transparent;
   border-radius: 4px;
-  padding: 5px 11px;
+  padding: 5px 14px;
   font-family: var(--font-mono);
   font-size: 11px;
-}
-
-.station-badge-title {
-  color: var(--text-primary);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.station-badge-sub {
-  color: var(--text-muted);
-  font-size: 9px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1px 5px;
-  border-radius: 3px;
-}
-
-.hud-station-select {
-  background: var(--bg-surface-2);
-  color: var(--text-primary);
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  padding: 5px 10px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  outline: none;
-  cursor: pointer;
-  transition: border-color var(--transition-fast);
-}
-
-.hud-station-select:hover:not(:disabled) {
-  border-color: var(--border-hover);
-}
-
-.hud-station-select:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Standard HUD Action Buttons */
-.hud-btn {
-  background: var(--bg-surface-2);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  padding: 5px 11px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
   cursor: pointer;
   transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
-.hud-btn:hover {
-  background: var(--bg-surface-3);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
-}
-
-.hud-btn.active {
-  background: var(--train-vandebharat);
-  color: #ffffff;
-  border-color: var(--border-focus);
-}
-
-/* Primary Trigger (Start / Resume) */
-.hud-btn-primary {
+.hud-play-btn.start,
+.hud-play-btn.resume {
   background: var(--btn-primary-bg);
-  color: #ffffff;
   border-color: var(--btn-primary-hover);
+  color: #ffffff;
 }
 
-.hud-btn-primary:hover {
+.hud-play-btn.start:hover,
+.hud-play-btn.resume:hover {
   background: var(--btn-primary-hover);
 }
 
-/* Danger Trigger (Stop) */
-.hud-btn-danger {
-  background: var(--btn-danger-bg);
-  color: #ffffff;
-  border-color: var(--btn-danger-hover);
+.hud-play-btn.pause {
+  background: var(--sig-amber);
+  border-color: var(--sig-amber);
+  color: #000000;
 }
 
-.hud-btn-danger:hover {
+.hud-play-btn.pause:hover {
+  background: var(--sig-double-amber);
+}
+
+.hud-play-btn.stop {
+  background: var(--btn-danger-bg);
+  border-color: var(--btn-danger-hover);
+  color: #ffffff;
+}
+
+.hud-play-btn.stop:hover {
   background: var(--btn-danger-hover);
 }
 
-/* Speed Multiplier Segmented Control */
-.hud-speed-group {
-  display: flex;
-  background: var(--bg-surface-1);
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  overflow: hidden;
+/* Pod Divider Line */
+.hud-pod-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border-default);
+  margin: 0 2px;
 }
 
-.hud-speed-btn {
+/* Speed Multipliers (Borderless Inline Chips) */
+.hud-speed-chips {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-speed-chip {
   background: transparent;
-  border: none;
-  color: var(--text-faint);
-  padding: 5px 9px;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 3px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
   cursor: pointer;
-  transition: color var(--transition-fast), background-color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
-.hud-speed-btn:hover {
+.hud-speed-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.hud-speed-chip.active {
+  background: #ffffff;
+  color: #0a0c0e;
+  border-color: #ffffff;
+}
+
+/* Right: Flat Ghost Navigation (Zero Outer Box) */
+.hud-right-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  pointer-events: auto;
+}
+
+.hud-ghost-btn {
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.hud-ghost-btn:hover {
   color: var(--text-primary);
 }
 
-.hud-speed-btn.active {
-  background: var(--train-shatabdi);
+.hud-ghost-btn.active {
   color: #ffffff;
 }
 
-/* Backend Status Chip */
-.hud-port-chip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10.5px;
-  color: var(--text-muted);
+.hud-ghost-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 1px;
 }
 
-.live-pulse {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--sig-green);
-}
-
-/* Floating SCADA Drawers */
+/* Floating SCADA Drawers (Content-Clamped, Zero Bottom Dead Space) */
 .floating-drawer {
   position: absolute;
-  top: 68px;
-  bottom: 18px;
+  top: 60px;
+  bottom: auto;
+  height: fit-content;
+  max-height: calc(100vh - 78px);
   background: var(--bg-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-default);
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   z-index: 200;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
-  animation: drawerSlide 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
+  animation: drawerSlide 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .drawer-left {
-  left: 18px;
+  left: 24px;
   width: 320px;
-  max-width: calc(100vw - 36px);
+  max-width: calc(100vw - 48px);
 }
 
 .drawer-right {
-  right: 18px;
+  right: 24px;
   width: 360px;
-  max-width: calc(100vw - 36px);
+  max-width: calc(100vw - 48px);
 }
 
 @keyframes drawerSlide {
-  from { opacity: 0; transform: translateY(-6px); }
+  from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -254,52 +258,54 @@
   color: var(--text-muted);
 }
 
-.drawer-close {
-  background: var(--bg-surface-2);
-  border: 1px solid var(--border-default);
+/* Sleek Vector Close Icon */
+.drawer-close-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
   border-radius: 3px;
   color: var(--text-muted);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  padding: 3px 6px;
+  font-size: 12px;
   cursor: pointer;
-  line-height: 1;
   transition: all var(--transition-fast);
 }
 
-.drawer-close:hover {
-  background: var(--bg-surface-3);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
+.drawer-close-icon-btn:hover {
+  background: var(--btn-danger-bg);
+  border-color: var(--btn-danger-hover);
+  color: #ffffff;
 }
 
 .drawer-body {
   flex: 1;
   overflow-y: auto;
-  padding: 8px;
+  padding: 10px;
 }
 
 /* Floating Dispatcher Assistant Box */
 .floating-chat-box {
   position: absolute;
-  bottom: 18px;
-  right: 18px;
+  bottom: 20px;
+  right: 24px;
   width: 380px;
-  max-width: calc(100vw - 36px);
-  height: 480px;
+  max-width: calc(100vw - 48px);
+  height: 460px;
   max-height: calc(100vh - 90px);
   background: var(--bg-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-default);
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   z-index: 200;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
-  animation: drawerSlide 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
+  animation: drawerSlide 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .chat-body {

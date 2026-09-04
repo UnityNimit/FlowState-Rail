@@ -1,156 +1,288 @@
-/*
-    Ensure CSS variables like --bg-main, --bg-panel, --border-color,
-    --text-primary, --accent-cyan-dark, --accent-cyan, etc.,
-    are defined in a globally accessible CSS file (e.g., App.css, index.css)
-    or directly in the :root selector.
-*/
+/* Chatbot.css - SCADA Section Controller AI Copilot Console */
 
-.chatbot-container {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--bg-dark-1); /* --bg-main to --bg-dark-1 */
-    border-radius: 10px; /* 8px to 10px */
-    box-shadow: none; /* 0 4px 15px rgba(0, 0, 0, 0.3); */
-    overflow: hidden; /* Ensures content respects border-radius */
-    border: 1px solid var(--border-color); /* Added border */
+.chatbot-console-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  user-select: none;
+  overflow: hidden;
 }
 
-.chatbot-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 15px; /* Increased padding */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Slightly reduced gap between messages for denser chat */
-    background-color: transparent; /* --bg-main to transparent */
-    box-shadow: none; /* inset 0 2px 5px rgba(0, 0, 0, 0.1); */
-    border-bottom: 1px solid var(--border-color); /* Separator from input */
+/* Telemetry Status Strip */
+.console-status-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
-.message-bubble {
-    padding: 12px 18px; /* More generous padding */
-    font-size: 15px; /* Slightly larger font */
-    max-width: 78%; /* Increased max-width for longer messages */
-    line-height: 1.5;
-    word-wrap: break-word; /* Ensures long words wrap */
-    box-shadow: none; /* 0 1px 3px rgba(0, 0, 0, 0.2); */
-    transition: transform 0.1s ease-out; /* Smooth pop-in for new messages */
+.telemetry-indicators {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--text-muted);
 }
 
-.message-bubble.user {
-    background-color: var(--accent-cyan-dark); /* Using the provided variable */
-    color: #fff; /* #1a1c1d to #fff */
-    align-self: flex-end;
-    /* Custom border radius for a chat bubble look */
-    border-radius: 18px 18px 4px 18px; /* Top-left, Top-right, Bottom-right, Bottom-left */
-    margin-right: 5px; /* Small offset from edge */
+.live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sig-green);
 }
 
-.message-bubble.ai {
-    background-color: var(--bg-dark-2); /* --bg-panel-header to --bg-dark-2 */
-    color: var(--text-primary);
-    align-self: flex-start;
-    /* Custom border radius for a chat bubble look */
-    border-radius: 18px 18px 18px 4px; /* Top-left, Top-right, Bottom-right, Bottom-left */
-    margin-left: 5px; /* Small offset from edge */
+.telemetry-item {
+  letter-spacing: 0.4px;
 }
 
-.chatbot-input-form {
-    display: flex;
-    padding: 10px;
-    background-color: var(--bg-dark-1); /* --bg-main to --bg-dark-1 */
-    align-items: center; /* Vertically align items */
+.telemetry-separator {
+  color: var(--text-faint);
 }
 
-.chatbot-input {
-    flex-grow: 1;
-    background-color: var(--bg-dark-2); /* --bg-panel to --bg-dark-2 */
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 12px 18px; /* Increased padding */
-    border-radius: 24px; /* More rounded to match button */
-    font-size: 15px; /* Consistent font size */
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.chatbot-input:focus {
-    border-color: var(--border-focus);
-}
-.chatbot-input:disabled {
-    background-color: var(--bg-dark-2);
-    cursor: not-allowed;
-    opacity: 0.7;
+.console-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  padding: 3px 5px;
+  border-radius: 3px;
+  transition: all var(--transition-fast);
 }
 
-.chatbot-send-btn {
-    flex-shrink: 0;
-    width: 44px;
-    height: 44px;
-    margin-left: 10px;
-    background: var(--train-express);
-    border: 1px solid var(--border-focus);
-    border-radius: 50%;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease;
-}
-.chatbot-send-btn:hover:not(:disabled) {
-    background-color: var(--btn-primary-hover);
-}
-.chatbot-send-btn:active:not(:disabled) {
-    transform: scale(0.96);
-}
-.chatbot-send-btn:disabled {
-    background-color: #5a6877; /* Desaturated gray */
-    color: #a1a5ab; /* Lighter text for disabled state */
-    cursor: not-allowed;
-    opacity: 0.7;
-    box-shadow: none; /* No shadow when disabled */
-    transform: none;
+.console-clear-btn:hover {
+  color: var(--btn-danger-hover);
+  background: var(--bg-surface-2);
 }
 
-/* Typing indicator animation */
-.typing-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%; /* Ensure it takes full height of the bubble */
-}
-.typing-indicator span {
-    height: 7px; /* Adjusted size */
-    width: 7px; /* Adjusted size */
-    background-color: var(--text-secondary);
-    border-radius: 50%;
-    display: inline-block;
-    animation: wave 1.2s infinite ease-in-out; /* Smoother animation */
-    margin: 0 3px; /* Adjusted spacing */
-}
-/* Ensure thinking bubble itself looks good */
-.message-bubble.ai.thinking {
-    min-width: 50px; /* Ensure enough space for dots */
-    height: 35px; /* Fixed height for consistent dot animation */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Message Output Feed */
+.console-messages-feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.typing-indicator span:nth-of-type(1) { animation-delay: 0s; } /* Adjusted delays for sequence */
-.typing-indicator span:nth-of-type(2) { animation-delay: 0.15s; }
-.typing-indicator span:nth-of-type(3) { animation-delay: 0.3s; }
+/* Terminal Log Blocks */
+.terminal-msg-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface-2);
+  transition: border-color var(--transition-fast);
+}
 
-@keyframes wave {
-  0%, 40%, 100% {
-    transform: translateY(0);
-    opacity: 0.8;
+.terminal-msg-block.ai {
+  border-left: 3px solid #ffffff;
+  background: var(--bg-surface-1);
+}
+
+.terminal-msg-block.user {
+  border-left: 3px solid var(--text-faint);
+  background: var(--bg-surface-2);
+}
+
+.terminal-msg-block.thinking {
+  border-left: 3px solid var(--sig-amber);
+  background: var(--bg-surface-1);
+}
+
+.msg-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.msg-sender-tag {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tag-icon {
+  font-size: 10px;
+}
+
+.msg-time {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.msg-body-content {
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  word-break: break-word;
+}
+
+/* Monospaced Terminal Typing Indicator */
+.terminal-typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  font-size: 11px;
+  color: var(--sig-amber);
+}
+
+.pulse-bracket {
+  font-weight: 800;
+}
+
+.typing-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--sig-amber);
+  border-radius: 50%;
+  animation: terminalPulse 0.9s infinite alternate;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.typing-dot:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+@keyframes terminalPulse {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
   }
-  20% {
-    transform: translateY(-5px); /* Smaller bounce */
+  100% {
     opacity: 1;
+    transform: scale(1.1);
   }
+}
+
+/* Tactical Quick-Action Prompts */
+.quick-prompts-tray {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 6px 12px;
+  background: var(--bg-surface-1);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+
+.quick-prompts-tray::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-prompt-chip {
+  white-space: nowrap;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.quick-prompt-chip:hover:not(:disabled) {
+  background: #ffffff;
+  color: #0a0c0e;
+  border-color: #ffffff;
+}
+
+.quick-prompt-chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Command Prompt Input Bar */
+.console-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--bg-surface-1);
+  border-top: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.input-prompt-symbol {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+.console-text-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.console-text-input::placeholder {
+  color: var(--text-faint);
+  font-size: 10px;
+}
+
+.console-text-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.console-send-trigger {
+  width: 28px;
+  height: 28px;
+  background: #ffffff;
+  border: none;
+  border-radius: 4px;
+  color: #0a0c0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.console-send-trigger:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.console-send-trigger:disabled {
+  background: var(--bg-surface-3);
+  color: var(--text-faint);
+  cursor: not-allowed;
 }

@@ -1,314 +1,344 @@
-/* --- START OF FILE LeftSidebar.css --- */
+/* LeftSidebar.css - Flat SCADA Infrastructure & Maintenance Console */
 
-/* --- FIX: Main container now handles layout and scrolling correctly --- */
-.left-sidebar {
-    width: 280px;
-    background-color: var(--bg-dark-1);
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    box-shadow: none;
-    padding: 14px;
-    box-sizing: border-box;
-    gap: 12px;
+.assets-drawer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 2px;
+  height: 100%;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  user-select: none;
 }
 
-/* --- NEW: This wrapper will contain all panels and will be the scrollable element --- */
-.sidebar-content {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Structural Section Container */
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-/* CORE FIX: Scoped the .panel selector to prevent styles from leaking to other components */
-.left-sidebar .panel {
-    background-color: var(--bg-dark-2);
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    flex-shrink: 0;
-    box-shadow: none;
-    transition: transform .12s ease, box-shadow .12s ease, border-color 0.2s ease;
-    min-height: 74px;
-    box-sizing: border-box;
+.drawer-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.left-sidebar .panel:hover {
-    transform: translateY(-4px); /* This will now ONLY apply to panels in the left sidebar */
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-    border-color: rgba(255, 255, 255, 0.1);
+/* Section Header Bar */
+.section-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
 }
 
-.panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: transparent;
-    padding: 10px 12px;
-    font-weight: 700;
-    border-bottom: 1px solid var(--border-color);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    color: var(--text-primary);
+.section-icon {
+  font-size: 13px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
 }
 
-.panel-content {
-    padding: 12px;
+.section-title {
+  color: var(--text-muted);
 }
 
-.map-dropdown {
-    width: 100%;
-    padding: 10px; /* Increased padding */
-    background-color: var(--bg-dark-2); /* --bg-main to --bg-dark-2 */
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 6px; /* 4px to 6px */
-    font-size: 14px;
-    appearance: none; /* Remove default dropdown arrow */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2395a0ad%22%20d%3D%22M287%2C197.978L146.2%2C57.178L5.4%2C197.978H287z%22%2F%3E%3C%2Fsvg%3E'); /* Custom dropdown arrow */
-    background-repeat: no-repeat;
-    background-position: right 10px top 50%;
-    background-size: 10px; /* 12px to 10px */
-    cursor: pointer;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.section-meta {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-faint);
+  letter-spacing: 0.5px;
 }
 
-.map-dropdown:hover {
-    border-color: var(--border-hover);
+.section-badge {
+  margin-left: auto;
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  border-radius: 3px;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 1px 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
 }
 
-.map-dropdown:focus {
-    outline: none;
-    border-color: var(--border-focus);
+/* Coordinated Joint Possession Grid */
+.zone-button-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.map-image-container {
-    margin-top: 15px;
-    background-color: var(--bg-dark-1); /* --bg-panel to --bg-dark-1 */
-    padding: 4px; /* 8px to 4px */
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow for image container */
-}
-.map-image {
-    width: 100%;
-    border-radius: 2px;
-    display: block;
-    object-fit: cover; /* Ensures image covers area without distortion */
-    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+.zone-chip {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-
-.panel-content.toggles {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.zone-chip:hover {
+  background: var(--bg-surface-3);
+  border-color: var(--border-hover);
 }
 
-.toggle-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 0;
-}
-.toggle-item.disabled {
-    opacity: 0.5; /* More distinct disabled opacity */
-    cursor: not-allowed;
-    filter: grayscale(50%); /* Subtle grayscale effect */
-}
-.toggle-item.disabled .toggle-label {
-    color: var(--text-secondary);
+.zone-chip.active {
+  background: rgba(202, 138, 4, 0.08);
+  border-color: var(--sig-amber);
 }
 
-.toggle-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 500;
-    color: var(--text-primary);
+.zone-chip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
 }
 
-/* Toggle Switch Styles */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px; /* Adjusted width */
-    height: 22px; /* Adjusted height */
+.zone-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
 }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+.zone-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-default);
+  transition: background-color var(--transition-fast);
 }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--bg-dark-1); /* --bg-darker to --bg-dark-1 */
-    -webkit-transition: .4s;
-    transition: background-color .4s ease; /* Smooth transition for background */
-    border: 1px solid var(--border-color); /* Added border */
+.zone-status-dot.active {
+  background: var(--sig-amber);
 }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px; /* 16px to 14px */
-    width: 14px; /* 16px to 14px */
-    left: 3px; /* Adjusted position */
-    bottom: 3px; /* Adjusted position */
-    background-color: var(--text-secondary); /* Handle color */
-    -webkit-transition: .4s;
-    transition: transform .4s ease; /* Smooth transition for handle movement */
+.zone-chip-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
 }
 
-input:checked + .slider {
-    background-color: var(--btn-primary-bg);
-    border-color: var(--btn-primary-hover);
+.zone-chip-dept {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-faint);
+  letter-spacing: 0.6px;
 }
 
-input:focus + .slider {
-    border-color: var(--border-focus);
+/* Track Circuit Isolation Input */
+.circuit-entry-form {
+  display: flex;
+  gap: 6px;
 }
 
-input:checked + .slider:before {
-    -webkit-transform: translateX(18px);
-    -ms-transform: translateX(18px);
-    transform: translateX(18px);
-    background-color: #fff;
+.circuit-input {
+  flex: 1;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast);
 }
 
-/* Rounded sliders */
-.slider.round {
-    border-radius: 22px;
+.circuit-input:focus {
+  border-color: var(--border-focus);
 }
 
-.slider.round:before {
-    border-radius: 50%;
+.circuit-submit-btn {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  flex-shrink: 0;
 }
 
-
-/* --- RENAMED and enhanced styles --- */
-.track-control-input-group {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
+.circuit-submit-btn:hover {
+  background: var(--border-default);
+  border-color: var(--border-hover);
 }
 
-.track-input {
-    flex-grow: 1;
-    background-color: var(--bg-dark-2);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding-left: 8px; 
-    border-radius: 6px;
-    font-size: 13px;
-    font-family: var(--font-mono);
-    transition: border-color 0.2s ease;
+/* Isolated Circuits Container */
+.isolated-circuits-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
 }
 
-.track-input:focus {
-    outline: none;
-    border-color: var(--border-focus);
+.empty-circuits-hint {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  padding: 6px 0;
+  line-height: 1.5;
 }
 
-.track-add-btn {
-    background-color: var(--train-express);
-    color: #fff;
-    border: 1px solid var(--border-focus);
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    line-height: 38px;
-    text-align: center;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-size: 1.2em;
-    flex-shrink: 0;
+.isolated-circuit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 6px 10px;
+  transition: border-color var(--transition-fast);
 }
 
-.track-add-btn:hover {
-    background-color: var(--accent-cyan); /* #ffb74d to --accent-cyan */
-    transform: translateY(-2px); /* -1px to -2px */
-    box-shadow: 0 6px 16px rgba(0,0,0,0.3); /* Added box-shadow */
+.isolated-circuit-row:hover {
+  border-color: var(--border-hover);
 }
 
-.track-add-btn:active {
-    transform: translateY(0); /* Press effect */
+.circuit-hazard-strip {
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--sig-amber);
+  flex-shrink: 0;
 }
 
-.blocked-track-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.circuit-name {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.no-tracks-message {
-    font-style: italic;
-    color: var(--text-secondary);
-    text-align: center;
-    padding: 12px; /* 10px 0 to 12px */
-    background-color: var(--bg-dark-2); /* --bg-darker to --bg-dark-2 */
-    border-radius: 8px; /* 4px to 8px */
-    font-size: 0.9em;
+.circuit-release-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  font-size: 12px;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
-.blocked-track-item {
-    display: flex;
-    align-items: center;
-    background-color: var(--bg-dark-2); /* #4a3a30 to --bg-dark-2 */
-    padding: 8px 12px; /* Increased padding */
-    border-radius: 6px; /* 4px to 6px */
-    color: var(--text-primary);
-    font-weight: 500;
-    border: 1px solid var(--border-color); /* #6e553c to --border-color */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.circuit-release-btn:hover {
+  background: var(--btn-danger-bg);
+  color: #ffffff;
 }
 
-.blocked-track-item:hover {
-    transform: translateY(-2px); /* Lift effect on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+/* SCADA Strategy Telemetry Toggles */
+.telemetry-toggle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.faulty-icon {
-    margin-right: 10px; /* Increased margin */
-    color: #ef4444; /* #ff8c00 to #ef4444 */
-    font-size: 1.1em;
+.telemetry-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 6px;
+  border-radius: 4px;
+  transition: background-color var(--transition-fast);
 }
 
-.blocked-track-item span {
-    flex-grow: 1; /* Allows track ID to take available space */
+.telemetry-toggle-row:hover {
+  background: var(--bg-surface-2);
 }
 
-.track-remove-btn {
-    margin-left: auto;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    color: var(--text-muted);
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    padding: 2px 6px;
-    transition: all 0.15s ease;
+.telemetry-toggle-row.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-.track-remove-btn:hover {
-    background: var(--btn-danger-bg);
-    border-color: transparent;
-    color: #ffffff;
+.toggle-info {
+  display: flex;
+  align-items: center;
+  gap: 9px;
 }
 
-.track-remove-btn:active {
-    transform: scale(0.95);
+.toggle-icon {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.toggle-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Minimal SCADA Switch Control */
+.scada-switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+}
+
+.scada-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.scada-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  border-radius: 18px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.scada-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.scada-switch input:checked + .scada-slider {
+  background-color: rgba(37, 99, 235, 0.25);
+  border-color: var(--border-focus);
+}
+
+.scada-switch input:checked + .scada-slider:before {
+  transform: translateX(14px);
+  background-color: #ffffff;
+}
+
+.scada-switch input:disabled + .scada-slider {
+  cursor: not-allowed;
 }

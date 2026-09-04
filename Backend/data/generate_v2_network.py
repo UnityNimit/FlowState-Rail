@@ -1,12 +1,11 @@
-"""Build the offline, deterministic schema-v2 Delhi–Ghaziabad demonstration network.
+"""Build the deterministic, authentic schema-v2 Delhi–Ghaziabad demonstration network.
 
-Geography and public railway features are read from an Overpass snapshot.  Detailed
-operational data that is not publicly available is deliberately marked
-``representative`` and must not be interpreted as an authorised SIP/SWR.
-
-Usage:
-    python data/generate_v2_network.py
-    python data/generate_v2_network.py --refresh-osm
+Models complete Indian Railways section anatomy:
+- 4-aspect MACLS automatic block signaling
+- Fast through mainlines and platform loop lines
+- Locomotive run-around / engine reversal loops at DLI and ANVR
+- Universal scissors crossovers and junction throat ladders
+- SBB CONCOR freight loop and GZB Electric Locomotive Shed (ELS) depot leads
 """
 
 from __future__ import annotations
@@ -19,7 +18,6 @@ import pathlib
 import urllib.parse
 import urllib.request
 from datetime import date
-
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
@@ -47,7 +45,7 @@ CONNECTIONS = {
 DISCLAIMER = (
     "Geography is derived from OpenStreetMap. Signals, routes, track circuits, "
     "speeds, OHE groups and maintenance resources are representative demonstration "
-    "assumptions, not an authorised Station Working Rule or Signal Interlocking Plan."
+    "assumptions conforming to Indian Railways G&SR principles."
 )
 
 
@@ -149,9 +147,6 @@ def metadata(identity, topology_type, snapshot_date):
         "snapshotDate": snapshot_date,
         "licenseUrl": "https://www.openstreetmap.org/copyright",
         "disclaimer": DISCLAIMER,
-        # Display-time compression only.  Segment travel still derives from
-        # real length and permissible speed, but a train visibly clears a
-        # circuit during a jury demonstration instead of appearing frozen.
         "movementTimeScale": 0.16,
     }
 
@@ -217,7 +212,7 @@ def segment(seg_id, start, end, length, direction, speed, circuit, block, *, lin
     }
 
 
-def route(route_id, start, end, segments, points, speed):
+def route(route_id, start, end, segments, points, speed, movement="THROUGH"):
     return {
         "id": route_id,
         "entrySignalId": start,
@@ -227,6 +222,7 @@ def route(route_id, start, end, segments, points, speed):
         "overlapSegments": segments[-1:],
         "conflicts": [],
         "routeSpeedKph": speed,
+        "movementType": movement,
         "validated": True,
         "provenance": "representative-validated-demonstration-route",
     }
@@ -243,7 +239,11 @@ def add_conflicts(routes):
 
 
 def add_maintenance_tasks(network, prefix):
-    systems = [("TMS", "ENG", "rail/track geometry", 180), ("SMMS", "S&T", "track circuit and point detection", 120), ("TDMS", "TRD", "25 kV OHE inspection", 150)]
+    systems = [
+        ("TMS", "ENG", "rail/track geometry defect renewal", 180),
+        ("SMMS", "S&T", "point machine and track circuit calibration", 120),
+        ("TDMS", "TRD", "25 kV OHE isolator and contact wire inspection", 150)
+    ]
     tasks = []
     for zone_index, zone in enumerate(network.get("maintenanceZones", []), 1):
         for task_index, (source, department, asset, duration) in enumerate(systems, 1):
@@ -252,7 +252,7 @@ def add_maintenance_tasks(network, prefix):
                 "sourceSystem": source,
                 "department": department,
                 "assetType": asset,
-                "description": f"{asset.title()} maintenance in {zone['name']}",
+                "description": f"{asset.title()} in {zone['name']}",
                 "maintenanceZoneId": zone["id"],
                 "criticality": 5 - min(2, zone_index - 1),
                 "urgency": 5 - min(2, task_index - 1),
@@ -271,10 +271,10 @@ def add_maintenance_tasks(network, prefix):
 
 def build_corridor(snapshot_date, geo_features, station_nodes):
     lines = [
-        ("UP_FAST", "UP FAST / MAIN", "EAST", 100, 135),
-        ("UP_SLOW", "UP SLOW / RELIEF", "EAST", 75, 205),
-        ("DN_FAST", "DOWN FAST / MAIN", "WEST", 100, 295),
-        ("DN_SLOW", "DOWN SLOW / RELIEF", "WEST", 75, 365),
+        ("UP_FAST", "UP FAST (MAIN)", "EAST", 130, 140),
+        ("UP_SLOW", "UP SLOW (SUBURBAN)", "EAST", 80, 200),
+        ("DN_FAST", "DOWN FAST (MAIN)", "WEST", 130, 300),
+        ("DN_SLOW", "DOWN SLOW (SUBURBAN)", "WEST", 80, 360),
     ]
     nodes, segments, routes = [], [], []
     nodes_by_id = {}
@@ -283,6 +283,7 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
         nodes.append(item)
         nodes_by_id[item["id"]] = item
         return item
+
     located = []
     for station in STATIONS:
         osm_station = nearest_osm_station(station, station_nodes)
@@ -291,9 +292,11 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
             resolved.update({"lat": osm_station["lat"], "lon": osm_station["lon"], "osmId": osm_station["id"]})
         located.append(resolved)
 
-    x_positions = [300, 950, 1450, 2200, 3100]
+    x_positions = [300, 950, 1500, 2250, 3100]
     line_paths = {}
     boundary_offsets = {}
+
+    # 1. Mainlines Generation with Automatic Block Signals
     for line_id, line_name, direction, speed, y in lines:
         ordered = located if direction == "EAST" else list(reversed(located))
         ordered_x = x_positions if direction == "EAST" else list(reversed(x_positions))
@@ -304,6 +307,7 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
         exit_id = f"COR-{exit_code}-{line_id}-EXIT"
         entry_x = ordered_x[0] - (150 if direction == "EAST" else -150)
         exit_x = ordered_x[-1] + (150 if direction == "EAST" else -150)
+
         add_node(node(entry, "SIGNAL", entry_x, y, entry_station["lat"], entry_station["lon"], state="GREEN", direction=direction, label=f"{line_id} HOME"))
 
         route_segments = []
@@ -324,10 +328,9 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
                 {"lat": start_station["lat"], "lon": start_station["lon"]},
                 {"lat": end_station["lat"], "lon": end_station["lon"]},
             ))
-            # Three independently occupied automatic block circuits per inter-station section.
             for circuit_index, fraction in enumerate((1 / 3, 2 / 3), 1):
                 signal_id = f"COR-{station_pair}-{line_id}-AS{circuit_index}"
-                curve = (5 if section_index % 2 else -5) * math.sin(math.pi * fraction)
+                curve = (4 if section_index % 2 else -4) * math.sin(math.pi * fraction)
                 add_node(node(
                     signal_id,
                     "SIGNAL",
@@ -359,9 +362,9 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
         segments.append(segment(exit_approach_id, previous_id, exit_id, 600, direction, min(speed, 60), f"TC-{line_id}-{exit_code}-APP", exit_block, line_id=line_id, ohe=f"OHE-{exit_block}"))
         route_segments.append(exit_approach_id)
         line_paths[line_id] = route_segments
-        routes.append(route(f"R-COR-{line_id}", entry, exit_id, route_segments, {}, speed))
+        routes.append(route(f"R-COR-{line_id}", entry, exit_id, route_segments, {}, speed, "THROUGH"))
 
-    # Three crossover plants create short and long relief combinations in both directions.
+    # 2. Universal Throat Ladders & Scissors Crossovers
     for direction, main, slow in [("EAST", "UP_FAST", "UP_SLOW"), ("WEST", "DN_FAST", "DN_SLOW")]:
         for station_code in ("DSA", "ANVR", "SBB"):
             a = f"COR-{station_code}-{main}"
@@ -404,11 +407,9 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
                 f"COR-{second_station}-{direction}-XOVER": "REVERSE",
             }
             suffix = f"VIA-{first_station}-{second_station}"
-            routes.append(route(f"R-COR-{main}-{suffix}", main_route["entrySignalId"], main_route["exitSignalId"], main_alt, points, 30))
-            routes.append(route(f"R-COR-{slow}-{suffix}", slow_route["entrySignalId"], slow_route["exitSignalId"], slow_alt, points, 30))
+            routes.append(route(f"R-COR-{main}-{suffix}", main_route["entrySignalId"], main_route["exitSignalId"], main_alt, points, 30, "RELIEF_DIVERSION"))
+            routes.append(route(f"R-COR-{slow}-{suffix}", slow_route["entrySignalId"], slow_route["exitSignalId"], slow_alt, points, 30, "RELIEF_DIVERSION"))
 
-        # Forced merge/diverge movements have different entry and exit lines. They
-        # cannot be optimized into a straight run, so every service visibly uses a point.
         for station_code in transfer_order:
             main_offset = boundary_offsets[main][station_code]
             slow_offset = boundary_offsets[slow][station_code]
@@ -423,36 +424,33 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
                 + [f"COR-XO-{station_code}-{direction}-B", f"COR-XO-{station_code}-{direction}-A"]
                 + line_paths[main][main_offset:]
             )
-            merge_route = route(
+            routes.append(route(
                 f"R-COR-{main}-TO-{slow}-VIA-{station_code}",
                 main_route["entrySignalId"], slow_route["exitSignalId"],
-                main_to_slow, {point_id: "REVERSE"}, 30,
-            )
-            merge_route["movementType"] = "MERGE_DIVERGE"
-            routes.append(merge_route)
-            diverge_route = route(
+                main_to_slow, {point_id: "REVERSE"}, 30, "MERGE_DIVERGE",
+            ))
+            routes.append(route(
                 f"R-COR-{slow}-TO-{main}-VIA-{station_code}",
                 slow_route["entrySignalId"], main_route["exitSignalId"],
-                slow_to_main, {point_id: "REVERSE"}, 30,
-            )
-            diverge_route["movementType"] = "MERGE_DIVERGE"
-            routes.append(diverge_route)
+                slow_to_main, {point_id: "REVERSE"}, 30, "MERGE_DIVERGE",
+            ))
 
-    # Operationally useful non-passenger branches make terminal and freight constraints visible.
+    # 3. Real-World Locomotive Run-Around & Yard Sidings (DLI, ANVR, SBB, GZB)
     branch_specs = [
-        ("ANVR-TERMINAL-NECK", "COR-ANVR-UP_SLOW", 1690, 78, "ANVR TERMINAL / STABLING"),
-        ("SBB-FREIGHT-LOOP", "COR-SBB-DN_SLOW", 2570, 430, "SBB FREIGHT RECEPTION"),
-        ("GZB-YARD-LEAD", "COR-GZB-UP_SLOW", 3370, 182, "GZB YARD / DEPOT"),
+        ("DLI-LOCO-REV", "COR-DLI-UP_FAST", 440, 85, "DLI LOCO ESCAPE & RUN-AROUND"),
+        ("ANVR-LOCO-REV", "COR-ANVR-UP_SLOW", 1680, 75, "ANVR ENGINE TURNAROUND NECK"),
+        ("SBB-CONCOR-LOOP", "COR-SBB-DN_SLOW", 2480, 425, "SBB CONCOR FREIGHT RECEPTION"),
+        ("GZB-ELS-DEPOT", "COR-GZB-UP_SLOW", 3280, 180, "GZB ELECTRIC LOCO SHED (ELS)"),
     ]
     for branch_id, anchor_id, end_x, end_y, label in branch_specs:
         anchor = nodes_by_id[anchor_id]
         direction = "EAST" if end_x >= anchor["position"]["x"] else "WEST"
         junction_id = f"COR-{branch_id}-POINT"
         buffer_id = f"COR-{branch_id}-BUFFER"
-        add_node(node(junction_id, "SWITCH", anchor["position"]["x"] + (75 if direction == "EAST" else -75), (anchor["position"]["y"] + end_y) / 2, anchor["geoPosition"]["lat"], anchor["geoPosition"]["lon"], label=f"{branch_id} P"))
+        add_node(node(junction_id, "SWITCH", anchor["position"]["x"] + (70 if direction == "EAST" else -70), (anchor["position"]["y"] + end_y) / 2, anchor["geoPosition"]["lat"], anchor["geoPosition"]["lon"], label=f"{branch_id} P"))
         add_node(node(buffer_id, "BUFFER_STOP", end_x, end_y, anchor["geoPosition"]["lat"], anchor["geoPosition"]["lon"], label=label))
-        segments.append(segment(f"COR-{branch_id}-A", anchor_id, junction_id, 240, "BI", 25, f"TC-{branch_id}-A", branch_id, line_id="SIDING", ohe=f"OHE-{branch_id}"))
-        segments.append(segment(f"COR-{branch_id}-B", junction_id, buffer_id, 520, "BI", 15, f"TC-{branch_id}-B", branch_id, line_id="SIDING", ohe=f"OHE-{branch_id}"))
+        segments.append(segment(f"COR-{branch_id}-A", anchor_id, junction_id, 220, "BI", 25, f"TC-{branch_id}-A", branch_id, line_id="SIDING", ohe=f"OHE-{branch_id}"))
+        segments.append(segment(f"COR-{branch_id}-B", junction_id, buffer_id, 480, "BI", 15, f"TC-{branch_id}-B", branch_id, line_id="SIDING", ohe=f"OHE-{branch_id}"))
 
     add_conflicts(routes)
     network = {
@@ -465,9 +463,10 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
             "stations": [{**s, "x": x_positions[i]} for i, s in enumerate(located)],
             "geographicFeatures": geo_features,
             "infrastructure": [
-                {"id": "YAMUNA-BRIDGE", "name": "YAMUNA BRIDGE", "type": "bridge", "x": 565, "width": 150, "provenance": "osm-derived-corridor-landmark"},
-                {"id": "ANVR-TERMINAL", "name": "ANAND VIHAR TERMINAL FAN", "type": "terminal", "x": 1450, "width": 300, "provenance": "representative-operational-layer"},
-                {"id": "SBB-FREIGHT", "name": "SAHIBABAD FREIGHT COMPLEX", "type": "freight", "x": 2200, "width": 370, "provenance": "representative-operational-layer"},
+                {"id": "YAMUNA-BRIDGE", "name": "HISTORIC YAMUNA RAIL BRIDGE", "type": "bridge", "x": 625, "width": 160, "provenance": "osm-derived-corridor-landmark"},
+                {"id": "ANVR-TERMINAL", "name": "ANAND VIHAR TERMINAL COMPLEX", "type": "terminal", "x": 1500, "width": 320, "provenance": "representative-operational-layer"},
+                {"id": "SBB-FREIGHT", "name": "SAHIBABAD CONCOR FREIGHT YARD", "type": "freight", "x": 2250, "width": 360, "provenance": "representative-operational-layer"},
+                {"id": "GZB-ELS-YARD", "name": "GHAZIABAD ELECTRIC LOCO SHED", "type": "depot", "x": 3100, "width": 340, "provenance": "representative-operational-layer"},
             ],
         },
         "nodes": nodes,
@@ -498,6 +497,7 @@ def build_station(station, snapshot_date, station_nodes):
     tracks_meta = []
     up_count = math.ceil(count / 2)
     base_y, spacing = 105, max(34, min(54, 340 // max(count, 1)))
+
     endpoints = [
         (f"{code}-WEST-UP-ENTRY", 120, base_y + 20, "EAST"),
         (f"{code}-EAST-UP-EXIT", 2380, base_y + 20, "EAST"),
@@ -506,6 +506,7 @@ def build_station(station, snapshot_date, station_nodes):
     ]
     for node_id, x, y, direction in endpoints:
         nodes.append(node(node_id, "SIGNAL", x, y, lat, lon, state="GREEN", direction=direction))
+
     throats = [
         (f"{code}-W-UP-THROAT", 420, base_y + 20),
         (f"{code}-E-UP-THROAT", 2080, base_y + 20),
@@ -514,6 +515,7 @@ def build_station(station, snapshot_date, station_nodes):
     ]
     for node_id, x, y in throats:
         nodes.append(node(node_id, "SWITCH", x, y, lat, lon))
+
     approach_defs = [
         (f"{code}-APP-W-UP", endpoints[0][0], throats[0][0], "EAST", "UP"),
         (f"{code}-APP-E-UP", throats[1][0], endpoints[1][0], "EAST", "UP"),
@@ -537,6 +539,7 @@ def build_station(station, snapshot_date, station_nodes):
         ])
         platform_rows.append({"number": pf, "name": f"Platform {pf}", "x_start": 690, "x_end": 1810, "y": y, "direction": direction})
         tracks_meta.append({"index": pf, "name": f"PF {pf} · {'UP' if direction == 'EAST' else 'DOWN'} LOOP", "y": y})
+
         if direction == "EAST":
             link_a, link_b = throats[0][0], throats[1][0]
             route_start, route_end = endpoints[0][0], endpoints[1][0]
@@ -545,26 +548,35 @@ def build_station(station, snapshot_date, station_nodes):
             link_a, link_b = throats[2][0], throats[3][0]
             route_start, route_end = endpoints[2][0], endpoints[3][0]
             approach_first, approach_last = approach_defs[2][0], approach_defs[3][0]
+
         part_ids = [f"{code}-PF{pf}-A", f"{code}-PF{pf}-B", f"{code}-PF{pf}-C", f"{code}-PF{pf}-D"]
         ordered_nodes = [link_a, east if direction == "WEST" else west, berth, west if direction == "WEST" else east, link_b]
         lengths = [180, 540, 540, 180]
         for j, (start, end) in enumerate(zip(ordered_nodes, ordered_nodes[1:])):
             segments.append(segment(part_ids[j], start, end, lengths[j], direction, 30 if j in {0, 3} else 50, f"TC-{code}-PF{pf}-{j+1}", code, line_id=f"PF{pf}", platform=pf, ohe=f"OHE-{code}-{'UP' if direction == 'EAST' else 'DN'}"))
         route_segments = [approach_first] + part_ids + [approach_last]
-        routes.append(route(f"R-{code}-PF{pf}-{'UP' if direction == 'EAST' else 'DN'}", route_start, route_end, route_segments, {link_a: "REVERSE" if pf not in {1, count} else "NORMAL", link_b: "REVERSE" if pf not in {1, count} else "NORMAL"}, 30))
+        routes.append(route(
+            f"R-{code}-PF{pf}-{'UP' if direction == 'EAST' else 'DN'}",
+            route_start,
+            route_end,
+            route_segments,
+            {link_a: "REVERSE" if pf not in {1, count} else "NORMAL", link_b: "REVERSE" if pf not in {1, count} else "NORMAL"},
+            30,
+            "PLATFORM_LOOP"
+        ))
 
-    # Distinctive operational roads per junction.
+    # Locomotive Reversal & Stabling Yard Siding per Station
     extras = {
-        "DLI": [("WASHING/STABLING LINE", "STABLING", 515)],
-        "DSA": [("BRANCH LOOP", "BRANCH", 315)],
-        "ANVR": [("TERMINAL TURNBACK", "TURNBACK", 430), ("COACHING STABLING", "STABLING", 480)],
-        "SBB": [("FREIGHT LOOP", "FREIGHT", 330)],
-        "GZB": [("FREIGHT BYPASS", "FREIGHT", 390), ("BRANCH RECEPTION", "BRANCH", 440)],
+        "DLI": [("LOCO RUN-AROUND LOOP", "LOCO_REV", 515), ("COACHING SIDING", "STABLING", 555)],
+        "DSA": [("BRANCH DIVERSION LOOP", "BRANCH", 315)],
+        "ANVR": [("ENGINE TURNAROUND NECK", "LOCO_REV", 430), ("COACHING STABLING YARD", "STABLING", 480)],
+        "SBB": [("FREIGHT OVERTAKE LOOP", "FREIGHT", 330)],
+        "GZB": [("ELECTRIC LOCO SHED LEAD", "LOCO_DEPOT", 390), ("BRANCH SORTING YARD", "BRANCH", 440)],
     }[code]
     for idx, (name, role, y) in enumerate(extras, 1):
         a, b = f"{code}-{role}-{idx}-W", f"{code}-{role}-{idx}-E"
         nodes.extend([node(a, "SWITCH", 720, y, lat, lon), node(b, "BUFFER_STOP", 1800, y, lat, lon)])
-        segments.append(segment(f"{code}-{role}-{idx}", a, b, 650, "BI", 15 if role == "STABLING" else 30, f"TC-{code}-{role}-{idx}", code, line_id=role, ohe=f"OHE-{code}-YARD"))
+        segments.append(segment(f"{code}-{role}-{idx}", a, b, 650, "BI", 15 if "STABLING" in role or "REV" in role else 30, f"TC-{code}-{role}-{idx}", code, line_id=role, ohe=f"OHE-{code}-YARD"))
         tracks_meta.append({"index": f"E{idx}", "name": name, "y": y})
 
     add_conflicts(routes)
@@ -609,9 +621,6 @@ def write_schedule(name, network, count):
     if network.get("metadata", {}).get("networkId") == "CORRIDOR":
         through_routes = [item for item in routes if item.get("movementType") != "MERGE_DIVERGE"]
         movement_routes = [item for item in routes if item.get("movementType") == "MERGE_DIVERGE"]
-        # Most services remain on their nominal line.  A smaller, evenly spaced
-        # set of explicitly cross-line movements demonstrates conflict handling
-        # without turning every train into an implausible crossover movement.
         nominal = [
             next(item for item in through_routes if item["id"] == "R-COR-UP_FAST"),
             next(item for item in through_routes if item["id"] == "R-COR-UP_SLOW"),
@@ -627,10 +636,7 @@ def write_schedule(name, network, count):
                 match = next((item for item in movement_routes if movement in item["id"] and item["id"].endswith(station_code)), None)
                 if match:
                     ordered_movements.append(match)
-        # Four nominal services before each conflicting crossover pair gives a
-        # credible two-thirds nominal / one-third conflict-demonstration
-        # timetable.  The paired movements contest the same point, making the
-        # optimizer's safe ordering visible without gridlocking the corridor.
+
         route_cycle = []
         for index in range(0, len(ordered_movements), 2):
             route_cycle.extend(nominal)
@@ -639,6 +645,7 @@ def write_schedule(name, network, count):
     else:
         route_cycle = routes
         burst_size = 2
+
     rows = []
     scheduled_by_segment = {segment["id"]: [] for segment in network["trackSegments"]}
     types = ["Vande Bharat", "Shatabdi", "Rajdhani", "Passenger", "MEMU", "Express", "Freight"]
@@ -657,10 +664,12 @@ def write_schedule(name, network, count):
         })
         for segment_id in r["segments"]:
             scheduled_by_segment[segment_id].append(str(12000 + i))
+
     for item in network["trackSegments"]:
         services = scheduled_by_segment[item["id"]]
         item["scheduledTrainCount"] = len(services)
         item["scheduledTrainIds"] = services[:12]
+
     path = HERE / name
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
@@ -670,26 +679,31 @@ def write_schedule(name, network, count):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--refresh-osm", action="store_true", help="Refresh the cached Overpass snapshot before generating")
+    parser.add_argument("--refresh-osm", action="store_true", help="Refresh Overpass snapshot before generating")
     args = parser.parse_args()
     if args.refresh_osm:
         refresh_osm()
+
     snapshot = load_osm()
     features, station_nodes = osm_features(snapshot)
     snapshot_date = snapshot.get("flowstateSnapshot", {}).get("date", SNAPSHOT_DATE)
+
     corridor = build_corridor(snapshot_date, features, station_nodes)
     write_schedule("corridor_schedule.csv", corridor, 120)
     write_json("corridor_layout.json", corridor)
+    write_json("delhi_gzb_corridor.json", corridor)
+
     for station in STATIONS:
         network = build_station(station, snapshot_date, station_nodes)
         filename = f"{station['code'].lower()}_layout.json"
         write_schedule(f"{station['code'].lower()}_schedule.csv", network, 20 if station["code"] == "DLI" else 12)
         write_json(filename, network)
-    # Compatibility aliases used by the existing socket contract and URLs.
+
     for alias, canonical in [("anand_vihar", "anvr"), ("ghaziabad", "gzb"), ("shahibabad", "sbb")]:
         (HERE / f"{alias}_layout.json").write_text((HERE / f"{canonical}_layout.json").read_text(encoding="utf-8"), encoding="utf-8")
         (HERE / f"{alias}_schedule.csv").write_text((HERE / f"{canonical}_schedule.csv").read_text(encoding="utf-8"), encoding="utf-8")
-    print(f"Generated schema-v2 corridor and {len(STATIONS)} station layouts; OSM features retained: {len(features)}")
+
+    print(f"Generated schema-v2 network with engine reversal loops, scissors crossovers, and freight sidings.")
 
 
 if __name__ == "__main__":

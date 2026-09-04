@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import { FiX } from 'react-icons/fi';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import DashboardPage from './pages/DashboardPage';
 import LeftSidebar from './components/LeftSidebar';
@@ -28,7 +29,6 @@ const DashboardLayout = () => {
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [activePort, setActivePort] = useState(socketService.getPort());
 
   useEffect(() => {
     sessionStorage.setItem('selectedStation', selectedStation);
@@ -40,7 +40,7 @@ const DashboardLayout = () => {
     setLiveData(data);
     if (data && data.network && data.network.trackSegments) {
       const serverFaulty = data.network.trackSegments
-        .filter((s) => s.status === 'FAULTY')
+        .filter((s) => s.status === 'FAULTY' || s.status === 'MAINTENANCE')
         .map((s) => s.id);
 
       setBlockedTracks((prev) => {
@@ -103,62 +103,50 @@ const DashboardLayout = () => {
     }
   };
 
-  const handlePortChange = () => {
-    const current = socketService.getPort();
-    const next = window.prompt(
-      'Enter Backend Port to connect (e.g. 8000, 8001, 8002, 8080):',
-      current
-    );
-    if (next && next !== current) {
-      socketService.changePort(next.trim());
-      setActivePort(next.trim());
-    }
-  };
-
   return (
     <div className="fullscreen-dashboard">
-      {/* SCADA Floating Header HUD */}
-      <header className="minimal-floating-hud">
+      {/* Box-Free Top Bar */}
+      <header className="minimal-top-hud">
+        {/* Left: Naked Logo + Clean Corridor Typography (Zero Boxes) */}
         <div className="hud-left-group">
-          <Link to="/" className="hud-brand" title="Return to Launch Screen">
-            <span style={{ fontWeight: 800, letterSpacing: '1.5px', color: '#f8fafc', fontSize: '11px' }}>
-              FLOWSTATE
-            </span>
+          <Link to="/" className="hud-logo-link" title="Return to Launch Screen">
+            <img src="/logo.png" alt="FlowState" className="hud-logo-img" />
           </Link>
-
-          <div className="hud-station-badge" title="Master OpenStreetMap Digital Twin (DLI–DSA–ANVR–SBB–GZB)">
-            <span className="station-badge-title">DELHI–GHAZIABAD QUADRUPLE LINE CORRIDOR</span>
-            <span className="station-badge-sub">74 CIRCUITS · MASTER TWIN</span>
-          </div>
+          <span className="hud-corridor-label">
+            DELHI–GHAZIABAD QUADRUPLE CORRIDOR
+          </span>
         </div>
 
-        <div className="hud-center-group">
+        {/* Center: Single Unified Control Pod */}
+        <div className="hud-center-pod">
           {simulationStatus === 'stopped' ? (
-            <button onClick={handleStartSimulation} className="hud-btn hud-btn-primary">
+            <button onClick={handleStartSimulation} className="hud-play-btn start">
               START
             </button>
           ) : simulationStatus === 'running' ? (
-            <button onClick={() => handleTogglePause(false)} className="hud-btn">
+            <button onClick={() => handleTogglePause(false)} className="hud-play-btn pause">
               PAUSE
             </button>
           ) : (
-            <button onClick={() => handleTogglePause(true)} className="hud-btn hud-btn-primary">
+            <button onClick={() => handleTogglePause(true)} className="hud-play-btn resume">
               RESUME
             </button>
           )}
 
           {simulationStatus !== 'stopped' && (
-            <button onClick={handleStopSimulation} className="hud-btn hud-btn-danger">
+            <button onClick={handleStopSimulation} className="hud-play-btn stop">
               STOP
             </button>
           )}
 
-          <div className="hud-speed-group">
+          <span className="hud-pod-divider" />
+
+          <div className="hud-speed-chips">
             {[1, 2, 8, 20].map((s) => (
               <button
                 key={s}
                 onClick={() => handleSimSpeedChange(s)}
-                className={`hud-speed-btn ${simSpeed === s ? 'active' : ''}`}
+                className={`hud-speed-chip ${simSpeed === s ? 'active' : ''}`}
               >
                 {s}X
               </button>
@@ -166,32 +154,26 @@ const DashboardLayout = () => {
           </div>
         </div>
 
+        {/* Right: Flat Ghost Navigation Buttons (Zero Outer Box) */}
         <div className="hud-right-group">
           <button
-            onClick={handlePortChange}
-            className="hud-btn hud-port-chip"
-            title="Switch Backend Socket Port"
-          >
-            <span className="live-pulse"></span> :{activePort}
-          </button>
-          <button
             onClick={() => setIsLeftOpen((v) => !v)}
-            className={`hud-btn ${isLeftOpen ? 'active' : ''}`}
-            title="Toggle Station Assets and Maintenance Panels"
+            className={`hud-ghost-btn ${isLeftOpen ? 'active' : ''}`}
+            title="Toggle Station Assets & Maintenance"
           >
             ASSETS
           </button>
           <button
             onClick={() => setIsRightOpen((v) => !v)}
-            className={`hud-btn ${isRightOpen ? 'active' : ''}`}
-            title="Toggle AI Recommendations and Solvers"
+            className={`hud-ghost-btn ${isRightOpen ? 'active' : ''}`}
+            title="Toggle AI Decisions & Insights"
           >
-            AI FEED
+            INSIGHTS
           </button>
           <button
             onClick={() => setIsChatOpen((v) => !v)}
-            className={`hud-btn ${isChatOpen ? 'active' : ''}`}
-            title="Toggle Natural Language Section Assistant"
+            className={`hud-ghost-btn ${isChatOpen ? 'active' : ''}`}
+            title="Toggle Section Assistant"
           >
             ASSISTANT
           </button>
@@ -215,8 +197,13 @@ const DashboardLayout = () => {
         <aside className="floating-drawer drawer-left">
           <div className="drawer-header">
             <span>INFRASTRUCTURE & TRACK CIRCUITS</span>
-            <button onClick={() => setIsLeftOpen(false)} className="drawer-close" title="Close Panel">
-              CLOSE
+            <button
+              onClick={() => setIsLeftOpen(false)}
+              className="drawer-close-icon-btn"
+              title="Close Panel"
+              aria-label="Close"
+            >
+              <FiX />
             </button>
           </div>
           <div className="drawer-body">
@@ -235,9 +222,14 @@ const DashboardLayout = () => {
       {isRightOpen && (
         <aside className="floating-drawer drawer-right">
           <div className="drawer-header">
-            <span>OPTIMIZATION ENGINE & PRECEDENCE FEED</span>
-            <button onClick={() => setIsRightOpen(false)} className="drawer-close" title="Close Panel">
-              CLOSE
+            <span>OPTIMIZATION ENGINE & INSIGHTS FEED</span>
+            <button
+              onClick={() => setIsRightOpen(false)}
+              className="drawer-close-icon-btn"
+              title="Close Panel"
+              aria-label="Close"
+            >
+              <FiX />
             </button>
           </div>
           <div className="drawer-body">
@@ -259,8 +251,13 @@ const DashboardLayout = () => {
         <aside className="floating-chat-box">
           <div className="drawer-header">
             <span>SECTION CONTROLLER ASSISTANT</span>
-            <button onClick={() => setIsChatOpen(false)} className="drawer-close" title="Close Assistant">
-              CLOSE
+            <button
+              onClick={() => setIsChatOpen(false)}
+              className="drawer-close-icon-btn"
+              title="Close Assistant"
+              aria-label="Close"
+            >
+              <FiX />
             </button>
           </div>
           <div className="chat-body">

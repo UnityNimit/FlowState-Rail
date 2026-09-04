@@ -1,184 +1,274 @@
-/* TrackDiagram.css - Ultra-Minimalist High-Contrast Vector Digital Twin */
+/* TrackDiagram.css - High-Contrast SCADA Electronic Interlocking Digital Twin */
 
 .track-canvas-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    background: #080b11;
-    overflow: hidden;
-    user-select: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: var(--bg-base);
+  overflow: hidden;
+  user-select: none;
 }
 
 .minimal-svg-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
+  width: 100%;
+  height: 100%;
+  display: block;
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
 }
 
-/* Direction Text */
+/* Direction & Boundary Telemetry */
 .corridor-direction-text {
-    fill: #475569;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5px;
-    font-weight: 700;
-    letter-spacing: 0.8px;
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  pointer-events: none;
+}
+
+/* Corridor Infrastructure Landmarks */
+.infra-landmark-rect {
+  fill: rgba(255, 255, 255, 0.02);
+  stroke: var(--border-default);
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+.infra-landmark-label {
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+/* Station Boundary Gantries */
+.station-boundary-guide {
+  stroke: var(--border-subtle);
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+
+.station-code-box {
+  fill: var(--bg-surface-2);
+  stroke: var(--border-default);
+  stroke-width: 1px;
+  pointer-events: none;
+}
+
+.station-code-text {
+  fill: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.station-km-text {
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 700;
+  pointer-events: none;
 }
 
 /* Platform Islands */
 .pf-island-up {
-    fill: rgba(56, 189, 248, 0.025);
-    stroke: rgba(56, 189, 248, 0.16);
-    stroke-width: 1px;
-    stroke-dasharray: 4 4;
+  fill: var(--pf-island-up-fill);
+  stroke: var(--pf-island-up-stroke);
+  stroke-width: 1px;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
 }
 
 .pf-island-dn {
-    fill: rgba(34, 197, 94, 0.025);
-    stroke: rgba(34, 197, 94, 0.16);
-    stroke-width: 1px;
-    stroke-dasharray: 4 4;
+  fill: var(--pf-island-dn-fill);
+  stroke: var(--pf-island-dn-stroke);
+  stroke-width: 1px;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
 }
 
 .pf-number-text {
-    text-anchor: middle;
-    fill: #64748b;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+  text-anchor: middle;
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  pointer-events: none;
 }
 
-/* Left Margin Line Identifiers */
+/* Line Identifiers */
 .minimal-line-text {
-    fill: #475569;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5px;
-    font-weight: 600;
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  pointer-events: none;
 }
 
-/* Steel Rails - Crisp Matte Rendering (No blur / glow) */
+/* Hitbox Layer for 100% Reliable Click Selection */
+.rail-hitbox-target {
+  stroke: transparent;
+  stroke-width: 16px;
+  stroke-linecap: round;
+  cursor: pointer;
+}
+
+/* Steel Rails - Crisp Industrial Thickness */
 .minimal-rail-base {
-    stroke: var(--rail-base);
-    stroke-width: 2.6px;
-    stroke-linecap: round;
-    transition: stroke 0.15s ease;
-    cursor: pointer;
+  stroke: var(--rail-base);
+  stroke-width: 3.4px;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition: stroke var(--transition-fast), stroke-width var(--transition-fast);
 }
 
-.minimal-rail-base:hover {
-    stroke: var(--rail-hover);
+.segment-render-group:hover .minimal-rail-base {
+  stroke: var(--rail-hover);
 }
 
-/* Occupied Rail: Clean solid red */
+/* Selected Asset Halo */
+.minimal-rail-base.selected {
+  stroke: #ffffff !important;
+  stroke-width: 5px !important;
+}
+
+/* Crossover Indicator */
+.minimal-rail-base.crossover {
+  stroke: #4d5358;
+}
+
+/* Interlocking Circuit States */
 .minimal-rail-occupied {
-    stroke: var(--rail-occupied);
-    stroke-width: 4.2px;
-    stroke-linecap: round;
+  stroke: var(--rail-occupied);
+  stroke-width: 4.8px;
+  stroke-linecap: round;
+  pointer-events: none;
 }
 
-/* Locked Rail: Clean solid amber */
 .minimal-rail-locked {
-    stroke: var(--rail-locked);
-    stroke-width: 3.6px;
-    stroke-linecap: round;
+  stroke: var(--rail-locked);
+  stroke-width: 4px;
+  stroke-linecap: round;
+  pointer-events: none;
 }
 
-/* Crossover Rail: Distinctive divergence indicator */
-.minimal-rail-crossover {
-    stroke: var(--accent-orange, #f97316);
-    stroke-width: 4px;
-    stroke-linecap: round;
-}
-
-/* Maintenance Block */
 .minimal-rail-hazard {
-    stroke-linecap: round;
-}
-
-.minimal-block-badge {
-    pointer-events: none;
-}
-
-.block-badge-bg {
-    fill: #18181b;
-    stroke: #f59e0b;
-    stroke-width: 1px;
-}
-
-.block-badge-text {
-    text-anchor: middle;
-    fill: #f59e0b;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-}
-
-/* Signals */
-.minimal-signal {
-    cursor: pointer;
-}
-
-.minimal-signal:hover circle {
-    r: 6px;
-}
-
-.sig-dot-red {
-    fill: var(--sig-red);
-    stroke: #020617;
-    stroke-width: 1px;
-}
-
-.sig-dot-green {
-    fill: var(--sig-green);
-    stroke: #020617;
-    stroke-width: 1px;
-}
-
-.sig-name-text {
-    text-anchor: middle;
-    fill: #475569;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7px;
-    pointer-events: none;
-}
-
-/* Turnout Switches */
-.minimal-switch {
-    cursor: pointer;
-}
-
-.switch-blade-solid {
-    fill: var(--sig-amber);
-    stroke: #020617;
-    stroke-width: 1px;
-}
-
-/* Train Capsules */
-.minimal-train {
-    cursor: pointer;
-    transition: transform 0.4s linear;
-}
-
-.train-capsule-body {
-    stroke: rgba(255, 255, 255, 0.25);
-    stroke-width: 1px;
-}
-
-.train-label-text {
-    text-anchor: middle;
-    fill: #ffffff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-    pointer-events: none;
+  stroke-width: 6.5px;
+  stroke-linecap: round;
+  pointer-events: none;
 }
 
 .minimal-speed-text {
-    text-anchor: middle;
-    fill: #475569;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7px;
-    pointer-events: none;
+  text-anchor: middle;
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* MACLS Signals */
+.minimal-signal {
+  cursor: pointer;
+}
+
+.signal-mast {
+  stroke: var(--text-faint);
+  stroke-width: 1.5px;
+  pointer-events: none;
+}
+
+.sig-dot-red {
+  fill: var(--sig-red);
+  stroke: #0a0c0e;
+  stroke-width: 1px;
+}
+
+.sig-dot-green {
+  fill: var(--sig-green);
+  stroke: #0a0c0e;
+  stroke-width: 1px;
+}
+
+.minimal-signal.selected circle:last-of-type {
+  stroke: #ffffff;
+  stroke-width: 2px;
+  r: 6px;
+}
+
+.sig-name-text {
+  text-anchor: middle;
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* Turnout Switches (Points) */
+.minimal-switch {
+  cursor: pointer;
+}
+
+.switch-blade-solid {
+  fill: var(--sig-amber);
+  stroke: #0a0c0e;
+  stroke-width: 1px;
+  transition: transform var(--transition-fast);
+}
+
+.switch-blade-solid.reverse {
+  fill: var(--sig-double-amber);
+  transform: rotate(22deg);
+  transform-origin: center;
+}
+
+/* Dead-End Buffer Stops */
+.minimal-buffer-stop {
+  pointer-events: none;
+}
+
+.buffer-bar {
+  stroke: var(--sig-red);
+  stroke-width: 3.5px;
+  stroke-linecap: square;
+}
+
+.buffer-bracket {
+  fill: var(--sig-red);
+}
+
+/* Rolling Stock Train Capsules */
+.minimal-train {
+  cursor: pointer;
+  transition: transform 0.35s linear;
+}
+
+.train-light-beam {
+  fill: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.train-capsule-body {
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1px;
+}
+
+.train-cockpit-window {
+  fill: #0a0c0e;
+}
+
+.train-label-text {
+  text-anchor: middle;
+  fill: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  pointer-events: none;
 }
