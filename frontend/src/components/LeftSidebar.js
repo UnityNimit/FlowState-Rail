@@ -77,10 +77,11 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
                             className="map-dropdown"
                             disabled={isSimRunning}
                         >
-                            <option value="DLI">Delhi Junction</option>
-                            <option value="GZB">Ghaziabad Junction</option>
-                            <option value="SBB">Shahibabad</option>
+                            <option value="CORRIDOR">Delhi–Ghaziabad Corridor (Quadruple Line)</option>
+                            <option value="DLI">Delhi Junction Yard</option>
                             <option value="ANVR">Anand Vihar Terminal</option>
+                            <option value="SBB">Sahibabad Junction</option>
+                            <option value="GZB">Ghaziabad Junction</option>
                         </select>
                         <div className="map-image-container">
                              <img

@@ -48,7 +48,7 @@ class Optimizer:
             segment = self.simulation.segments_map.get(train['currentSegmentId'])
             if not segment: continue
 
-            travel_time_per_segment = 30
+            travel_time_per_segment = 14
             remaining_time_on_segment = int(travel_time_per_segment * (1 - train['positionOnSegment']))
 
             start_time = int(current_time)
@@ -96,7 +96,7 @@ class Optimizer:
 
                 node_path = self.simulation._convert_segment_path_to_node_path(route)
                 for seg_idx, segment_id in enumerate(route):
-                    travel_time = 30
+                    travel_time = 14
                     start = model.NewIntVar(current_time, max_time, f's_{train_id}_{i}_{seg_idx}')
                     end = model.NewIntVar(current_time, max_time, f'e_{train_id}_{i}_{seg_idx}')
                     interval = model.NewOptionalIntervalVar(start, travel_time, end, choice_var, f'i_{train_id}_{i}_{seg_idx}')
@@ -168,7 +168,8 @@ class Optimizer:
 
         # --- Step 5: Solve ---
         solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = 10.0
+        solver.parameters.max_time_in_seconds = 0.8
+        solver.parameters.num_search_workers = 4
         status = solver.Solve(model)
         print(f"🧠 Optimizer: Solver finished with status: {solver.StatusName(status)}")
 

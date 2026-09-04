@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './RightSidebar.css';
 import { FiInfo, FiPlay, FiPause, FiSquare } from 'react-icons/fi';
 import socketService from '../services/socketService';
-import ttsService from '../services/ttsService';
 
 const MAX_CARDS = 30;
 
@@ -36,6 +35,7 @@ function clampTooltipPosition(x, y, width, height) {
     let left = x - width - 10; // Position to the left
     let top = y;
     if (left < padding) left = x + 40; // Flip to the right if no space
+    if (left + width + padding > vw) left = vw - width - padding;
     if (top + height + padding > vh) top = vh - height - padding;
     if (top < padding) top = padding;
     return { left, top };

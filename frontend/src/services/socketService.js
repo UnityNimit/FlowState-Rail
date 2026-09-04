@@ -2,7 +2,7 @@
 import { io } from 'socket.io-client';
 
 // Backend URL — configured via REACT_APP_API_URL with port 8001 default
-const SOCKET_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001';
+const SOCKET_URL = process.env.REACT_APP_API_URL || 'http://localhost:8002';
 
 class SocketService {
     constructor() {

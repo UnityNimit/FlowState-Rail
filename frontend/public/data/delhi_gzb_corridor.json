@@ -1,0 +1,2903 @@
+{
+  "corridor": {
+    "id": "DLI_GZB_CORRIDOR",
+    "name": "Delhi - Anand Vihar - Sahibabad - Ghaziabad Quadruple Corridor",
+    "lengthKm": 24.5,
+    "tracks": [
+      {
+        "id": "UP_MAIN",
+        "name": "Line 1 (UP Main - Passenger)",
+        "y": 110
+      },
+      {
+        "id": "DN_MAIN",
+        "name": "Line 2 (DN Main - Passenger)",
+        "y": 160
+      },
+      {
+        "id": "UP_SLOW",
+        "name": "Line 3 (UP Slow - Suburban/Goods)",
+        "y": 250
+      },
+      {
+        "id": "DN_SLOW",
+        "name": "Line 4 (DN Slow - Suburban/Goods)",
+        "y": 300
+      }
+    ],
+    "stations": [
+      {
+        "code": "DLI",
+        "name": "Delhi Jn",
+        "x_in": 100,
+        "x_mid": 240,
+        "x_out": 380,
+        "km": 0.0
+      },
+      {
+        "code": "DSA",
+        "name": "Delhi Shahdara",
+        "x_in": 580,
+        "x_mid": 700,
+        "x_out": 820,
+        "km": 5.8
+      },
+      {
+        "code": "ANVR",
+        "name": "Anand Vihar Terminal",
+        "x_in": 1020,
+        "x_mid": 1180,
+        "x_out": 1340,
+        "km": 12.5
+      },
+      {
+        "code": "SBB",
+        "name": "Sahibabad Jn",
+        "x_in": 1540,
+        "x_mid": 1660,
+        "x_out": 1780,
+        "km": 18.2
+      },
+      {
+        "code": "GZB",
+        "name": "Ghaziabad Jn",
+        "x_in": 1980,
+        "x_mid": 2140,
+        "x_out": 2300,
+        "km": 24.5
+      }
+    ]
+  },
+  "network": {
+    "nodes": [
+      {
+        "id": "SIG-ENTRY-UPM",
+        "type": "SIGNAL",
+        "position": {
+          "x": 50,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ENTRY-DNM",
+        "type": "SIGNAL",
+        "position": {
+          "x": 50,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ENTRY-UPS",
+        "type": "SIGNAL",
+        "position": {
+          "x": 50,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ENTRY-DNS",
+        "type": "SIGNAL",
+        "position": {
+          "x": 50,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "DLI-IN-UPM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 100,
+          "y": 110
+        }
+      },
+      {
+        "id": "DLI-IN-DNM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 100,
+          "y": 160
+        }
+      },
+      {
+        "id": "DLI-IN-UPS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 100,
+          "y": 250
+        }
+      },
+      {
+        "id": "DLI-IN-DNS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 100,
+          "y": 300
+        }
+      },
+      {
+        "id": "SW-DLI-IN-1",
+        "type": "SWITCH",
+        "position": {
+          "x": 135,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DLI-IN-2",
+        "type": "SWITCH",
+        "position": {
+          "x": 135,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DLI-X-DN",
+        "type": "SWITCH",
+        "position": {
+          "x": 185,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-DLI-UPM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 215,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-DNM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 215,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "DLI-PF-1",
+        "type": "JUNCTION",
+        "position": {
+          "x": 240,
+          "y": 110
+        }
+      },
+      {
+        "id": "DLI-PF-2",
+        "type": "JUNCTION",
+        "position": {
+          "x": 240,
+          "y": 160
+        }
+      },
+      {
+        "id": "DLI-PF-3",
+        "type": "JUNCTION",
+        "position": {
+          "x": 240,
+          "y": 250
+        }
+      },
+      {
+        "id": "DLI-PF-4",
+        "type": "JUNCTION",
+        "position": {
+          "x": 240,
+          "y": 300
+        }
+      },
+      {
+        "id": "SIG-DLI-UPM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 305,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-DNM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 305,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-UPS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 305,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-DNS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 305,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SW-DLI-OUT-UPM",
+        "type": "SWITCH",
+        "position": {
+          "x": 345,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DLI-OUT-DNM",
+        "type": "SWITCH",
+        "position": {
+          "x": 345,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DLI-OUT-UPS",
+        "type": "SWITCH",
+        "position": {
+          "x": 345,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DLI-OUT-DNS",
+        "type": "SWITCH",
+        "position": {
+          "x": 345,
+          "y": 300
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DLI-BYPASS",
+        "type": "SWITCH",
+        "position": {
+          "x": 395,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-DLI-UPM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 430,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-DNM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 430,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-UPS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 430,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DLI-DNS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 430,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "DSA-IN-UPM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 580,
+          "y": 110
+        }
+      },
+      {
+        "id": "DSA-IN-DNM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 580,
+          "y": 160
+        }
+      },
+      {
+        "id": "DSA-IN-UPS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 580,
+          "y": 250
+        }
+      },
+      {
+        "id": "DSA-IN-DNS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 580,
+          "y": 300
+        }
+      },
+      {
+        "id": "SW-DSA-IN-1",
+        "type": "SWITCH",
+        "position": {
+          "x": 615,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DSA-IN-2",
+        "type": "SWITCH",
+        "position": {
+          "x": 615,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DSA-X-DN",
+        "type": "SWITCH",
+        "position": {
+          "x": 665,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-DSA-UPM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 695,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-DNM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 695,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "DSA-PF-1",
+        "type": "JUNCTION",
+        "position": {
+          "x": 700,
+          "y": 110
+        }
+      },
+      {
+        "id": "DSA-PF-2",
+        "type": "JUNCTION",
+        "position": {
+          "x": 700,
+          "y": 160
+        }
+      },
+      {
+        "id": "DSA-PF-3",
+        "type": "JUNCTION",
+        "position": {
+          "x": 700,
+          "y": 250
+        }
+      },
+      {
+        "id": "DSA-PF-4",
+        "type": "JUNCTION",
+        "position": {
+          "x": 700,
+          "y": 300
+        }
+      },
+      {
+        "id": "SIG-DSA-UPM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 745,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-DNM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 745,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-UPS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 745,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-DNS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 745,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SW-DSA-OUT-UPM",
+        "type": "SWITCH",
+        "position": {
+          "x": 785,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DSA-OUT-DNM",
+        "type": "SWITCH",
+        "position": {
+          "x": 785,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DSA-OUT-UPS",
+        "type": "SWITCH",
+        "position": {
+          "x": 785,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DSA-OUT-DNS",
+        "type": "SWITCH",
+        "position": {
+          "x": 785,
+          "y": 300
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-DSA-BYPASS",
+        "type": "SWITCH",
+        "position": {
+          "x": 835,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-DSA-UPM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 870,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-DNM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 870,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-UPS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 870,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-DSA-DNS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 870,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "ANVR-IN-UPM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1020,
+          "y": 110
+        }
+      },
+      {
+        "id": "ANVR-IN-DNM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1020,
+          "y": 160
+        }
+      },
+      {
+        "id": "ANVR-IN-UPS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1020,
+          "y": 250
+        }
+      },
+      {
+        "id": "ANVR-IN-DNS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1020,
+          "y": 300
+        }
+      },
+      {
+        "id": "SW-ANVR-IN-1",
+        "type": "SWITCH",
+        "position": {
+          "x": 1055,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-ANVR-IN-2",
+        "type": "SWITCH",
+        "position": {
+          "x": 1055,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-ANVR-X-DN",
+        "type": "SWITCH",
+        "position": {
+          "x": 1105,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-ANVR-UPM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1135,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-DNM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1135,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "ANVR-PF-1",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1180,
+          "y": 110
+        }
+      },
+      {
+        "id": "ANVR-PF-2",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1180,
+          "y": 160
+        }
+      },
+      {
+        "id": "ANVR-PF-3",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1180,
+          "y": 250
+        }
+      },
+      {
+        "id": "ANVR-PF-4",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1180,
+          "y": 300
+        }
+      },
+      {
+        "id": "SIG-ANVR-UPM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1265,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-DNM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1265,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-UPS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1265,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-DNS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1265,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SW-ANVR-OUT-UPM",
+        "type": "SWITCH",
+        "position": {
+          "x": 1305,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-ANVR-OUT-DNM",
+        "type": "SWITCH",
+        "position": {
+          "x": 1305,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-ANVR-OUT-UPS",
+        "type": "SWITCH",
+        "position": {
+          "x": 1305,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-ANVR-OUT-DNS",
+        "type": "SWITCH",
+        "position": {
+          "x": 1305,
+          "y": 300
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-ANVR-BYPASS",
+        "type": "SWITCH",
+        "position": {
+          "x": 1355,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-ANVR-UPM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1390,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-DNM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1390,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-UPS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1390,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-ANVR-DNS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1390,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SBB-IN-UPM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1540,
+          "y": 110
+        }
+      },
+      {
+        "id": "SBB-IN-DNM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1540,
+          "y": 160
+        }
+      },
+      {
+        "id": "SBB-IN-UPS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1540,
+          "y": 250
+        }
+      },
+      {
+        "id": "SBB-IN-DNS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1540,
+          "y": 300
+        }
+      },
+      {
+        "id": "SW-SBB-IN-1",
+        "type": "SWITCH",
+        "position": {
+          "x": 1575,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-SBB-IN-2",
+        "type": "SWITCH",
+        "position": {
+          "x": 1575,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-SBB-X-DN",
+        "type": "SWITCH",
+        "position": {
+          "x": 1625,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-SBB-UPM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1655,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-DNM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1655,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SBB-PF-1",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1660,
+          "y": 110
+        }
+      },
+      {
+        "id": "SBB-PF-2",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1660,
+          "y": 160
+        }
+      },
+      {
+        "id": "SBB-PF-3",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1660,
+          "y": 250
+        }
+      },
+      {
+        "id": "SBB-PF-4",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1660,
+          "y": 300
+        }
+      },
+      {
+        "id": "SIG-SBB-UPM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1705,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-DNM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1705,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-UPS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1705,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-DNS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1705,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SW-SBB-OUT-UPM",
+        "type": "SWITCH",
+        "position": {
+          "x": 1745,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-SBB-OUT-DNM",
+        "type": "SWITCH",
+        "position": {
+          "x": 1745,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-SBB-OUT-UPS",
+        "type": "SWITCH",
+        "position": {
+          "x": 1745,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-SBB-OUT-DNS",
+        "type": "SWITCH",
+        "position": {
+          "x": 1745,
+          "y": 300
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-SBB-BYPASS",
+        "type": "SWITCH",
+        "position": {
+          "x": 1795,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-SBB-UPM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1830,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-DNM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1830,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-UPS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1830,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-SBB-DNS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 1830,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "GZB-IN-UPM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1980,
+          "y": 110
+        }
+      },
+      {
+        "id": "GZB-IN-DNM",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1980,
+          "y": 160
+        }
+      },
+      {
+        "id": "GZB-IN-UPS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1980,
+          "y": 250
+        }
+      },
+      {
+        "id": "GZB-IN-DNS",
+        "type": "JUNCTION",
+        "position": {
+          "x": 1980,
+          "y": 300
+        }
+      },
+      {
+        "id": "SW-GZB-IN-1",
+        "type": "SWITCH",
+        "position": {
+          "x": 2015,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-GZB-IN-2",
+        "type": "SWITCH",
+        "position": {
+          "x": 2015,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-GZB-X-DN",
+        "type": "SWITCH",
+        "position": {
+          "x": 2065,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-GZB-UPM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2095,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-DNM-HOME",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2095,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "GZB-PF-1",
+        "type": "JUNCTION",
+        "position": {
+          "x": 2140,
+          "y": 110
+        }
+      },
+      {
+        "id": "GZB-PF-2",
+        "type": "JUNCTION",
+        "position": {
+          "x": 2140,
+          "y": 160
+        }
+      },
+      {
+        "id": "GZB-PF-3",
+        "type": "JUNCTION",
+        "position": {
+          "x": 2140,
+          "y": 250
+        }
+      },
+      {
+        "id": "GZB-PF-4",
+        "type": "JUNCTION",
+        "position": {
+          "x": 2140,
+          "y": 300
+        }
+      },
+      {
+        "id": "SIG-GZB-UPM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2225,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-DNM-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2225,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-UPS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2225,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-DNS-START",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2225,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SW-GZB-OUT-UPM",
+        "type": "SWITCH",
+        "position": {
+          "x": 2265,
+          "y": 110
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-GZB-OUT-DNM",
+        "type": "SWITCH",
+        "position": {
+          "x": 2265,
+          "y": 160
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-GZB-OUT-UPS",
+        "type": "SWITCH",
+        "position": {
+          "x": 2265,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-GZB-OUT-DNS",
+        "type": "SWITCH",
+        "position": {
+          "x": 2265,
+          "y": 300
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SW-GZB-BYPASS",
+        "type": "SWITCH",
+        "position": {
+          "x": 2315,
+          "y": 250
+        },
+        "state": "NORMAL",
+        "isLocked": false
+      },
+      {
+        "id": "SIG-GZB-UPM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2350,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-DNM-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2350,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-UPS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2350,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-GZB-DNS-ADV",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2350,
+          "y": 300
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-EXIT-UPM",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2420,
+          "y": 110
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-EXIT-DNM",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2420,
+          "y": 160
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-EXIT-UPS",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2420,
+          "y": 250
+        },
+        "state": "RED"
+      },
+      {
+        "id": "SIG-EXIT-DNS",
+        "type": "SIGNAL",
+        "position": {
+          "x": 2420,
+          "y": 300
+        },
+        "state": "RED"
+      }
+    ],
+    "trackSegments": [
+      {
+        "id": "BLK-SIG-ENT-DLI-UPM",
+        "startNodeId": "SIG-ENTRY-UPM",
+        "endNodeId": "DLI-IN-UPM",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ENT-DLI-DNM",
+        "startNodeId": "SIG-ENTRY-DNM",
+        "endNodeId": "DLI-IN-DNM",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ENT-DLI-UPS",
+        "startNodeId": "SIG-ENTRY-UPS",
+        "endNodeId": "DLI-IN-UPS",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ENT-DLI-DNS",
+        "startNodeId": "SIG-ENTRY-DNS",
+        "endNodeId": "DLI-IN-DNS",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-THROAT-1",
+        "startNodeId": "DLI-IN-UPM",
+        "endNodeId": "SW-DLI-IN-1",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-THROAT-2",
+        "startNodeId": "DLI-IN-DNM",
+        "endNodeId": "SW-DLI-IN-2",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-DLI-UP-DN",
+        "startNodeId": "SW-DLI-IN-1",
+        "endNodeId": "SW-DLI-X-DN",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-DN-THROAT",
+        "startNodeId": "SW-DLI-IN-2",
+        "endNodeId": "SW-DLI-X-DN",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-HOME-1",
+        "startNodeId": "SW-DLI-IN-1",
+        "endNodeId": "SIG-DLI-UPM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-HOME-2",
+        "startNodeId": "SW-DLI-X-DN",
+        "endNodeId": "SIG-DLI-DNM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DLI-LINE1",
+        "startNodeId": "SIG-DLI-UPM-HOME",
+        "endNodeId": "DLI-PF-1",
+        "trackType": "PLATFORM",
+        "line": "UP_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DLI-LINE2",
+        "startNodeId": "SIG-DLI-DNM-HOME",
+        "endNodeId": "DLI-PF-2",
+        "trackType": "PLATFORM",
+        "line": "DN_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DLI-LINE3",
+        "startNodeId": "DLI-IN-UPS",
+        "endNodeId": "DLI-PF-3",
+        "trackType": "PLATFORM",
+        "line": "UP_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DLI-LINE4",
+        "startNodeId": "DLI-IN-DNS",
+        "endNodeId": "DLI-PF-4",
+        "trackType": "PLATFORM",
+        "line": "DN_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-PF-OUT-1",
+        "startNodeId": "DLI-PF-1",
+        "endNodeId": "SIG-DLI-UPM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-PF-OUT-2",
+        "startNodeId": "DLI-PF-2",
+        "endNodeId": "SIG-DLI-DNM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-PF-OUT-3",
+        "startNodeId": "DLI-PF-3",
+        "endNodeId": "SIG-DLI-UPS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-PF-OUT-4",
+        "startNodeId": "DLI-PF-4",
+        "endNodeId": "SIG-DLI-DNS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-STARTER-1",
+        "startNodeId": "SIG-DLI-UPM-START",
+        "endNodeId": "SW-DLI-OUT-UPM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-STARTER-2",
+        "startNodeId": "SIG-DLI-DNM-START",
+        "endNodeId": "SW-DLI-OUT-DNM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-STARTER-3",
+        "startNodeId": "SIG-DLI-UPS-START",
+        "endNodeId": "SW-DLI-OUT-UPS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-STARTER-4",
+        "startNodeId": "SIG-DLI-DNS-START",
+        "endNodeId": "SW-DLI-OUT-DNS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-DLI-MAIN-TO-SLOW",
+        "startNodeId": "SW-DLI-OUT-UPM",
+        "endNodeId": "SW-DLI-BYPASS",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-SLOW-BYPASS",
+        "startNodeId": "SW-DLI-OUT-UPS",
+        "endNodeId": "SW-DLI-BYPASS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-ADV-1",
+        "startNodeId": "SW-DLI-OUT-UPM",
+        "endNodeId": "SIG-DLI-UPM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-ADV-2",
+        "startNodeId": "SW-DLI-OUT-DNM",
+        "endNodeId": "SIG-DLI-DNM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-ADV-3",
+        "startNodeId": "SW-DLI-BYPASS",
+        "endNodeId": "SIG-DLI-UPS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DLI-ADV-4",
+        "startNodeId": "SW-DLI-OUT-DNS",
+        "endNodeId": "SIG-DLI-DNS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DLI-DSA-UPM",
+        "startNodeId": "SIG-DLI-UPM-ADV",
+        "endNodeId": "DSA-IN-UPM",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DLI-DSA-DNM",
+        "startNodeId": "SIG-DLI-DNM-ADV",
+        "endNodeId": "DSA-IN-DNM",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DLI-DSA-UPS",
+        "startNodeId": "SIG-DLI-UPS-ADV",
+        "endNodeId": "DSA-IN-UPS",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DLI-DSA-DNS",
+        "startNodeId": "SIG-DLI-DNS-ADV",
+        "endNodeId": "DSA-IN-DNS",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-THROAT-1",
+        "startNodeId": "DSA-IN-UPM",
+        "endNodeId": "SW-DSA-IN-1",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-THROAT-2",
+        "startNodeId": "DSA-IN-DNM",
+        "endNodeId": "SW-DSA-IN-2",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-DSA-UP-DN",
+        "startNodeId": "SW-DSA-IN-1",
+        "endNodeId": "SW-DSA-X-DN",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-DN-THROAT",
+        "startNodeId": "SW-DSA-IN-2",
+        "endNodeId": "SW-DSA-X-DN",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-HOME-1",
+        "startNodeId": "SW-DSA-IN-1",
+        "endNodeId": "SIG-DSA-UPM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-HOME-2",
+        "startNodeId": "SW-DSA-X-DN",
+        "endNodeId": "SIG-DSA-DNM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DSA-LINE1",
+        "startNodeId": "SIG-DSA-UPM-HOME",
+        "endNodeId": "DSA-PF-1",
+        "trackType": "PLATFORM",
+        "line": "UP_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DSA-LINE2",
+        "startNodeId": "SIG-DSA-DNM-HOME",
+        "endNodeId": "DSA-PF-2",
+        "trackType": "PLATFORM",
+        "line": "DN_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DSA-LINE3",
+        "startNodeId": "DSA-IN-UPS",
+        "endNodeId": "DSA-PF-3",
+        "trackType": "PLATFORM",
+        "line": "UP_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-DSA-LINE4",
+        "startNodeId": "DSA-IN-DNS",
+        "endNodeId": "DSA-PF-4",
+        "trackType": "PLATFORM",
+        "line": "DN_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-PF-OUT-1",
+        "startNodeId": "DSA-PF-1",
+        "endNodeId": "SIG-DSA-UPM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-PF-OUT-2",
+        "startNodeId": "DSA-PF-2",
+        "endNodeId": "SIG-DSA-DNM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-PF-OUT-3",
+        "startNodeId": "DSA-PF-3",
+        "endNodeId": "SIG-DSA-UPS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-PF-OUT-4",
+        "startNodeId": "DSA-PF-4",
+        "endNodeId": "SIG-DSA-DNS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-STARTER-1",
+        "startNodeId": "SIG-DSA-UPM-START",
+        "endNodeId": "SW-DSA-OUT-UPM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-STARTER-2",
+        "startNodeId": "SIG-DSA-DNM-START",
+        "endNodeId": "SW-DSA-OUT-DNM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-STARTER-3",
+        "startNodeId": "SIG-DSA-UPS-START",
+        "endNodeId": "SW-DSA-OUT-UPS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-STARTER-4",
+        "startNodeId": "SIG-DSA-DNS-START",
+        "endNodeId": "SW-DSA-OUT-DNS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-DSA-MAIN-TO-SLOW",
+        "startNodeId": "SW-DSA-OUT-UPM",
+        "endNodeId": "SW-DSA-BYPASS",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-SLOW-BYPASS",
+        "startNodeId": "SW-DSA-OUT-UPS",
+        "endNodeId": "SW-DSA-BYPASS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-ADV-1",
+        "startNodeId": "SW-DSA-OUT-UPM",
+        "endNodeId": "SIG-DSA-UPM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-ADV-2",
+        "startNodeId": "SW-DSA-OUT-DNM",
+        "endNodeId": "SIG-DSA-DNM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-ADV-3",
+        "startNodeId": "SW-DSA-BYPASS",
+        "endNodeId": "SIG-DSA-UPS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-DSA-ADV-4",
+        "startNodeId": "SW-DSA-OUT-DNS",
+        "endNodeId": "SIG-DSA-DNS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DSA-ANVR-UPM",
+        "startNodeId": "SIG-DSA-UPM-ADV",
+        "endNodeId": "ANVR-IN-UPM",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DSA-ANVR-DNM",
+        "startNodeId": "SIG-DSA-DNM-ADV",
+        "endNodeId": "ANVR-IN-DNM",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DSA-ANVR-UPS",
+        "startNodeId": "SIG-DSA-UPS-ADV",
+        "endNodeId": "ANVR-IN-UPS",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-DSA-ANVR-DNS",
+        "startNodeId": "SIG-DSA-DNS-ADV",
+        "endNodeId": "ANVR-IN-DNS",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-THROAT-1",
+        "startNodeId": "ANVR-IN-UPM",
+        "endNodeId": "SW-ANVR-IN-1",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-THROAT-2",
+        "startNodeId": "ANVR-IN-DNM",
+        "endNodeId": "SW-ANVR-IN-2",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-ANVR-UP-DN",
+        "startNodeId": "SW-ANVR-IN-1",
+        "endNodeId": "SW-ANVR-X-DN",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-DN-THROAT",
+        "startNodeId": "SW-ANVR-IN-2",
+        "endNodeId": "SW-ANVR-X-DN",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-HOME-1",
+        "startNodeId": "SW-ANVR-IN-1",
+        "endNodeId": "SIG-ANVR-UPM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-HOME-2",
+        "startNodeId": "SW-ANVR-X-DN",
+        "endNodeId": "SIG-ANVR-DNM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-ANVR-LINE1",
+        "startNodeId": "SIG-ANVR-UPM-HOME",
+        "endNodeId": "ANVR-PF-1",
+        "trackType": "PLATFORM",
+        "line": "UP_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-ANVR-LINE2",
+        "startNodeId": "SIG-ANVR-DNM-HOME",
+        "endNodeId": "ANVR-PF-2",
+        "trackType": "PLATFORM",
+        "line": "DN_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-ANVR-LINE3",
+        "startNodeId": "ANVR-IN-UPS",
+        "endNodeId": "ANVR-PF-3",
+        "trackType": "PLATFORM",
+        "line": "UP_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-ANVR-LINE4",
+        "startNodeId": "ANVR-IN-DNS",
+        "endNodeId": "ANVR-PF-4",
+        "trackType": "PLATFORM",
+        "line": "DN_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-PF-OUT-1",
+        "startNodeId": "ANVR-PF-1",
+        "endNodeId": "SIG-ANVR-UPM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-PF-OUT-2",
+        "startNodeId": "ANVR-PF-2",
+        "endNodeId": "SIG-ANVR-DNM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-PF-OUT-3",
+        "startNodeId": "ANVR-PF-3",
+        "endNodeId": "SIG-ANVR-UPS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-PF-OUT-4",
+        "startNodeId": "ANVR-PF-4",
+        "endNodeId": "SIG-ANVR-DNS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-STARTER-1",
+        "startNodeId": "SIG-ANVR-UPM-START",
+        "endNodeId": "SW-ANVR-OUT-UPM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-STARTER-2",
+        "startNodeId": "SIG-ANVR-DNM-START",
+        "endNodeId": "SW-ANVR-OUT-DNM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-STARTER-3",
+        "startNodeId": "SIG-ANVR-UPS-START",
+        "endNodeId": "SW-ANVR-OUT-UPS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-STARTER-4",
+        "startNodeId": "SIG-ANVR-DNS-START",
+        "endNodeId": "SW-ANVR-OUT-DNS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-ANVR-MAIN-TO-SLOW",
+        "startNodeId": "SW-ANVR-OUT-UPM",
+        "endNodeId": "SW-ANVR-BYPASS",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-SLOW-BYPASS",
+        "startNodeId": "SW-ANVR-OUT-UPS",
+        "endNodeId": "SW-ANVR-BYPASS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-ADV-1",
+        "startNodeId": "SW-ANVR-OUT-UPM",
+        "endNodeId": "SIG-ANVR-UPM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-ADV-2",
+        "startNodeId": "SW-ANVR-OUT-DNM",
+        "endNodeId": "SIG-ANVR-DNM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-ADV-3",
+        "startNodeId": "SW-ANVR-BYPASS",
+        "endNodeId": "SIG-ANVR-UPS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-ANVR-ADV-4",
+        "startNodeId": "SW-ANVR-OUT-DNS",
+        "endNodeId": "SIG-ANVR-DNS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ANV-SBB-UPM",
+        "startNodeId": "SIG-ANVR-UPM-ADV",
+        "endNodeId": "SBB-IN-UPM",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ANV-SBB-DNM",
+        "startNodeId": "SIG-ANVR-DNM-ADV",
+        "endNodeId": "SBB-IN-DNM",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ANV-SBB-UPS",
+        "startNodeId": "SIG-ANVR-UPS-ADV",
+        "endNodeId": "SBB-IN-UPS",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-ANV-SBB-DNS",
+        "startNodeId": "SIG-ANVR-DNS-ADV",
+        "endNodeId": "SBB-IN-DNS",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-THROAT-1",
+        "startNodeId": "SBB-IN-UPM",
+        "endNodeId": "SW-SBB-IN-1",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-THROAT-2",
+        "startNodeId": "SBB-IN-DNM",
+        "endNodeId": "SW-SBB-IN-2",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-SBB-UP-DN",
+        "startNodeId": "SW-SBB-IN-1",
+        "endNodeId": "SW-SBB-X-DN",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-DN-THROAT",
+        "startNodeId": "SW-SBB-IN-2",
+        "endNodeId": "SW-SBB-X-DN",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-HOME-1",
+        "startNodeId": "SW-SBB-IN-1",
+        "endNodeId": "SIG-SBB-UPM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-HOME-2",
+        "startNodeId": "SW-SBB-X-DN",
+        "endNodeId": "SIG-SBB-DNM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-SBB-LINE1",
+        "startNodeId": "SIG-SBB-UPM-HOME",
+        "endNodeId": "SBB-PF-1",
+        "trackType": "PLATFORM",
+        "line": "UP_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-SBB-LINE2",
+        "startNodeId": "SIG-SBB-DNM-HOME",
+        "endNodeId": "SBB-PF-2",
+        "trackType": "PLATFORM",
+        "line": "DN_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-SBB-LINE3",
+        "startNodeId": "SBB-IN-UPS",
+        "endNodeId": "SBB-PF-3",
+        "trackType": "PLATFORM",
+        "line": "UP_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-SBB-LINE4",
+        "startNodeId": "SBB-IN-DNS",
+        "endNodeId": "SBB-PF-4",
+        "trackType": "PLATFORM",
+        "line": "DN_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-PF-OUT-1",
+        "startNodeId": "SBB-PF-1",
+        "endNodeId": "SIG-SBB-UPM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-PF-OUT-2",
+        "startNodeId": "SBB-PF-2",
+        "endNodeId": "SIG-SBB-DNM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-PF-OUT-3",
+        "startNodeId": "SBB-PF-3",
+        "endNodeId": "SIG-SBB-UPS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-PF-OUT-4",
+        "startNodeId": "SBB-PF-4",
+        "endNodeId": "SIG-SBB-DNS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-STARTER-1",
+        "startNodeId": "SIG-SBB-UPM-START",
+        "endNodeId": "SW-SBB-OUT-UPM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-STARTER-2",
+        "startNodeId": "SIG-SBB-DNM-START",
+        "endNodeId": "SW-SBB-OUT-DNM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-STARTER-3",
+        "startNodeId": "SIG-SBB-UPS-START",
+        "endNodeId": "SW-SBB-OUT-UPS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-STARTER-4",
+        "startNodeId": "SIG-SBB-DNS-START",
+        "endNodeId": "SW-SBB-OUT-DNS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-SBB-MAIN-TO-SLOW",
+        "startNodeId": "SW-SBB-OUT-UPM",
+        "endNodeId": "SW-SBB-BYPASS",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-SLOW-BYPASS",
+        "startNodeId": "SW-SBB-OUT-UPS",
+        "endNodeId": "SW-SBB-BYPASS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-ADV-1",
+        "startNodeId": "SW-SBB-OUT-UPM",
+        "endNodeId": "SIG-SBB-UPM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-ADV-2",
+        "startNodeId": "SW-SBB-OUT-DNM",
+        "endNodeId": "SIG-SBB-DNM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-ADV-3",
+        "startNodeId": "SW-SBB-BYPASS",
+        "endNodeId": "SIG-SBB-UPS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-SBB-ADV-4",
+        "startNodeId": "SW-SBB-OUT-DNS",
+        "endNodeId": "SIG-SBB-DNS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-SBB-GZB-UPM",
+        "startNodeId": "SIG-SBB-UPM-ADV",
+        "endNodeId": "GZB-IN-UPM",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-SBB-GZB-DNM",
+        "startNodeId": "SIG-SBB-DNM-ADV",
+        "endNodeId": "GZB-IN-DNM",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_MAIN",
+        "speedLimit": 130,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-SBB-GZB-UPS",
+        "startNodeId": "SIG-SBB-UPS-ADV",
+        "endNodeId": "GZB-IN-UPS",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-SIG-SBB-GZB-DNS",
+        "startNodeId": "SIG-SBB-DNS-ADV",
+        "endNodeId": "GZB-IN-DNS",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_SLOW",
+        "speedLimit": 100,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-THROAT-1",
+        "startNodeId": "GZB-IN-UPM",
+        "endNodeId": "SW-GZB-IN-1",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-THROAT-2",
+        "startNodeId": "GZB-IN-DNM",
+        "endNodeId": "SW-GZB-IN-2",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-GZB-UP-DN",
+        "startNodeId": "SW-GZB-IN-1",
+        "endNodeId": "SW-GZB-X-DN",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-DN-THROAT",
+        "startNodeId": "SW-GZB-IN-2",
+        "endNodeId": "SW-GZB-X-DN",
+        "trackType": "STATION_THROAT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-HOME-1",
+        "startNodeId": "SW-GZB-IN-1",
+        "endNodeId": "SIG-GZB-UPM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-HOME-2",
+        "startNodeId": "SW-GZB-X-DN",
+        "endNodeId": "SIG-GZB-DNM-HOME",
+        "trackType": "STATION_APPROACH",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-GZB-LINE1",
+        "startNodeId": "SIG-GZB-UPM-HOME",
+        "endNodeId": "GZB-PF-1",
+        "trackType": "PLATFORM",
+        "line": "UP_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-GZB-LINE2",
+        "startNodeId": "SIG-GZB-DNM-HOME",
+        "endNodeId": "GZB-PF-2",
+        "trackType": "PLATFORM",
+        "line": "DN_MAIN",
+        "speedLimit": 50,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-GZB-LINE3",
+        "startNodeId": "GZB-IN-UPS",
+        "endNodeId": "GZB-PF-3",
+        "trackType": "PLATFORM",
+        "line": "UP_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "PF-GZB-LINE4",
+        "startNodeId": "GZB-IN-DNS",
+        "endNodeId": "GZB-PF-4",
+        "trackType": "PLATFORM",
+        "line": "DN_SLOW",
+        "speedLimit": 40,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-PF-OUT-1",
+        "startNodeId": "GZB-PF-1",
+        "endNodeId": "SIG-GZB-UPM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-PF-OUT-2",
+        "startNodeId": "GZB-PF-2",
+        "endNodeId": "SIG-GZB-DNM-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-PF-OUT-3",
+        "startNodeId": "GZB-PF-3",
+        "endNodeId": "SIG-GZB-UPS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-PF-OUT-4",
+        "startNodeId": "GZB-PF-4",
+        "endNodeId": "SIG-GZB-DNS-START",
+        "trackType": "PLATFORM_EXIT",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-STARTER-1",
+        "startNodeId": "SIG-GZB-UPM-START",
+        "endNodeId": "SW-GZB-OUT-UPM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-STARTER-2",
+        "startNodeId": "SIG-GZB-DNM-START",
+        "endNodeId": "SW-GZB-OUT-DNM",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-STARTER-3",
+        "startNodeId": "SIG-GZB-UPS-START",
+        "endNodeId": "SW-GZB-OUT-UPS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-STARTER-4",
+        "startNodeId": "SIG-GZB-DNS-START",
+        "endNodeId": "SW-GZB-OUT-DNS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "XO-GZB-MAIN-TO-SLOW",
+        "startNodeId": "SW-GZB-OUT-UPM",
+        "endNodeId": "SW-GZB-BYPASS",
+        "trackType": "CROSSOVER",
+        "line": "UP_MAIN",
+        "speedLimit": 30,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-SLOW-BYPASS",
+        "startNodeId": "SW-GZB-OUT-UPS",
+        "endNodeId": "SW-GZB-BYPASS",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-ADV-1",
+        "startNodeId": "SW-GZB-OUT-UPM",
+        "endNodeId": "SIG-GZB-UPM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-ADV-2",
+        "startNodeId": "SW-GZB-OUT-DNM",
+        "endNodeId": "SIG-GZB-DNM-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-ADV-3",
+        "startNodeId": "SW-GZB-BYPASS",
+        "endNodeId": "SIG-GZB-UPS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "TRK-GZB-ADV-4",
+        "startNodeId": "SW-GZB-OUT-DNS",
+        "endNodeId": "SIG-GZB-DNS-ADV",
+        "trackType": "MAIN",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-GZB-OUT-UPM",
+        "startNodeId": "SIG-GZB-UPM-ADV",
+        "endNodeId": "SIG-EXIT-UPM",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-GZB-OUT-DNM",
+        "startNodeId": "SIG-GZB-DNM-ADV",
+        "endNodeId": "SIG-EXIT-DNM",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_MAIN",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-GZB-OUT-UPS",
+        "startNodeId": "SIG-GZB-UPS-ADV",
+        "endNodeId": "SIG-EXIT-UPS",
+        "trackType": "BLOCK_SECTION",
+        "line": "UP_SLOW",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      },
+      {
+        "id": "BLK-GZB-OUT-DNS",
+        "startNodeId": "SIG-GZB-DNS-ADV",
+        "endNodeId": "SIG-EXIT-DNS",
+        "trackType": "BLOCK_SECTION",
+        "line": "DN_SLOW",
+        "speedLimit": 110,
+        "length": 1000,
+        "status": "CLEAR",
+        "isOccupied": false
+      }
+    ]
+  }
+}

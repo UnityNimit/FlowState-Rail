@@ -9,6 +9,9 @@ if sys.platform == "win32":
         pass
 
 STATION_ALIASES = {
+    'corridor': 'corridor',
+    'delhi_gzb': 'corridor',
+    'delhi_corridor': 'corridor',
     'gzb': 'ghaziabad',
     'ghaziabad': 'ghaziabad',
     'sbb': 'shahibabad',
@@ -175,6 +178,15 @@ class Simulation:
         return [self._convert_node_path_to_segment_path(p) for p in node_paths if p]
 
     def _find_all_paths_bfs(self, start, end, max_paths=6):
+        start_node = self.nodes_map.get(start)
+        end_node = self.nodes_map.get(end)
+        desired_dir = None
+        if start_node and end_node:
+            if start_node['position']['x'] < end_node['position']['x']:
+                desired_dir = 'EAST'
+            elif start_node['position']['x'] > end_node['position']['x']:
+                desired_dir = 'WEST'
+
         paths, queue = [], deque([[start]])
         while queue and len(paths) < max_paths:
             path = queue.popleft()
@@ -186,6 +198,9 @@ class Simulation:
                 seg = self.segments_map.get(seg_id, {})
                 if seg.get('status') == 'FAULTY': continue
                 if self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
+                    continue
+                seg_dir = seg.get('direction', 'BI')
+                if desired_dir and seg_dir != 'BI' and seg_dir != desired_dir:
                     continue
                 if neighbor['node'] not in path:
                     new_path = list(path); new_path.append(neighbor['node']); queue.append(new_path)
@@ -212,7 +227,7 @@ class Simulation:
         return node_path
 
     def _spawn_trains(self):
-        max_spawn_per_tick = 3
+        max_spawn_per_tick = 6
         eligible = []
         for train_data in self.master_schedule:
             train_id = str(train_data.get('Train No'))
@@ -260,7 +275,7 @@ class Simulation:
         for train in list(self.active_trains):
             if train.get('state') != "RUNNING": continue
 
-            travel_time = 30
+            travel_time = 14
             increment = 1.0 / travel_time
             prev_pos = train['positionOnSegment']
             train['positionOnSegment'] += increment * self.tick_rate * self.sim_speed
@@ -302,11 +317,11 @@ class Simulation:
             train['state'] = 'EXITED'
             return
 
-        if arrived_at_node_id.startswith("S-PF-"):
+        if arrived_at_node_id.startswith("S-PF-") or "BERTH" in arrived_at_node_id or "PF-" in arrived_at_node_id:
             train['state'] = 'BOARDING_PASSENGERS'
             train['speed_kph'] = 0
-            train['boarding_timer_ends_at'] = self.current_time_seconds + 100
-            print(f"  -> boarding Train {train['id']} at {arrived_at_node_id}. Waiting for 100s.")
+            train['boarding_timer_ends_at'] = self.current_time_seconds + 12
+            print(f"  -> boarding Train {train['id']} at {arrived_at_node_id}. Waiting for 12s.")
         else:
             train['state'] = 'STOPPED_AWAITING_CLEARANCE'
             train['speed_kph'] = 0

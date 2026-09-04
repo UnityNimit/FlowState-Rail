@@ -12,7 +12,7 @@ import socketService from './services/socketService';
 const DashboardLayout = () => {
     // --- State initialized from sessionStorage for refresh-proof UI ---
     const [selectedStation, setSelectedStation] = useState(
-        () => sessionStorage.getItem('selectedStation') || 'DLI'
+        () => sessionStorage.getItem('selectedStation') || 'CORRIDOR'
     );
     const [simulationStatus, setSimulationStatus] = useState(
         () => sessionStorage.getItem('simulationStatus') || 'stopped'

@@ -383,9 +383,13 @@ async def simulation_loop(simulation_instance, optimizer_instance):
                 if trains_needing_plan and not is_optimizing and getattr(simulation_instance, 'plan_needed', False):
                     is_optimizing = True
                     simulation_instance.plan_needed = False
-                    await sio.emit('ai:plan-thinking')
                     try:
-                        plan = optimizer_instance.generate_plan(trains_needing_plan, current_state, current_ai_priorities)
+                        plan = await asyncio.to_thread(
+                            optimizer_instance.generate_plan,
+                            trains_needing_plan,
+                            current_state,
+                            current_ai_priorities
+                        )
                     except Exception as e:
                         print("❌ Exception during optimizer.generate_plan():")
                         traceback.print_exc()

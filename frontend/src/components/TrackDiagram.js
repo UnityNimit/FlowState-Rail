@@ -1,29 +1,59 @@
-// TrackDiagram.js (fixed)
-import React from 'react';
+// TrackDiagram.js - Authentic Indian Railways Electronic Interlocking (EI) VDU Digital Twin
+import React, { useState, useEffect } from 'react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import './TrackDiagram.css';
 
-// NEW: Color map based on your provided high-priority palette.
 const trainColorMap = new Map([
-    ['Shatabdi', '#FF0000'],
-    ['Rajdhani', '#0000FF'],
-    ['Passenger', '#228B22'],
-    ['DMU', '#FFD700'],
-    ['MEMU', '#FF8C00'],
-    ['SF Express', '#800080'],
-    ['Mail', '#A52A2A'],
-    ['Express', '#808080']
+    ['Shatabdi', '#38bdf8'],
+    ['Rajdhani', '#c084fc'],
+    ['Vande Bharat', '#00f0ff'],
+    ['Passenger', '#34d399'],
+    ['DMU', '#facc15'],
+    ['MEMU', '#fb923c'],
+    ['SF Express', '#f43f5e'],
+    ['Mail', '#818cf8'],
+    ['Express', '#60a5fa'],
+    ['Freight', '#94a3b8']
 ]);
 
-// The getTrainColor function is now simpler and uses the new map.
 const getTrainColor = (trainType = '') => {
-    return trainColorMap.get(trainType.trim()) || '#95a5a6'; // Default gray for any other type
+    return trainColorMap.get(trainType.trim()) || '#38bdf8';
 };
 
-const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames = true, showSpeeds = false }) => {
-    if (!network) return null;
+const TrackDiagram = ({ 
+    network, 
+    trains = [], 
+    onSignalClick, 
+    onTrackClick, 
+    showNames = false, 
+    showSpeeds = false,
+    activeMaintenanceBlocks = []
+}) => {
+    const [errTimer, setErrTimer] = useState(120);
+    const [selectedPoint, setSelectedPoint] = useState(null);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setErrTimer(prev => (prev > 0 ? prev - 1 : 120));
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    if (!network || !network.nodes || !network.trackSegments) return null;
 
     const nodesMap = new Map(network.nodes.map(node => [node.id, node]));
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    network.nodes.forEach(n => {
+        if (n.position.x < minX) minX = n.position.x;
+        if (n.position.x > maxX) maxX = n.position.x;
+        if (n.position.y < minY) minY = n.position.y;
+        if (n.position.y > maxY) maxY = n.position.y;
+    });
+
+    const viewBoxWidth = Math.max(1400, maxX - minX + 280);
+    const viewBoxHeight = Math.max(450, maxY + 140);
+    const originX = Math.max(0, minX - 120);
 
     const lockedSegmentIds = new Set();
     if (trains) {
@@ -31,6 +61,8 @@ const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames 
             if (train.route) train.route.forEach(id => lockedSegmentIds.add(id));
         });
     }
+
+    const blockedSet = new Set(activeMaintenanceBlocks);
 
     const calculateTrainPosition = (train) => {
         if (!train.currentSegmentId || !train.route) return null;
@@ -53,116 +85,352 @@ const TrackDiagram = ({ network, trains, onSignalClick, onTrackClick, showNames 
         const endNode = nodesMap.get(endNodeId);
         if (!startNode || !endNode) return null;
 
-        const x = startNode.position.x + (endNode.position.x - startNode.position.x) * train.positionOnSegment;
-        const y = startNode.position.y + (endNode.position.y - startNode.position.y) * train.positionOnSegment;
-        return { x, y };
+        const posFraction = Math.max(0, Math.min(1, train.positionOnSegment || 0));
+        const x = startNode.position.x + (endNode.position.x - startNode.position.x) * posFraction;
+        const y = startNode.position.y + (endNode.position.y - startNode.position.y) * posFraction;
+        const angle = Math.atan2(endNode.position.y - startNode.position.y, endNode.position.x - startNode.position.x) * (180 / Math.PI);
+        return { x, y, angle };
     };
 
+    const stationMeta = network.station || null;
+    const platforms = stationMeta?.platforms || [];
+    const tracksMeta = stationMeta?.tracksMeta || [];
+
     return (
-        <TransformWrapper limitToBounds={false} minScale={0.2} maxScale={15}>
-            <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
-                <svg width="1200" height="400" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet">
-                    {/* VISUAL TWEAK: Inline styles are updated for a cleaner look */}
-                    <defs>
-                        <style>{`
-                            .track { stroke: #4b5563; stroke-width: 3; fill: none; transition: stroke 0.3s; cursor: pointer; }
-                            .track-occupied { stroke: var(--status-red); stroke-width: 4.5; }
-                            .track-route-locked { stroke: var(--accent-cyan); stroke-width: 4; }
-                            .track-faulty { stroke: var(--status-red); stroke-width: 3; stroke-dasharray: 8 4; }
-                            .track-weather-bad { stroke: #1f2937; stroke-width: 4; stroke-opacity: 0.85; }
-                            .signal { stroke: #111827; stroke-width: 2px; cursor: pointer; }
-                            .signal-red { fill: #f87171; }
-                            .signal-green { fill: #4ade80; }
-                            .point { fill: var(--accent-yellow); stroke: #1f2326; stroke-width: 1.5px; }
-                            .label { fill: #cbd5e1; font-size: 11px; text-anchor: middle; pointer-events: none; }
-                            .train-body { stroke: #111827; stroke-width: 2px; rx: 5px; }
-                            .train-label { text-anchor: middle; dominant-baseline: middle; fill: white; font-size: 9px; font-weight: bold; pointer-events: none; text-shadow: 0 0 3px black; }
-                            .speed-label { font-size: 9px; fill: #e5e7eb; pointer-events: none; }
-                        `}</style>
-                    </defs>
+        <div className="vdu-screen-container">
+            {/* Authentic Indian Railways VDU Top Control Console */}
+            <div className="vdu-top-bar">
+                <div className="vdu-header-left">
+                    <span className="ei-system-badge">MEDHA / HITACHI EI</span>
+                    <span className="ei-doc-badge">NR-DLI-SIP-2026/01</span>
+                    <span className="ei-clock">⏰ 00:00:00 LIVE</span>
+                </div>
 
-                    <g id="track-segments">
-                        {network.trackSegments.map(segment => {
-                            const startNode = nodesMap.get(segment.startNodeId);
-                            const endNode = nodesMap.get(segment.endNodeId);
-                            if (!startNode || !endNode) return null;
+                <div className="vdu-station-titleplate">
+                    <div className="title-hindi">उत्तर रेलवे · पुरानी दिल्ली जंक्शन</div>
+                    <div className="title-main">OLD DELHI JUNCTION (DLI) · 16 PLATFORMS ROUTE RELAY INTERLOCKING</div>
+                    <div className="title-sub">ELECTRONIC INTERLOCKING VDU OPERATIONAL CONSOLE · CHENNAI/DELHI DIVISION STANDARDS</div>
+                </div>
 
-                            let classNames = 'track';
-                            if (segment.status === 'FAULTY') {
-                                classNames += ' track-faulty';
-                            } else if (segment.weather === 'BAD') {
-                                classNames += ' track-weather-bad';
-                            } else if (segment.isOccupied) {
-                                classNames += ' track-occupied';
-                            } else if (lockedSegmentIds.has(segment.id)) {
-                                classNames += ' track-route-locked';
-                            }
+                <div className="vdu-header-right">
+                    <span className="north-arrow">⬆ N</span>
+                    <span className="system-health-ok">● SYSTEM HEALTH: NORMAL</span>
+                    <span className="block-status-tag">CTC DUAL DUPLEX</span>
+                </div>
+            </div>
 
-                            const midX = (startNode.position.x + endNode.position.x) / 2;
-                            const midY = (startNode.position.y + endNode.position.y) / 2;
-                            const speedText = `60`;
+            {/* Authentic VDU Hardware Operation Push-Buttons Row (As in the real Photo!) */}
+            <div className="vdu-buttons-strip">
+                <button className="vdu-btn btn-sig-clear">SIGNAL CLEAR (KL)</button>
+                <button className="vdu-btn btn-sig-cancel">CANCEL ROUTE (KR)</button>
+                <button className="vdu-btn btn-err">
+                    EMERGENCY ROUTE RELEASE <span className="timer-tag">({errTimer}s)</span>
+                </button>
+                <button className="vdu-btn btn-co">CALLING ON (CO)</button>
+                <button className="vdu-btn btn-epo">EMERGENCY POINT (EPO)</button>
+                <button className="vdu-btn btn-ch">CRANK HANDLE UNLOCK</button>
+                <button className="vdu-btn btn-ac-reset">AXLE COUNTER RESET</button>
+                <button className="vdu-btn btn-ohe">25kV OHE ENERGIZED</button>
+                <button className="vdu-btn btn-bdms-active">🚧 BDMS SHADOW BLOCK ACTIVE</button>
+            </div>
 
-                            return (
-                                <g key={segment.id}>
-                                    <line
-                                        x1={startNode.position.x}
-                                        y1={startNode.position.y}
-                                        x2={endNode.position.x}
-                                        y2={endNode.position.y}
-                                        className={classNames}
-                                        onClick={() => onTrackClick && onTrackClick(segment.id)}
-                                        title={`${segment.id}`}
-                                    />
-                                    {showSpeeds && <text x={midX} y={midY - 8} className="speed-label">{speedText}</text>}
-                                </g>
-                            );
-                        })}
-                    </g>
+            {/* CTC Interactive Vector Canvas */}
+            <div className="track-diagram-wrapper">
+                <TransformWrapper 
+                    limitToBounds={false} 
+                    minScale={0.2} 
+                    maxScale={8} 
+                    initialScale={0.52}
+                    centerOnInit={true}
+                >
+                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
+                        <svg 
+                            width="100%" 
+                            height="100%" 
+                            viewBox={`${originX} 0 ${viewBoxWidth} ${viewBoxHeight}`} 
+                            preserveAspectRatio="xMidYMid meet"
+                            className="ctc-svg-canvas"
+                        >
+                            <defs>
+                                <pattern id="maint-hazard" width="16" height="16" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                                    <line x1="0" y1="0" x2="0" y2="16" stroke="#f59e0b" strokeWidth="6" />
+                                    <line x1="8" y1="0" x2="8" y2="16" stroke="#1e293b" strokeWidth="6" />
+                                </pattern>
 
-                    <g id="trains">
-                         {trains && trains.filter(t => t.currentSegmentId).map(train => {
-                            const pos = calculateTrainPosition(train);
-                            if (!pos) return null;
-                            const statusSymbol = train.state === 'HOLD' ? '⏸️' : '';
-                            return (
-                                <g key={train.id} transform={`translate(${pos.x}, ${pos.y})`} className="train-group">
-                                    <rect className="train-body" fill={getTrainColor(train.type)} x="-22" y="-7" width="44" height="14" />
-                                    <text className="train-label" x="0" y="0">{train.id} {statusSymbol}</text>
-                                </g>
-                            );
-                        })}
-                    </g>
+                                <filter id="cyan-glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="3" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                                <filter id="hazard-glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="4" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                                <filter id="red-glow" x="-30%" y="-30%" width="160%" height="160%">
+                                    <feGaussianBlur stdDeviation="4" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
 
-                    {/* --- FIX: Render Order Changed --- */}
-                    {/* By rendering the nodes (signals) LAST, they will always appear ON TOP of the trains and tracks. */}
-                    <g id="nodes">
-                        {network.nodes.map(node => (
-                            <g key={node.id}>
-                                {node.type === 'SIGNAL' &&
-                                    <circle
-                                        cx={node.position.x}
-                                        cy={node.position.y}
-                                        r="6"
-                                        className={`signal ${((node.state||'RED').toUpperCase()==='GREEN') ? 'signal-green' : 'signal-red'}`}
-                                        onClick={() => onSignalClick && onSignalClick(node.id)}
-                                        title={`${node.id} (${(node.state||'RED')})`}
-                                    />
-                                }
-                                {/* VISUAL TWEAK: Switches are now rendered as diamonds for a cleaner look */}
-                                {node.type === 'SWITCH' && 
-                                    <rect 
-                                        x={node.position.x - 5} y={node.position.y - 5} 
-                                        width="10" height="10" className="point" 
-                                        transform={`rotate(45 ${node.position.x} ${node.position.y})`}
-                                    />
-                                }
-                                {showNames && <text x={node.position.x} y={node.position.y > 200 ? node.position.y + 20 : node.position.y - 10} className="label">{node.id}</text>}
+                            {/* Section Corridor Markers */}
+                            <g transform="translate(180, 42)">
+                                <rect x="-10" y="-12" width="310" height="24" rx="4" className="vdu-corridor-plate-bg" />
+                                <text className="vdu-corridor-plate-text" x="145" y="4">
+                                    ⬅️ WEST ENTRY (AMBALA / ROHTAK / REWARI)
+                                </text>
                             </g>
-                        ))}
-                    </g>
-                </svg>
-            </TransformComponent>
-        </TransformWrapper>
+                            <g transform="translate(3050, 42)">
+                                <rect x="-10" y="-12" width="320" height="24" rx="4" className="vdu-corridor-plate-bg" />
+                                <text className="vdu-corridor-plate-text" x="150" y="4">
+                                    EAST EXIT (YAMUNA BRIDGE / GHAZIABAD) ➡️
+                                </text>
+                            </g>
+
+                            {/* Passenger Platforms 1 to 16 (Authentic IR VDU Platform Bays) */}
+                            {platforms.map(pf => {
+                                const isUp = pf.direction === 'WEST';
+                                return (
+                                    <g key={pf.number} className="platform-vdu-group">
+                                        {/* Frosted Platform Island */}
+                                        <rect
+                                            x={pf.x_start}
+                                            y={pf.y - 14}
+                                            width={pf.x_end - pf.x_start}
+                                            height={28}
+                                            rx={4}
+                                            className={isUp ? "vdu-platform-bay-up" : "vdu-platform-bay-dn"}
+                                        />
+                                        {/* Platform Identification Plaque */}
+                                        <g transform={`translate(${pf.x_start + 110}, ${pf.y})`}>
+                                            <rect x="-65" y="-10" width="130" height="20" rx="3" className="vdu-pf-badge-bg" />
+                                            <text className="vdu-pf-badge-text" x="0" y="4">
+                                                {`PF ${pf.number} [${isUp ? 'UP ▲' : 'DN ▼'}]`}
+                                            </text>
+                                        </g>
+                                    </g>
+                                );
+                            })}
+
+                            {/* Left Margin: Operational Line Names & Shunting Necks */}
+                            {tracksMeta.map(tm => (
+                                <g key={tm.index} transform={`translate(20, ${tm.y})`} className="vdu-line-label">
+                                    <rect x="0" y="-9" width="210" height="18" rx="3" className="vdu-line-label-bg" />
+                                    <text x="6" y="3.5" className="vdu-line-label-text">
+                                        {tm.name}
+                                    </text>
+                                </g>
+                            ))}
+
+                            {/* Track Circuits (Clean Steel Lines / Route Yellow / Solid Red Occupied) */}
+                            <g id="track-segments">
+                                {network.trackSegments.map(segment => {
+                                    const startNode = nodesMap.get(segment.startNodeId);
+                                    const endNode = nodesMap.get(segment.endNodeId);
+                                    if (!startNode || !endNode) return null;
+
+                                    const isBlocked = segment.status === 'FAULTY' || blockedSet.has(segment.id);
+                                    const isLocked = lockedSegmentIds.has(segment.id);
+                                    const isOccupied = segment.isOccupied;
+
+                                    const midX = (startNode.position.x + endNode.position.x) / 2;
+                                    const midY = (startNode.position.y + endNode.position.y) / 2;
+
+                                    return (
+                                        <g 
+                                            key={segment.id} 
+                                            className="segment-group" 
+                                            onClick={() => onTrackClick && onTrackClick(segment.id)}
+                                        >
+                                            {/* Base Crisp White/Grey Track Circuit Line */}
+                                            <line
+                                                x1={startNode.position.x}
+                                                y1={startNode.position.y}
+                                                x2={endNode.position.x}
+                                                y2={endNode.position.y}
+                                                className="vdu-track-base"
+                                            />
+
+                                            {/* Dynamic VDU State Rendering */}
+                                            {isBlocked ? (
+                                                <>
+                                                    <line
+                                                        x1={startNode.position.x}
+                                                        y1={startNode.position.y}
+                                                        x2={endNode.position.x}
+                                                        y2={endNode.position.y}
+                                                        className="vdu-track-blocked"
+                                                        stroke="url(#maint-hazard)"
+                                                        strokeWidth="8"
+                                                    />
+                                                    <g transform={`translate(${midX}, ${midY - 14})`} className="maint-badge">
+                                                        <rect x="-56" y="-9" width="112" height="18" rx="4" className="maint-badge-bg" />
+                                                        <text x="0" y="3" className="maint-badge-text">
+                                                            🚧 BDMS BLOCK
+                                                        </text>
+                                                    </g>
+                                                </>
+                                            ) : isOccupied ? (
+                                                /* SOLID GLOWING RED (Exact Indian Railways VDU standard!) */
+                                                <line
+                                                    x1={startNode.position.x}
+                                                    y1={startNode.position.y}
+                                                    x2={endNode.position.x}
+                                                    y2={endNode.position.y}
+                                                    className="vdu-track-occupied"
+                                                    filter="url(#red-glow)"
+                                                />
+                                            ) : isLocked ? (
+                                                /* Interlocking Yellow Route Locked Line */
+                                                <line
+                                                    x1={startNode.position.x}
+                                                    y1={startNode.position.y}
+                                                    x2={endNode.position.x}
+                                                    y2={endNode.position.y}
+                                                    className="vdu-track-locked"
+                                                    filter="url(#cyan-glow)"
+                                                />
+                                            ) : null}
+
+                                            {/* Track Circuit Name Label */}
+                                            {segment.trackCircuit && (
+                                                <text x={midX} y={midY - 6} className="vdu-tc-name">
+                                                    {segment.trackCircuit}
+                                                </text>
+                                            )}
+                                        </g>
+                                    );
+                                })}
+                            </g>
+
+                            {/* Interlocking Points (Switches) & Signals */}
+                            <g id="interlocking-devices">
+                                {network.nodes.map(node => {
+                                    if (node.type === 'SIGNAL') {
+                                        const isGreen = ((node.state || 'RED').toUpperCase() === 'GREEN');
+                                        return (
+                                            <g 
+                                                key={node.id} 
+                                                transform={`translate(${node.position.x}, ${node.position.y})`}
+                                                className="vdu-signal-mast"
+                                                onClick={() => onSignalClick && onSignalClick(node.id)}
+                                            >
+                                                {/* Mast stem */}
+                                                <line x1="0" y1="0" x2="0" y2="-12" stroke="#64748b" strokeWidth="2" />
+                                                {/* Aspect Head */}
+                                                <circle
+                                                    cx="0"
+                                                    cy="-12"
+                                                    r="5"
+                                                    className={isGreen ? "vdu-signal-green" : "vdu-signal-red"}
+                                                    filter={isGreen ? "url(#cyan-glow)" : "url(#red-glow)"}
+                                                />
+                                                {showNames && (
+                                                    <text x="0" y="-18" className="vdu-device-id">
+                                                        {node.id}
+                                                    </text>
+                                                )}
+                                            </g>
+                                        );
+                                    } else if (node.type === 'SWITCH') {
+                                        return (
+                                            <g 
+                                                key={node.id} 
+                                                transform={`translate(${node.position.x}, ${node.position.y})`}
+                                                className="vdu-switch-point"
+                                                onClick={() => setSelectedPoint(node.id)}
+                                            >
+                                                {/* Point Normal/Reverse Blade */}
+                                                <polygon 
+                                                    points="-4,-4 0,-7 4,-4 0,7" 
+                                                    className="vdu-switch-blade" 
+                                                />
+                                                {showNames && (
+                                                    <text x="0" y="14" className="vdu-point-label">
+                                                        {node.id.replace('SW-', 'P')}
+                                                    </text>
+                                                )}
+                                            </g>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </g>
+
+                            {/* High-Precision Streamlined Train Capsules */}
+                            <g id="trains">
+                                {trains && trains.filter(t => t.currentSegmentId).map(train => {
+                                    const pos = calculateTrainPosition(train);
+                                    if (!pos) return null;
+                                    const color = getTrainColor(train.type);
+                                    const isHeld = train.state === 'HOLD';
+                                    const isBoarding = train.state === 'BOARDING_PASSENGERS';
+
+                                    return (
+                                        <g 
+                                            key={train.id} 
+                                            transform={`translate(${pos.x}, ${pos.y}) rotate(${pos.angle})`} 
+                                            className="vdu-train-capsule"
+                                        >
+                                            {/* Forward High-Intensity Headlight Beam */}
+                                            <polygon 
+                                                points="22,-6 56,-16 56,16 22,6" 
+                                                fill="rgba(255, 255, 255, 0.22)" 
+                                                filter="url(#cyan-glow)" 
+                                            />
+                                            {/* Train Hull */}
+                                            <rect 
+                                                x="-28" 
+                                                y="-9" 
+                                                width="56" 
+                                                height="18" 
+                                                rx="9" 
+                                                fill={color} 
+                                                className="vdu-train-hull" 
+                                            />
+                                            {/* Cockpit Visor */}
+                                            <rect x="16" y="-6" width="9" height="12" rx="3" fill="#020617" />
+                                            {/* Train ID Tag */}
+                                            <text x="-2" y="3" className="vdu-train-id-text">
+                                                {train.id} {isBoarding ? '👥' : isHeld ? '⏸' : ''}
+                                            </text>
+                                        </g>
+                                    );
+                                })}
+                            </g>
+                        </svg>
+                    </TransformComponent>
+                </TransformWrapper>
+            </div>
+
+            {/* Authentic VDU Bottom Telemetry Bar */}
+            <div className="vdu-bottom-bar">
+                <div className="telemetry-block">
+                    <span className="telemetry-label">UP MAIN BLOCK:</span>
+                    <span className="telemetry-value-clear">LINE CLEAR</span>
+                </div>
+                <div className="telemetry-block">
+                    <span className="telemetry-label">DN MAIN BLOCK:</span>
+                    <span className="telemetry-value-tol">TRAIN ON LINE (TOL)</span>
+                </div>
+                <div className="telemetry-block">
+                    <span className="telemetry-label">STATION CONTROLLER:</span>
+                    <span className="telemetry-value-auto">AUTOMATIC AI ROUTE SETTING (OR-TOOLS)</span>
+                </div>
+                <div className="telemetry-block">
+                    <span className="telemetry-label">ACTIVE TRAINS IN YARD:</span>
+                    <span className="telemetry-value-count">{trains.filter(t => t.currentSegmentId).length}</span>
+                </div>
+                <div className="telemetry-block">
+                    <span className="telemetry-label">SELECTED POINT:</span>
+                    <span className="telemetry-value-auto">{selectedPoint || 'POINT 101 (N)'}</span>
+                </div>
+                <div className="telemetry-block">
+                    <span className="telemetry-label">MAINTENANCE BLOCKS (BDMS):</span>
+                    <span className={activeMaintenanceBlocks.length > 0 ? "telemetry-value-warn" : "telemetry-value-clear"}>
+                        {activeMaintenanceBlocks.length} ACTIVE
+                    </span>
+                </div>
+            </div>
+        </div>
     );
 };
 
