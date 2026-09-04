@@ -232,6 +232,9 @@ class Simulation:
             p_rel = os.path.join('.', 'data', cand)
             if os.path.exists(p_rel):
                 return p_rel
+        corridor_fallback = os.path.join(DATA_DIR, f"corridor_{suffix}")
+        if os.path.exists(corridor_fallback):
+            return corridor_fallback
         return os.path.join(DATA_DIR, candidates[0])
 
     def _load_network_layout(self):

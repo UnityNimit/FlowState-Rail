@@ -126,18 +126,10 @@ const DashboardLayout = () => {
             </span>
           </Link>
 
-          <select
-            value={selectedStation}
-            onChange={(e) => setSelectedStation(e.target.value)}
-            className="hud-station-select"
-            disabled={simulationStatus !== 'stopped'}
-          >
-            <option value="CORRIDOR">Delhi–Ghaziabad Quadruple Line Corridor (Master Digital Twin)</option>
-            <option value="DLI">Old Delhi Junction (DLI - 16 Platforms)</option>
-            <option value="ANVR">Anand Vihar Terminal (ANVR)</option>
-            <option value="SBB">Sahibabad Junction (SBB)</option>
-            <option value="GZB">Ghaziabad Junction (GZB)</option>
-          </select>
+          <div className="hud-station-badge" title="Master OpenStreetMap Digital Twin (DLI–DSA–ANVR–SBB–GZB)">
+            <span className="station-badge-title">DELHI–GHAZIABAD QUADRUPLE LINE CORRIDOR</span>
+            <span className="station-badge-sub">74 CIRCUITS · MASTER TWIN</span>
+          </div>
         </div>
 
         <div className="hud-center-group">
