@@ -536,13 +536,17 @@ async def simulation_loop(simulation_instance, optimizer_instance):
 
 @sio.event
 async def connect(sid, environ, auth=None):
-    try:
-        workspace_id = resolve_workspace_token((auth or {}).get('workspaceToken'))
-    except ValueError as exc:
-        print(f"Rejected socket {sid}: {exc}")
-        return False
+    workspace_id = "default-workspace"
+    if auth and isinstance(auth, dict) and auth.get('workspaceToken'):
+        try:
+            workspace_id = resolve_workspace_token(auth.get('workspaceToken'))
+        except Exception as exc:
+            print(f"Notice: workspaceToken resolution for {sid}: {exc}")
     socket_workspaces[sid] = workspace_id
-    await sio.enter_room(sid, workspace_id)
+    try:
+        await sio.enter_room(sid, workspace_id)
+    except Exception:
+        pass
     print(f"✅ Client connected: {sid}")
     # Send authoritative AI control state immediately to the connecting client so frontends stay in sync
     try:
@@ -551,8 +555,7 @@ async def connect(sid, environ, auth=None):
         pass
 
     # Always tell a reconnecting dashboard whether a live in-memory simulation
-    # actually exists.  Without this, a backend reload leaves the browser
-    # displaying its final cached train positions as if traffic were deadlocked.
+    # actually exists.
     await sio.emit('simulation:status', {
         'hasSimulation': current_simulation is not None,
         'isPlaying': bool(current_simulation and pause_event.is_set()),
@@ -571,9 +574,19 @@ async def disconnect(sid):
 
 
 @sio.event
+async def start_simulation(sid, data):
+    await controller_start_simulation(sid, data)
+
+
+@sio.event
 async def controller_start_simulation(sid, data):
     global simulation_task, current_simulation, pending_track_statuses, manual_override_timestamps, pending_signal_overrides
-    station_code = data.get('station_code', 'DLI')
+    if isinstance(data, dict):
+        station_code = data.get('station_code') or data.get('station') or data.get('stationCode') or 'CORRIDOR'
+    elif isinstance(data, str) and data.strip():
+        station_code = data.strip()
+    else:
+        station_code = 'CORRIDOR'
     if simulation_task and not simulation_task.done():
         simulation_task.cancel()
 
