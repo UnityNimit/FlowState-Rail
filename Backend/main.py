@@ -25,7 +25,18 @@ except ImportError:
     pass
 
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
-app = FastAPI()
+app = FastAPI(title="Flow Railway AI", version="1.0.0")
+
+@app.get("/")
+@app.get("/health")
+def health_check():
+    return {
+        "status": "online",
+        "service": "Flow Railway Digital Twin API",
+        "timestamp": time.time(),
+        "interlocking": "operational"
+    }
+
 socket_app = socketio.ASGIApp(sio, app)
 
 simulation_task = None
