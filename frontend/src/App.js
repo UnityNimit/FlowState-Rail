@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
-import HomePage from './pages/HomePage';
+import SplashScreen from './components/SplashScreen/SplashScreen';
 import DashboardPage from './pages/DashboardPage';
 import LeftSidebar from './components/LeftSidebar';
 import RightSidebar from './components/RightSidebar';
@@ -257,7 +257,7 @@ const DashboardLayout = () => {
 function App() {
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<SplashScreen />} />
             <Route path="/dashboard" element={<DashboardLayout />} />
         </Routes>
     );
