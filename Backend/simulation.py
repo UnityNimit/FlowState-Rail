@@ -1,4 +1,4 @@
-import sys, os, time, json, pandas as pd, random
+import sys, os, time, json, math, pandas as pd, random
 from collections import deque
 
 if sys.platform == "win32":
@@ -66,6 +66,12 @@ class Simulation:
 
         # dynamic per-train boost (increases when lower priority trains are deferred)
         self.train_boosts = {}  # train_id -> int
+        self.routes_map = {r['id']: dict(r) for r in self.network.get('routes', [])}
+        self.routes_by_segments = {tuple(r['segments']): dict(r) for r in self.network.get('routes', [])}
+        self.route_point_locks = {}
+        self.isolated_ohe_groups = set()
+        self.active_maintenance_zones = set()
+        self.maintenance_resource_locks = {}
 
         start_time_str = time.strftime('%H:%M:%S', time.gmtime(self.current_time_seconds % 86400))
         print(f"🚀 Simulation for [{self.section_code}] ready at {start_time_str}.")
@@ -74,12 +80,106 @@ class Simulation:
 
 
 
+    def get_route_definition(self, route):
+        if isinstance(route, str):
+            return self.routes_map.get(route)
+        if isinstance(route, (list, tuple)):
+            return self.routes_by_segments.get(tuple(route))
+        return None
+
+    def get_segment_travel_time(self, seg_id):
+        seg = self.segments_map.get(seg_id, {})
+        length = max(1.0, float(seg.get('lengthMeters', seg.get('length', 500))))
+        speed = max(5.0, float(seg.get('permissibleSpeedKph', seg.get('maxSpeed', 60))))
+        real_seconds = length / (speed / 3.6)
+        demo_scale = float(self.network.get('metadata', {}).get('movementTimeScale', 0.16))
+        return max(3, int(math.ceil(real_seconds * demo_scale)))
+
+    def _required_points_for_segment(self, train, segment_id):
+        """Only lock a point while the train is actually approaching or clearing it.
+
+        A route may reserve a point in its definition, but holding every point from
+        corridor entry to exit turns a route lock into a deadlock.  The train keeps
+        the point through the two legs of its crossover and releases it once clear.
+        """
+        route_def = self.routes_map.get(train.get('routeDefinitionId')) or self.get_route_definition(train.get('route', [])) or {}
+        required = set(route_def.get('requiredPointPositions', {}))
+        segment = self.segments_map.get(segment_id, {})
+        segment_nodes = {segment.get('startNodeId'), segment.get('endNodeId')}
+        return required.intersection(segment_nodes)
+
+    def _points_available_for_train(self, train, point_ids):
+        owned = self.route_point_locks.get(train['id'], set())
+        return not any(point_id in self.locked_resources and point_id not in owned for point_id in point_ids)
+
+    def _lock_points_for_train(self, train, point_ids):
+        if not point_ids:
+            return
+        owned = self.route_point_locks.setdefault(train['id'], set())
+        owned.update(point_ids)
+        self.locked_resources.update(point_ids)
+
+    def _release_point_if_runtime_owned(self, train, point_id):
+        owned = self.route_point_locks.get(train['id'], set())
+        if point_id not in owned:
+            return
+        owned.discard(point_id)
+        maintenance_owns_point = any(point_id in resources for resources in self.maintenance_resource_locks.values())
+        if not maintenance_owns_point:
+            self.locked_resources.discard(point_id)
+        if not owned:
+            self.route_point_locks.pop(train['id'], None)
+
+    def _segment_unavailable(self, seg_id):
+        seg = self.segments_map.get(seg_id, {})
+        if seg.get('status') in ('FAULTY', 'MAINTENANCE'):
+            return True
+        if seg.get('oheIsolationGroup') in self.isolated_ohe_groups:
+            return True
+        if self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
+            return True
+        return False
+
+    def set_maintenance_zone(self, zone_id, active):
+        zone = next((z for z in self.network.get('maintenanceZones', []) if z['id'] == zone_id), None)
+        if not zone:
+            return False
+        if active:
+            self.active_maintenance_zones.add(zone_id)
+            for seg_id in zone.get('affectedSegments', []):
+                if seg_id in self.segments_map:
+                    self.segments_map[seg_id]['status'] = 'MAINTENANCE'
+                self.locked_resources.add(seg_id)
+            for point_id in zone.get('affectedPoints', []):
+                self.locked_resources.add(point_id)
+            self.isolated_ohe_groups.update(zone.get('oheGroups', []))
+            self.maintenance_resource_locks[zone_id] = set(zone.get('affectedSegments', []) + zone.get('affectedPoints', []))
+        else:
+            self.active_maintenance_zones.discard(zone_id)
+            released = self.maintenance_resource_locks.pop(zone_id, set())
+            for res_id in released:
+                self.locked_resources.discard(res_id)
+            for seg_id in zone.get('affectedSegments', []):
+                if seg_id in self.segments_map and self.segments_map[seg_id].get('status') == 'MAINTENANCE':
+                    self.segments_map[seg_id]['status'] = 'OPERATIONAL'
+            active_groups = set()
+            for active_id in self.active_maintenance_zones:
+                az = next((z for z in self.network.get('maintenanceZones', []) if z['id'] == active_id), None)
+                if az:
+                    active_groups.update(az.get('oheGroups', []))
+            self.isolated_ohe_groups = active_groups
+        self.plan_needed = True
+        return True
+
     def set_signal_state(self, node_id, state):
         """
         Set a node (signal) state in nodes_map & network copy so UI sees it.
         Valid states are strings like 'GREEN', 'RED', 'NORMAL' (switch), etc.
         """
         node_id = node_id.strip().upper()
+        if node_id in self.locked_resources:
+            print(f"⚠️ Point {node_id} is route-locked and cannot move.")
+            return False
         if node_id in self.nodes_map:
             self.nodes_map[node_id]['state'] = state
             # reflect into network nodes list for get_state / UI
@@ -107,7 +207,14 @@ class Simulation:
 
     def get_state(self):
         self._update_network_state()
-        return {"timestamp": self.current_time_seconds, "network": self.network, "trains": self.active_trains}
+        op_state = self.network.get('operationalState', {})
+        return {
+            "timestamp": self.current_time_seconds,
+            "network": self.network,
+            "trains": self.active_trains,
+            "activeConflicts": op_state.get('activeConflicts', []),
+            "activeCrossovers": op_state.get('activeCrossovers', []),
+        }
 
     def _resolve_data_path(self, suffix):
         code = self.section_code.lower()
@@ -174,6 +281,16 @@ class Simulation:
             print(f"❌ FATAL ERROR: Could not load schedule from CSV {csv_path}: {e}"); return []
 
     def find_all_possible_routes(self, start_node, end_node):
+        matching_routes = [
+            r for r in self.network.get('routes', [])
+            if r.get('entrySignalId') == start_node and r.get('exitSignalId') == end_node
+        ]
+        if matching_routes:
+            return [
+                r['segments']
+                for r in matching_routes
+                if not any(self._segment_unavailable(seg_id) for seg_id in r.get('segments', []))
+            ]
         node_paths = self._find_all_paths_bfs(start_node, end_node)
         return [self._convert_node_path_to_segment_path(p) for p in node_paths if p]
 
@@ -195,10 +312,9 @@ class Simulation:
             if len(path) > 30: continue
             for neighbor in self.adjacency_list.get(path[-1], []):
                 seg_id = neighbor['segment_id']
-                seg = self.segments_map.get(seg_id, {})
-                if seg.get('status') == 'FAULTY': continue
-                if self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
+                if self._segment_unavailable(seg_id):
                     continue
+                seg = self.segments_map.get(seg_id, {})
                 seg_dir = seg.get('direction', 'BI')
                 if desired_dir and seg_dir != 'BI' and seg_dir != desired_dir:
                     continue
@@ -214,9 +330,13 @@ class Simulation:
                     path.append(neighbor['segment_id']); break
         return path
 
-    def _convert_segment_path_to_node_path(self, segment_path):
+    def _convert_segment_path_to_node_path(self, segment_path, start_node=None):
         if not segment_path: return []
-        node_path = [self.segments_map[segment_path[0]]['startNodeId']]
+        first_segment = self.segments_map[segment_path[0]]
+        if start_node in {first_segment['startNodeId'], first_segment['endNodeId']}:
+            node_path = [start_node]
+        else:
+            node_path = [first_segment['startNodeId']]
         for seg_id in segment_path:
             segment = self.segments_map[seg_id]
             last_node = node_path[-1]
@@ -263,19 +383,36 @@ class Simulation:
     def apply_plan(self, plan):
         for instruction in plan:
             train = next((t for t in self.active_trains if t['id'] == instruction['trainId']), None)
-            if not train or train['state'] != 'WAITING_PLAN': continue
+            if not train or train['state'] not in ('WAITING_PLAN', 'HOLD'): continue
 
             train['route'] = instruction['route']
-            train['node_path'] = self._convert_segment_path_to_node_path(train['route'])
-            train['state'] = 'READY_TO_PROCEED'
-            print(f"  -> ✅ Plan for {train['id']} received. Is READY_TO_PROCEED.")
+            train['node_path'] = self._convert_segment_path_to_node_path(train['route'], train.get('start_node'))
+            route_def = self.get_route_definition(train['route'])
+            train['routeDefinitionId'] = route_def.get('id') if route_def else None
+            train['priority'] = instruction.get('priority', train.get('priority', 1))
+            train['planned_start_time'] = instruction.get('startTime', self.current_time_seconds)
+            train['justification'] = instruction.get('justification', '')
+            train['conflictInfo'] = instruction.get('conflictInfo')
+            train['is_alternate_route'] = instruction.get('algorithmTrace', {}).get('isAlternateRoute', False)
+            train['movementType'] = (route_def or {}).get('movementType', 'THROUGH')
+
+            if instruction.get('action') == 'HOLD' and instruction.get('startTime', 0) > self.current_time_seconds:
+                train['state'] = 'HOLD'
+                if instruction.get('route'):
+                    train['currentSegmentId'] = instruction['route'][0]
+                    train['positionOnSegment'] = 0.0
+                    train['speed_kph'] = 0
+                print(f"  -> ⏸️ Plan for {train['id']}: HOLD until t={instruction['startTime']}s (delay {instruction['startTime'] - self.current_time_seconds}s).")
+            else:
+                train['state'] = 'READY_TO_PROCEED'
+                print(f"  -> ✅ Plan for {train['id']} received. Is READY_TO_PROCEED.")
 
     def _update_train_positions(self):
         moved = []
         for train in list(self.active_trains):
             if train.get('state') != "RUNNING": continue
 
-            travel_time = 14
+            travel_time = self.get_segment_travel_time(train.get('currentSegmentId'))
             increment = 1.0 / travel_time
             prev_pos = train['positionOnSegment']
             train['positionOnSegment'] += increment * self.tick_rate * self.sim_speed
@@ -306,6 +443,9 @@ class Simulation:
 
         self.locked_resources.discard(completed_segment_id)
         self.locked_resources.discard(cleared_node_id)
+        # A point is released as soon as the train has cleared its outgoing leg;
+        # it is never retained until the end of a corridor-length route.
+        self._release_point_if_runtime_owned(train, cleared_node_id)
         self.plan_needed = True
 
         print(f"  -> ➡️ Train {train['id']} cleared {cleared_node_id} & {completed_segment_id}, arrived at {arrived_at_node_id}.")
@@ -313,6 +453,10 @@ class Simulation:
         if current_route_index + 1 >= len(train['route']):
             final_node = train['node_path'][-1]
             self.locked_resources.discard(final_node)
+            for resource_id in set(self.route_point_locks.pop(train['id'], set())):
+                maintenance_owns_point = any(resource_id in resources for resources in self.maintenance_resource_locks.values())
+                if not maintenance_owns_point:
+                    self.locked_resources.discard(resource_id)
             print(f"✅ Train {train['id']} has EXITED. Final node {final_node} released.")
             train['state'] = 'EXITED'
             return
@@ -328,7 +472,10 @@ class Simulation:
             train['waiting_since'] = self.current_time_seconds
 
     def _route_is_viable(self, segment_route, node_path, start_node_idx=0):
-        for seg_idx, seg_id in enumerate(segment_route):
+        # Runtime dispatch reserves only the next block and its immediate look-ahead.
+        # Later blocks are evaluated again at their protecting signals, avoiding a
+        # false "no route" when a distant train will clear before this one arrives.
+        for seg_idx, seg_id in enumerate(segment_route[:2]):
             node_before = node_path[seg_idx]
             node_after = node_path[seg_idx + 1]
 
@@ -338,16 +485,14 @@ class Simulation:
             seg = self.segments_map.get(seg_id, {})
             if seg_id in self.locked_resources:
                 return False
-            if seg.get('status') == 'FAULTY':
-                return False
-            if self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
+            if self._segment_unavailable(seg_id):
                 return False
             if node_after in self.locked_resources:
                 return False
         return True
 
     def _score_route(self, route, node_path):
-        score = len(route)
+        score = sum(self.get_segment_travel_time(seg_id) for seg_id in route)
         if self.current_ai_priorities.get('congestion'):
             occupied = sum(1 for seg in route if seg in self.locked_resources)
             score += occupied * 5
@@ -363,7 +508,7 @@ class Simulation:
 
         viable_routes = []
         for route in possible_routes:
-            node_path = self._convert_segment_path_to_node_path(route)
+            node_path = self._convert_segment_path_to_node_path(route, current_node_id)
             if self._route_is_viable(route, node_path, start_node_idx=0):
                 viable_routes.append((route, node_path))
 
@@ -377,14 +522,23 @@ class Simulation:
         first_node_after = chosen_node_path[1]
         seg = self.segments_map.get(first_segment, {})
 
-        if first_segment not in self.locked_resources and first_node_after not in self.locked_resources and seg.get('status') != 'FAULTY' and (not (self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD')):
+        route_def = self.get_route_definition(chosen_route)
+        candidate_point_resources = set((route_def or {}).get('requiredPointPositions', {}).keys()).intersection({
+            self.segments_map.get(first_segment, {}).get('startNodeId'),
+            self.segments_map.get(first_segment, {}).get('endNodeId'),
+        })
+        if not self._points_available_for_train(train, candidate_point_resources):
+            return False
+        if first_segment not in self.locked_resources and first_node_after not in self.locked_resources and not self._segment_unavailable(first_segment):
             train['route'] = chosen_route
             train['node_path'] = chosen_node_path
+            train['routeDefinitionId'] = route_def.get('id') if route_def else None
             self.locked_resources.add(first_segment)
             self.locked_resources.add(first_node_after)
+            self._lock_points_for_train(train, candidate_point_resources)
 
             train['state'] = 'RUNNING'
-            train['speed_kph'] = 60
+            train['speed_kph'] = seg.get('permissibleSpeedKph', seg.get('maxSpeed', 60))
             train['currentSegmentId'] = first_segment
             train['positionOnSegment'] = 0.0
             train['waiting_since'] = None
@@ -433,9 +587,15 @@ class Simulation:
         return (group_rank, priority_component, waiting_since)
 
     def _check_and_dispatch_trains(self):
-        # --- DEBUG: snapshot before dispatch ---
+        # Check trains in HOLD: promote to READY_TO_PROCEED when planned start time is reached
+        for train in self.active_trains:
+            if train.get('state') == 'HOLD':
+                if self.current_time_seconds >= train.get('planned_start_time', 0):
+                    train['state'] = 'READY_TO_PROCEED'
+                    print(f"  -> 🟢 HOLD released for Train {train['id']} at t={self.current_time_seconds}. Now READY_TO_PROCEED.")
+
         counts = {}
-        for s in ['WAITING_PLAN','READY_TO_PROCEED','RUNNING','STOPPED_AWAITING_CLEARANCE','BOARDING_PASSENGERS','EXITED']:
+        for s in ['WAITING_PLAN', 'HOLD', 'READY_TO_PROCEED', 'RUNNING', 'STOPPED_AWAITING_CLEARANCE', 'BOARDING_PASSENGERS', 'EXITED']:
             counts[s] = sum(1 for t in self.active_trains if t.get('state')==s)
         running_info = [(t['id'], t.get('currentSegmentId'), round(t.get('positionOnSegment',0),3)) for t in self.active_trains if t.get('state')=='RUNNING']
         print(f"[tick {self.current_time_seconds}] snapshot -> locked:{sorted(list(self.locked_resources))[:8]} | counts:{counts} | running:{running_info[:6]}")
@@ -472,18 +632,11 @@ class Simulation:
                 next_node_id = train['node_path'][1]
 
                 seg = self.segments_map.get(next_segment_id, {})
-                if seg.get('status') == 'FAULTY':
+                if self._segment_unavailable(next_segment_id):
                     start_node = train['start_node']
                     rerouted = self._attempt_reroute_and_dispatch(train, start_node)
                     if not rerouted:
                         print(f"  -> ⛔ {train['id']} READY_TO_PROCEED: planned next segment {next_segment_id} is FAULTY; no alternate found.")
-                    continue
-
-                if self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
-                    start_node = train['start_node']
-                    rerouted = self._attempt_reroute_and_dispatch(train, start_node)
-                    if not rerouted:
-                        print(f"  -> ⛔ {train['id']} READY_TO_PROCEED: planned next segment {next_segment_id} has BAD weather; no alternate found.")
                     continue
 
                 departure_node = train['node_path'][0]
@@ -496,11 +649,13 @@ class Simulation:
                         continue
                 # non-signal nodes are allowed to proceed
 
-                if next_segment_id not in self.locked_resources and next_node_id not in self.locked_resources:
+                point_resources = self._required_points_for_segment(train, next_segment_id)
+                if next_segment_id not in self.locked_resources and next_node_id not in self.locked_resources and self._points_available_for_train(train, point_resources):
                     self.locked_resources.add(next_segment_id)
                     self.locked_resources.add(next_node_id)
+                    self._lock_points_for_train(train, point_resources)
                     train['state'] = 'RUNNING'
-                    train['speed_kph'] = 60
+                    train['speed_kph'] = seg.get('permissibleSpeedKph', seg.get('maxSpeed', 60))
                     train['currentSegmentId'] = next_segment_id
                     train['positionOnSegment'] = 0.0
                     train['waiting_since'] = None
@@ -546,18 +701,11 @@ class Simulation:
                 next_node_id = train['node_path'][current_route_index + 2]
                 seg = self.segments_map.get(next_segment_id, {})
 
-                if seg.get('status') == 'FAULTY':
+                if self._segment_unavailable(next_segment_id):
                     current_node = train['node_path'][current_route_index + 1]
                     rerouted = self._attempt_reroute_and_dispatch(train, current_node)
                     if not rerouted:
                         print(f"  -> ⛔ STOPPED {train['id']} blocked at {current_node} because next segment {next_segment_id} is FAULTY.")
-                    continue
-
-                if self.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
-                    current_node = train['node_path'][current_route_index + 1]
-                    rerouted = self._attempt_reroute_and_dispatch(train, current_node)
-                    if not rerouted:
-                        print(f"  -> ⛔ STOPPED {train['id']} blocked at {current_node} because next segment {next_segment_id} has BAD weather.")
                     continue
 
                 current_node_id = train['node_path'][current_route_index + 1]
@@ -570,11 +718,13 @@ class Simulation:
                         continue
                 # else non-signal node -> proceed if resources free
 
-                if next_segment_id not in self.locked_resources and next_node_id not in self.locked_resources:
+                point_resources = self._required_points_for_segment(train, next_segment_id)
+                if next_segment_id not in self.locked_resources and next_node_id not in self.locked_resources and self._points_available_for_train(train, point_resources):
                     self.locked_resources.add(next_segment_id)
                     self.locked_resources.add(next_node_id)
+                    self._lock_points_for_train(train, point_resources)
                     train['state'] = 'RUNNING'
-                    train['speed_kph'] = 60
+                    train['speed_kph'] = seg.get('permissibleSpeedKph', seg.get('maxSpeed', 60))
                     train['currentSegmentId'] = next_segment_id
                     train['positionOnSegment'] = 0.0
                     train['waiting_since'] = None
@@ -629,6 +779,64 @@ class Simulation:
             mapnode = self.nodes_map.get(node['id'])
             if mapnode:
                 node['state'] = mapnode.get('state', node.get('state'))
+        for zone in self.network.get('maintenanceZones', []):
+            zone['active'] = zone['id'] in self.active_maintenance_zones
+
+        active_conflicts = []
+        for t in self.active_trains:
+            if t.get('state') == 'HOLD':
+                c_info = t.get('conflictInfo') or {}
+                active_conflicts.append({
+                    'trainId': t['id'],
+                    'trainType': t['type'],
+                    'priority': t.get('priority', 1),
+                    'startNode': t.get('start_node'),
+                    'contendedResource': c_info.get('contendedResource') or t.get('currentSegmentId'),
+                    'conflictingTrainId': c_info.get('conflictingTrainId'),
+                    'conflictingTrainType': c_info.get('conflictingTrainType'),
+                    'conflictingTrainPriority': c_info.get('conflictingTrainPriority'),
+                    'holdDurationSeconds': c_info.get('holdDurationSeconds', 0),
+                    'heldUntil': t.get('planned_start_time', 0),
+                    'secondsRemaining': max(0, int(t.get('planned_start_time', 0) - self.current_time_seconds)),
+                    'resolution': c_info.get('resolution') or t.get('justification', ''),
+                    'conflictType': c_info.get('conflictType', 'CONTENTION'),
+                })
+
+        active_crossovers = []
+        for t in self.active_trains:
+            if t.get('state') in ('RUNNING', 'STOPPED_AWAITING_CLEARANCE'):
+                route = t.get('route') or []
+                try:
+                    current_index = route.index(t.get('currentSegmentId'))
+                except ValueError:
+                    current_index = -1
+                # A crossover is active only while the train is on it or is in
+                # the immediately protecting block—not merely because it occurs
+                # somewhere later in the planned journey.
+                active_window = route[max(0, current_index):current_index + 2] if current_index >= 0 else []
+                xo_segs = [s for s in active_window if '-XO-' in s or (s in self.segments_map and self.segments_map[s].get('lineId') == 'CROSSOVER')]
+                if xo_segs:
+                    route_def = self.routes_map.get(t.get('routeDefinitionId')) or self.get_route_definition(route)
+                    active_crossovers.append({
+                        'trainId': t['id'],
+                        'trainType': t['type'],
+                        'routeId': (route_def or {}).get('id', t.get('routeDefinitionId')),
+                        'crossoverSegments': xo_segs,
+                        'pointPositions': (route_def or {}).get('requiredPointPositions', {}),
+                        'movementType': t.get('movementType', (route_def or {}).get('movementType', 'MERGE_DIVERGE')),
+                        'state': t.get('state'),
+                        'currentSegment': t.get('currentSegmentId'),
+                    })
+
+        self.network['operationalState'] = {
+            'activeMaintenanceZones': sorted(self.active_maintenance_zones),
+            'isolatedOheGroups': sorted(self.isolated_ohe_groups),
+            'lockedResourceCount': len(self.locked_resources),
+            'activeConflicts': active_conflicts,
+            'activeConflictCount': len(active_conflicts),
+            'activeCrossovers': active_crossovers,
+            'activeCrossoverCount': len(active_crossovers),
+        }
 
     def tick(self):
         self.current_time_seconds += self.tick_rate * self.sim_speed

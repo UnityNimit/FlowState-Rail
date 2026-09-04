@@ -198,6 +198,45 @@
     height: 100% !important;
 }
 
+.junction-activity-overlay {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    z-index: 32;
+    min-width: 190px;
+    max-width: 285px;
+    padding: 7px 8px;
+    border: 1px solid rgba(245, 158, 11, .62);
+    border-radius: 6px;
+    background: rgba(20, 13, 2, .94);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .48);
+    color: #f8fafc;
+    font-family: 'JetBrains Mono', monospace;
+    pointer-events: none;
+}
+
+.junction-activity-title {
+    margin-bottom: 4px;
+    color: #fbbf24;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .55px;
+}
+
+.junction-activity-row {
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    gap: 5px;
+    align-items: center;
+    padding: 2px 0;
+    border-top: 1px solid rgba(245, 158, 11, .15);
+    font-size: 8px;
+}
+
+.junction-activity-row strong { color: #fde68a; }
+.junction-activity-row span { color: #bae6fd; white-space: nowrap; }
+.junction-activity-row em { color: #fca5a5; font-style: normal; white-space: nowrap; }
+
 .diagram-view-controls {
     position: absolute;
     top: 10px;
@@ -270,8 +309,20 @@
 }
 
 .legend-line.locked { border-color: #eab308; }
+.legend-line.crossover-locked { border-color: #f59e0b; border-top-style: dashed; }
 .legend-line.occupied { border-color: #ff0033; }
 .legend-line.blocked { border-color: #f59e0b; border-top-style: dashed; }
+.legend-line.failure { border-color: #d946ef; }
+
+.signal-aspect-icon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #020617;
+}
+
+.signal-aspect-icon.proceed { background: #22c55e; box-shadow: 0 0 6px rgba(34, 197, 94, .9); }
+.signal-aspect-icon.stop { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, .9); }
 
 .ctc-svg-canvas {
     width: 100%;
@@ -279,7 +330,7 @@
     display: block;
 }
 
-@container (max-width: 850px) {
+@container (max-width: 1050px) {
     .vdu-top-bar {
         justify-content: flex-start;
     }
@@ -435,22 +486,39 @@
     cursor: pointer;
 }
 
-.vdu-signal-mast:hover circle {
-    r: 6.5px;
-    filter: drop-shadow(0 0 8px #ffffff);
+.vdu-signal-mast:hover .signal-head {
+    stroke: #f8fafc;
 }
 
-.vdu-signal-red {
-    fill: #ef4444;
-    stroke: #020617;
+.signal-mast-stem,
+.signal-mast-foot {
+    stroke: #94a3b8;
+    stroke-width: 2px;
+}
+
+.signal-head {
+    fill: #070b12;
+    stroke: #64748b;
     stroke-width: 1.5px;
 }
 
-.vdu-signal-green {
-    fill: #22c55e;
+.signal-lamp {
     stroke: #020617;
-    stroke-width: 1.5px;
+    stroke-width: 1px;
 }
+
+.signal-lamp.red.active { fill: #ff243f; }
+.signal-lamp.green.active { fill: #21f36b; }
+.signal-lamp.red.dim { fill: #3c131a; }
+.signal-lamp.green.dim { fill: #0d3a20; }
+
+.signal-direction {
+    stroke: #020617;
+    stroke-width: 1px;
+}
+
+.signal-direction.proceed { fill: #22c55e; }
+.signal-direction.stop { fill: #ef4444; }
 
 .vdu-device-id {
     text-anchor: middle;
@@ -482,7 +550,6 @@
 /* Train Capsules */
 .vdu-train-capsule {
     cursor: pointer;
-    transition: transform 0.4s linear;
 }
 
 .vdu-train-hull {
@@ -521,6 +588,41 @@
     gap: 6px;
     white-space: nowrap;
 }
+
+.vdu-track-failure {
+    stroke: #d946ef;
+    stroke-width: 5px;
+    stroke-linecap: square;
+    filter: drop-shadow(0 0 8px rgba(217, 70, 239, 0.9));
+}
+
+.vdu-speed-label {
+    fill: #64748b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.corridor-station-boundary { cursor: pointer; }
+.corridor-station-boundary line { stroke: rgba(56, 189, 248, 0.32); stroke-width: 1; stroke-dasharray: 8 6; }
+.corridor-station-boundary rect { fill: #07111f; stroke: #38bdf8; stroke-width: 1; }
+.corridor-station-boundary text { fill: #f8fafc; font-size: 12px; font-weight: 900; text-anchor: middle; }
+.corridor-station-boundary .corridor-chainage { fill: #94a3b8; font-size: 7px; font-weight: 700; }
+.corridor-station-boundary:hover rect { fill: #12304a; stroke: #67e8f9; }
+
+.corridor-infrastructure rect { fill: rgba(30, 41, 59, .12); stroke: rgba(100, 116, 139, .24); stroke-width: 1; stroke-dasharray: 5 5; }
+.corridor-infrastructure text { fill: #64748b; font-size: 7px; font-weight: 800; letter-spacing: .7px; text-anchor: middle; }
+.corridor-infrastructure.bridge rect { fill: rgba(14, 165, 233, .055); stroke: rgba(56, 189, 248, .4); }
+.corridor-infrastructure.bridge text { fill: #38bdf8; }
+.corridor-infrastructure.freight rect { fill: rgba(245, 158, 11, .035); stroke: rgba(245, 158, 11, .26); }
+.corridor-infrastructure.freight text { fill: #d97706; }
+
+.vdu-buffer-stop line { stroke: #f8fafc; stroke-width: 2; }
+
+.attribution-block { margin-left: auto; color: #64748b; }
+.attribution-block a { color: #94a3b8; text-decoration: none; }
+.attribution-block a:hover { color: #67e8f9; text-decoration: underline; }
 
 .telemetry-label {
     color: #64748b;
@@ -571,4 +673,107 @@
     border-color: rgba(100, 116, 139, 0.55);
     color: #94a3b8;
     background: #0b111a;
+}
+
+/* Crossover Track Highlight & Flowing Animations */
+.vdu-track-crossover-locked {
+    stroke: #f59e0b;
+    stroke-width: 5.5px;
+    stroke-linecap: round;
+    stroke-dasharray: 12 6;
+    animation: crossoverFlow 1.2s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
+}
+
+.active-crossover-segment .vdu-track-base {
+    stroke: #fbbf24;
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 5px rgba(245, 158, 11, .72));
+}
+
+@keyframes crossoverFlow {
+    from { stroke-dashoffset: 18; }
+    to { stroke-dashoffset: 0; }
+}
+
+.vdu-track-crossover-occupied {
+    stroke: #ff0055;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    stroke-dasharray: 8 4;
+    animation: crossoverOccFlow 1s linear infinite;
+    filter: drop-shadow(0 0 12px rgba(255, 0, 85, 0.95));
+}
+
+@keyframes crossoverOccFlow {
+    from { stroke-dashoffset: 12; }
+    to { stroke-dashoffset: 0; }
+}
+
+.crossover-base {
+    stroke: #cbd5e1;
+    stroke-width: 3.2px;
+}
+
+.vdu-crossover-badge {
+    pointer-events: none;
+}
+
+.vdu-crossover-badge-bg {
+    fill: #1c1402;
+    stroke: #f59e0b;
+    stroke-width: 1px;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+}
+
+.vdu-crossover-badge-text {
+    text-anchor: middle;
+    fill: #fbbf24;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* Held Train Visual Callouts & Dynamic Contention Halo */
+.vdu-train-capsule.held-capsule { cursor: default; }
+
+.vdu-train-hold-halo {
+    fill: none;
+    stroke: #f59e0b;
+    stroke-width: 2px;
+    stroke-dasharray: 5 3;
+    animation: holdHaloPulse 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes holdHaloPulse {
+    0% { opacity: 0.5; stroke: #f59e0b; }
+    100% { opacity: 1; stroke: #ef4444; filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
+}
+
+.vdu-train-hull-held {
+    stroke: #f59e0b !important;
+    stroke-width: 2px !important;
+    stroke-dasharray: 4 2;
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.85)) !important;
+}
+
+.vdu-train-conflict-callout {
+    pointer-events: none;
+}
+
+.vdu-train-conflict-callout .callout-bg {
+    fill: rgba(15, 23, 42, 0.96);
+    stroke: #f59e0b;
+    stroke-width: 1.2px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.95));
+}
+
+.vdu-train-conflict-callout .callout-text {
+    text-anchor: middle;
+    fill: #fef08a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
 }

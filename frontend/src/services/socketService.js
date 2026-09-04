@@ -1,7 +1,8 @@
 // socketService.js
 import { io } from 'socket.io-client';
+import apiService from './apiService';
 
-// Backend URL — configured via REACT_APP_API_URL with port 8001 default
+// Backend URL — configured via REACT_APP_API_URL with port 8002 default
 const SOCKET_URL = process.env.REACT_APP_API_URL || 'http://localhost:8002';
 
 class SocketService {
@@ -15,19 +16,21 @@ class SocketService {
         this._reconnectionDelay = 1000;
     }
 
-    connect() {
+    async connect() {
         // idempotent
         if (this.socket) {
             console.log('SocketService: socket already created. connected=', this.isConnected());
             return this._connectPromise || Promise.resolve();
         }
 
+        await apiService.ensureWorkspace();
         console.log(`SocketService: Attempting to connect to socket server at ${SOCKET_URL}...`);
         this.socket = io(SOCKET_URL, {
             reconnection: true,
             reconnectionAttempts: this._reconnectionAttempts,
             reconnectionDelay: this._reconnectionDelay,
             transports: ['websocket', 'polling'],
+            auth: { workspaceToken: apiService.token },
         });
 
         this._connectPromise = new Promise((resolve, reject) => {

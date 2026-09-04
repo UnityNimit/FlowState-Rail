@@ -1,6 +1,13 @@
 import sys
 import os
 
+try:
+    from dotenv import load_dotenv
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    load_dotenv(env_path)
+except ImportError:
+    pass
+
 if sys.platform == "win32":
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -10,23 +17,50 @@ if sys.platform == "win32":
 
 import asyncio
 import json
+import uuid
 import socketio
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from simulation import Simulation
 from optimizer import Optimizer
+from planning_api import router as planning_router, resolve_workspace_token
+from planning_models import initialize_database, SessionLocal, SimulationCheckpoint
 import time
 import traceback
 
-try:
-    from dotenv import load_dotenv
-    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
-    load_dotenv(env_path)
-except ImportError:
-    pass
-
-sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
-app = FastAPI()
+allowed_origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if origin.strip()]
+sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins=allowed_origins)
+app = FastAPI(title="FlowState Rail API", version="2.1.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "X-Workspace-Token"],
+)
+app.include_router(planning_router)
+if not os.getenv("DATABASE_URL"):
+    # Zero-configuration local demo/test mode. Production Supabase schemas are
+    # managed explicitly by Alembic during the Render build.
+    initialize_database()
 socket_app = socketio.ASGIApp(sio, app)
+
+
+@app.get("/")
+async def health():
+    return {
+        "service": "FlowState Rail API",
+        "status": "ok",
+        "schemaVersion": 2,
+        "planningSchemaVersion": 1,
+        "persistence": "supabase-postgresql" if os.getenv("DATABASE_URL") else "local-sqlite",
+        "simulation": current_simulation.section_code if current_simulation else None,
+    }
+
+
+@app.get("/health")
+async def health_detail():
+    return await health()
 
 simulation_task = None
 current_simulation = None
@@ -51,7 +85,21 @@ current_ai_priorities = {
 }
 
 # Tracks that UI set while no simulation is running; applied when sim starts.
-pending_faulty_tracks = set()
+pending_track_statuses = {}
+socket_workspaces = {}
+
+
+def persist_simulation_checkpoint(sid):
+    """Persist recoverable evidence after each operator mutation."""
+    workspace_id = socket_workspaces.get(sid)
+    if not workspace_id or not current_simulation:
+        return
+    try:
+        with SessionLocal() as db:
+            db.add(SimulationCheckpoint(id=str(uuid.uuid4()), workspace_id=workspace_id, station_code=current_simulation.section_code, payload=current_simulation.get_state()))
+            db.commit()
+    except Exception as exc:
+        print(f"Checkpoint persistence warning: {exc}")
 
 
 def _signal_overridden_recently(signal_id: str) -> bool:
@@ -62,6 +110,10 @@ def _signal_overridden_recently(signal_id: str) -> bool:
 
 
 def apply_track_status_to_sim(sim: Simulation, track_id: str, status: str):
+    status = status.upper()
+    if status in {'FAULTY', 'MAINTENANCE'} and track_id in sim.locked_resources:
+        print(f"⛔ Refused status={status} for occupied/locked resource {track_id}.")
+        return False
     updated = False
     for seg in sim.network['trackSegments']:
         if seg['id'] == track_id:
@@ -70,7 +122,7 @@ def apply_track_status_to_sim(sim: Simulation, track_id: str, status: str):
                 sim.segments_map[track_id]['status'] = status
             updated = True
             break
-    if status == 'FAULTY':
+    if status in {'FAULTY', 'MAINTENANCE'}:
         sim.locked_resources.add(track_id)
     else:
         sim.locked_resources.discard(track_id)
@@ -78,6 +130,7 @@ def apply_track_status_to_sim(sim: Simulation, track_id: str, status: str):
     if updated:
         sim.plan_needed = True
         print(f"🔧 Applied status={status} to track {track_id} in simulation {sim.section_code}.")
+    return updated
 
 
 def apply_signal_state(sim: Simulation, signal_id: str, state: str, by: str = 'ai'):
@@ -163,6 +216,7 @@ def ai_try_clear_waiting_trains(sim: Simulation):
         if state == 'READY_TO_PROCEED':
             departure_node = node_path[0]
             next_segment = route[0]
+            next_node_after = node_path[1] if len(node_path) > 1 else None
         else:
             # STOPPED_AWAITING_CLEARANCE
             try:
@@ -172,26 +226,22 @@ def ai_try_clear_waiting_trains(sim: Simulation):
                 else:
                     departure_node = node_path[0]
                 next_segment = route[idx + 1] if (idx + 1) < len(route) else None
+                next_node_after = node_path[idx + 2] if (idx + 2) < len(node_path) else None
             except Exception:
                 departure_node = node_path[0]
                 next_segment = route[0]
+                next_node_after = node_path[1] if len(node_path) > 1 else None
         if not next_segment:
             continue
 
         # safety checks: segment not faulty, weather priorities, resources not locked
         seg = sim.segments_map.get(next_segment, {})
-        if seg.get('status') == 'FAULTY':
+        if sim._segment_unavailable(next_segment):
             continue
         if sim.current_ai_priorities.get('weather') and seg.get('weather') == 'BAD':
             continue
         if next_segment in sim.locked_resources:
             continue
-        # check node after segment if possible
-        try:
-            np_node_path = sim._convert_segment_path_to_node_path([next_segment])
-            next_node_after = np_node_path[1] if len(np_node_path) > 1 else None
-        except Exception:
-            next_node_after = None
         if next_node_after and next_node_after in sim.locked_resources:
             continue
 
@@ -452,13 +502,29 @@ async def simulation_loop(simulation_instance, optimizer_instance):
 
 
 @sio.event
-async def connect(sid, environ):
+async def connect(sid, environ, auth=None):
+    try:
+        workspace_id = resolve_workspace_token((auth or {}).get('workspaceToken'))
+    except ValueError as exc:
+        print(f"Rejected socket {sid}: {exc}")
+        return False
+    socket_workspaces[sid] = workspace_id
+    await sio.enter_room(sid, workspace_id)
     print(f"✅ Client connected: {sid}")
     # Send authoritative AI control state immediately to the connecting client so frontends stay in sync
     try:
         await sio.emit('ai:control_state_changed', {'enabled': ai_control_enabled}, to=sid)
     except Exception:
         pass
+
+    # Always tell a reconnecting dashboard whether a live in-memory simulation
+    # actually exists.  Without this, a backend reload leaves the browser
+    # displaying its final cached train positions as if traffic were deadlocked.
+    await sio.emit('simulation:status', {
+        'hasSimulation': current_simulation is not None,
+        'isPlaying': bool(current_simulation and pause_event.is_set()),
+        'stationCode': current_simulation.section_code if current_simulation else None,
+    }, to=sid)
 
     if current_simulation:
         print(f"   -> Active simulation found. Syncing client {sid}.")
@@ -467,12 +533,13 @@ async def connect(sid, environ):
 
 @sio.event
 async def disconnect(sid):
+    socket_workspaces.pop(sid, None)
     print(f"🔌 Client disconnected: {sid}")
 
 
 @sio.event
 async def controller_start_simulation(sid, data):
-    global simulation_task, current_simulation, pending_faulty_tracks, manual_override_timestamps, pending_signal_overrides
+    global simulation_task, current_simulation, pending_track_statuses, manual_override_timestamps, pending_signal_overrides
     station_code = data.get('station_code', 'DLI')
     if simulation_task and not simulation_task.done():
         simulation_task.cancel()
@@ -491,11 +558,11 @@ async def controller_start_simulation(sid, data):
                 manual_override_timestamps[sig_id] = time.time()
             pending_signal_overrides.clear()
 
-        # apply any pending faulty tracks
-        if pending_faulty_tracks:
-            for trackid in list(pending_faulty_tracks):
-                apply_track_status_to_sim(simulation_instance, trackid, 'FAULTY')
-            pending_faulty_tracks.clear()
+        # Apply offline-selected maintenance/failure states atomically after layout load.
+        if pending_track_statuses:
+            for trackid, status in list(pending_track_statuses.items()):
+                apply_track_status_to_sim(simulation_instance, trackid, status)
+            pending_track_statuses.clear()
 
         # apply pending manual signal overrides recorded in timestamps (if any)
         for sid_id, ts_or_state in list(manual_override_timestamps.items()):
@@ -513,6 +580,7 @@ async def controller_start_simulation(sid, data):
 
         await sio.emit('simulation:started')
         await sio.emit('initial-state', current_simulation.get_state())
+        persist_simulation_checkpoint(sid)
 
         # Inform clients of AI control state as well (ensure UI shows correct toggle)
         try:
@@ -558,6 +626,7 @@ async def controller_set_signal(sid, data):
         apply_signal_state(current_simulation, sid_id, desired, by='manual')
         # broadcast immediate update
         await sio.emit('network-update', current_simulation.get_state())
+        persist_simulation_checkpoint(sid)
     else:
         # simulation not running: queue override to apply on start
         desired = desired or 'GREEN'
@@ -593,6 +662,7 @@ async def controller_toggle_pause_simulation(sid, data):
         pause_event.clear()
         print("⏸️ Simulation Paused")
     await sio.emit('simulation:state_changed', {'isPlaying': is_playing})
+    persist_simulation_checkpoint(sid)
 
 
 @sio.event
@@ -643,11 +713,12 @@ async def controller_set_priorities(sid, data):
         else:
             current_simulation.clear_weather()
         await sio.emit('network-update', current_simulation.get_state())
+        persist_simulation_checkpoint(sid)
 
 
 @sio.event
 async def controller_set_track_status(sid, data):
-    global pending_faulty_tracks, current_simulation
+    global pending_track_statuses, current_simulation
     track_id = data.get('trackId') or data.get('track_id') or data.get('track')
     status = data.get('status')
 
@@ -661,13 +732,42 @@ async def controller_set_track_status(sid, data):
         apply_track_status_to_sim(current_simulation, track_id, status)
         await sio.emit('network-update', current_simulation.get_state())
     else:
-        if status == 'FAULTY':
-            pending_faulty_tracks.add(track_id)
-            print(f"🕓 Queued pending faulty track {track_id} (simulation not running).")
+        if status.upper() in {'FAULTY', 'MAINTENANCE'}:
+            pending_track_statuses[track_id] = status.upper()
+            print(f"🕓 Queued pending track state {track_id}={status.upper()} (simulation not running).")
         else:
-            if track_id in pending_faulty_tracks:
-                pending_faulty_tracks.discard(track_id)
-                print(f"🧾 Removed {track_id} from pending faulty list.")
+            if track_id in pending_track_statuses:
+                pending_track_statuses.pop(track_id, None)
+                print(f"🧾 Removed {track_id} from pending track states.")
+
+
+@sio.event
+async def controller_set_maintenance_zone(sid, data):
+    """Reserve/release every segment, point and OHE group in a v2 maintenance zone."""
+    if not current_simulation or not isinstance(data, dict):
+        return
+    zone_id = data.get('zoneId') or data.get('zone_id')
+    active = bool(data.get('active', True))
+    applied = current_simulation.set_maintenance_zone(zone_id, active)
+    await sio.emit('maintenance:zone-state', {'zoneId': zone_id, 'active': active, 'applied': applied})
+    await sio.emit('network-update', current_simulation.get_state())
+    persist_simulation_checkpoint(sid)
+
+
+@sio.event
+async def controller_generate_block_plan(sid, data):
+    """Generate weekly/monthly coordinated block plans without changing live state."""
+    payload = data if isinstance(data, dict) else {}
+    horizon = payload.get('horizon', 'weekly')
+    station_code = payload.get('stationCode', 'CORRIDOR')
+    try:
+        planning_simulation = current_simulation or Simulation(station_code)
+        planner = Optimizer(planning_simulation)
+        plan = await asyncio.to_thread(planner.generate_maintenance_plan, horizon)
+        await sio.emit('maintenance:plan-update', plan, to=sid)
+    except Exception as exc:
+        traceback.print_exc()
+        await sio.emit('simulation:error', {'message': f'Block planning error: {exc}'}, to=sid)
 
 
 @sio.event

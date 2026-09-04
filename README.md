@@ -169,7 +169,7 @@ This project requires API keys for Google Gemini. You need to create `.env` file
     **File: `frontend/.env`**
     ```env
     # React backend URL
-    REACT_APP_API_URL="http://localhost:8001"
+    REACT_APP_API_URL="http://localhost:8002"
     ```
 
 ---
@@ -179,19 +179,19 @@ This project requires API keys for Google Gemini. You need to create `.env` file
 You can launch both services with a single click or run them in separate terminals.
 
 ### Quick Start (Windows)
-Double-click **`start_all.bat`** in the root directory. This will start both the backend on port 8001 and frontend on port 3000 in separate windows.
+Double-click **`start_all.bat`** in the root directory. This starts the backend on port 8002 and frontend on port 3000 in separate windows.
 
 ### Manual Start
 
 1.  **Start the Python Backend Server:**
     -   Navigate to the `Backend/` directory.
-    -   Run the FastAPI server using Uvicorn on port 8001:
+    -   Run the FastAPI server using Uvicorn on port 8002:
 
     ```sh
     cd Backend
-    python -m uvicorn main:socket_app --host 0.0.0.0 --port 8001 --reload
+    python -m uvicorn main:socket_app --host 0.0.0.0 --port 8002 --reload
     ```
-    - The server will be running at `http://localhost:8001`.
+    - The server will be running at `http://localhost:8002` (`/` and `/health` return service status).
 
 2.  **Start the React Frontend Application:**
     -   In a separate terminal, navigate to the `frontend/` directory.
@@ -204,6 +204,28 @@ Double-click **`start_all.bat`** in the root directory. This will start both the
     - The application will automatically open in your browser at `http://localhost:3000`.
 
 You can now access the **HomePage** at `http://localhost:3000` and navigate to the `/dashboard` to use the Railway Section Controller.
+
+---
+
+## Railway Network Data (Schema v2)
+
+The demonstration ships with an offline OpenStreetMap/Overpass snapshot and deterministic layouts for the Delhi–Ghaziabad corridor plus DLI, DSA, ANVR, SBB, and GZB. The four-line corridor overview and each station schematic are separate topologies; runtime routing uses only the validated explicit routes in those files.
+
+```sh
+# Rebuild layouts and timetables from the committed snapshot (offline)
+python Backend/data/generate_v2_network.py
+
+# Explicitly refresh the Overpass snapshot, then rebuild
+python Backend/data/generate_v2_network.py --refresh-osm
+
+# Validate IDs, references, route continuity/direction and schedules
+python Backend/data/validate_v2_network.py
+python -m unittest discover -s Backend/tests -v
+```
+
+Each network and field includes provenance. Geographic railway features and station anchors come from OpenStreetMap; signals, routes, track circuits, permitted speeds, OHE isolation groups and maintenance resources are representative SIH demonstration assumptions, not an authorised Station Working Rule or Signal Interlocking Plan.
+
+Map data: © OpenStreetMap contributors, licensed under ODbL 1.0. The application displays attribution and the snapshot date on every diagram.
 
 ---
 
@@ -308,3 +330,36 @@ This project is distributed under the MIT License. See `LICENSE` for more inform
 -   **Team Rose A** for their dedication and hard work.
 
 ---
+## Planning platform (Problem Statement 26027)
+
+The dashboard now separates operational work into Overview, Data Hub,
+Maintenance, Block Planner, Digital Twin and Reports. Departmental CSV/JSON
+imports are normalized into a workspace-scoped planning store, scored with an
+explainable risk model, and scheduled by OR-Tools CP-SAT at weekly or monthly
+resolution. Plans carry an auditable demonstration approval lifecycle and can
+be exported or mock-submitted to BDMS.
+
+### Local setup
+
+1. Copy `Backend/.env.example` to `Backend/.env` and provide local values. Do
+   not expose a Supabase service-role key to React or commit it.
+2. Install backend dependencies with `pip install -r Backend/requirements.txt`.
+3. Run `alembic -c Backend/alembic.ini upgrade head` from the repository root.
+4. Start the API with `uvicorn main:socket_app --app-dir Backend --port 8002`.
+5. Start React with `npm start --prefix frontend`.
+
+Without `DATABASE_URL` or Supabase values, the API uses ignored local SQLite
+and private object-storage directories under `Backend/.runtime`.
+
+### Render and Vercel
+
+`render.yaml` configures a single-worker ASGI service, database migration and
+health check. Add `DATABASE_URL`, `SUPABASE_URL`, a newly rotated
+`SUPABASE_SERVICE_ROLE_KEY`, and the Vercel origin in `CORS_ORIGINS` in Render.
+Set only `REACT_APP_API_URL` to the Render URL in Vercel. `vercel.json` builds
+the React project and retains client-side routing.
+
+The displayed railway geography comes from the repository's OSM snapshot.
+Operational fields marked representative are demonstration assumptions and
+must not be treated as an authorized Station Working Rule, Signal
+Interlocking Plan or production safety authority.

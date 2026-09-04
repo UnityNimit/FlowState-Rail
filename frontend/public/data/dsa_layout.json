@@ -1,0 +1,1702 @@
+{
+  "network": {
+    "schemaVersion": 2,
+    "metadata": {
+      "networkId": "DSA",
+      "name": "Delhi Shahdara Junction",
+      "hindiName": "दिल्ली शाहदरा जंक्शन",
+      "topologyType": "station-schematic",
+      "source": [
+        "OpenStreetMap",
+        "OpenRailwayMap-compatible tags",
+        "representative operational layer"
+      ],
+      "attribution": "© OpenStreetMap contributors · ODbL 1.0",
+      "snapshotDate": "2026-09-04",
+      "licenseUrl": "https://www.openstreetmap.org/copyright",
+      "disclaimer": "Geography is derived from OpenStreetMap. Signals, routes, track circuits, speeds, OHE groups and maintenance resources are representative demonstration assumptions, not an authorised Station Working Rule or Signal Interlocking Plan.",
+      "movementTimeScale": 0.16
+    },
+    "station": {
+      "code": "DSA",
+      "name": "Delhi Shahdara Junction",
+      "hindiName": "दिल्ली शाहदरा जंक्शन",
+      "kind": "junction",
+      "platformCount": 4,
+      "osmId": 663758998,
+      "geoPosition": {
+        "lat": 28.6734298,
+        "lon": 77.2898858
+      },
+      "westConnection": "DELHI JN / YAMUNA BRIDGE",
+      "eastConnection": "SAHIBABAD / GHAZIABAD",
+      "platforms": [
+        {
+          "number": 1,
+          "name": "Platform 1",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 125,
+          "direction": "EAST"
+        },
+        {
+          "number": 2,
+          "name": "Platform 2",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 179,
+          "direction": "EAST"
+        },
+        {
+          "number": 3,
+          "name": "Platform 3",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 233,
+          "direction": "WEST"
+        },
+        {
+          "number": 4,
+          "name": "Platform 4",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 287,
+          "direction": "WEST"
+        }
+      ],
+      "tracksMeta": [
+        {
+          "index": 1,
+          "name": "PF 1 · UP LOOP",
+          "y": 125
+        },
+        {
+          "index": 2,
+          "name": "PF 2 · UP LOOP",
+          "y": 179
+        },
+        {
+          "index": 3,
+          "name": "PF 3 · DOWN LOOP",
+          "y": 233
+        },
+        {
+          "index": 4,
+          "name": "PF 4 · DOWN LOOP",
+          "y": 287
+        },
+        {
+          "index": "E1",
+          "name": "BRANCH LOOP",
+          "y": 315
+        }
+      ]
+    },
+    "nodes": [
+      {
+        "id": "DSA-WEST-UP-ENTRY",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 120,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-WEST-UP-ENTRY",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "EAST"
+      },
+      {
+        "id": "DSA-EAST-UP-EXIT",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 2380,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-EAST-UP-EXIT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "EAST"
+      },
+      {
+        "id": "DSA-EAST-DN-ENTRY",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 2380,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-EAST-DN-ENTRY",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "WEST"
+      },
+      {
+        "id": "DSA-WEST-DN-EXIT",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 120,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-WEST-DN-EXIT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "WEST"
+      },
+      {
+        "id": "DSA-W-UP-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 420,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-W-UP-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-E-UP-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 2080,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-E-UP-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-E-DN-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 2080,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-E-DN-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-W-DN-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 420,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-W-DN-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF1-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF1-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF1-BERTH",
+        "osmId": 663758998,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "Platform 1",
+        "provenance": {
+          "geoPosition": "osm",
+          "type": "osm",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "DSA-PF1-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF1-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF2-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 179
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF2-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF2-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 179
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "Platform 2",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "DSA-PF2-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 179
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF2-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF3-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 233
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF3-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF3-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 233
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "Platform 3",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "DSA-PF3-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 233
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF3-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF4-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF4-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-PF4-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "Platform 4",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "DSA-PF4-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-PF4-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-BRANCH-1-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 720,
+          "y": 315
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-BRANCH-1-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "DSA-BRANCH-1-E",
+        "osmId": null,
+        "type": "BUFFER_STOP",
+        "position": {
+          "x": 1800,
+          "y": 315
+        },
+        "geoPosition": {
+          "lat": 28.6734298,
+          "lon": 77.2898858
+        },
+        "label": "DSA-BRANCH-1-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      }
+    ],
+    "trackSegments": [
+      {
+        "id": "DSA-APP-W-UP",
+        "osmId": null,
+        "startNodeId": "DSA-WEST-UP-ENTRY",
+        "endNodeId": "DSA-W-UP-THROAT",
+        "lineId": "UP",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "EAST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-DSA-APP-1",
+        "blockSection": "DSA-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12000",
+          "12001",
+          "12004",
+          "12005",
+          "12008",
+          "12009"
+        ]
+      },
+      {
+        "id": "DSA-APP-E-UP",
+        "osmId": null,
+        "startNodeId": "DSA-E-UP-THROAT",
+        "endNodeId": "DSA-EAST-UP-EXIT",
+        "lineId": "UP",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "EAST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-DSA-APP-2",
+        "blockSection": "DSA-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12000",
+          "12001",
+          "12004",
+          "12005",
+          "12008",
+          "12009"
+        ]
+      },
+      {
+        "id": "DSA-APP-E-DN",
+        "osmId": null,
+        "startNodeId": "DSA-EAST-DN-ENTRY",
+        "endNodeId": "DSA-E-DN-THROAT",
+        "lineId": "DN",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "WEST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-DSA-APP-3",
+        "blockSection": "DSA-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12002",
+          "12003",
+          "12006",
+          "12007",
+          "12010",
+          "12011"
+        ]
+      },
+      {
+        "id": "DSA-APP-W-DN",
+        "osmId": null,
+        "startNodeId": "DSA-W-DN-THROAT",
+        "endNodeId": "DSA-WEST-DN-EXIT",
+        "lineId": "DN",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "WEST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-DSA-APP-4",
+        "blockSection": "DSA-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12002",
+          "12003",
+          "12006",
+          "12007",
+          "12010",
+          "12011"
+        ]
+      },
+      {
+        "id": "DSA-PF1-A",
+        "osmId": null,
+        "startNodeId": "DSA-W-UP-THROAT",
+        "endNodeId": "DSA-PF1-W",
+        "lineId": "PF1",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF1-1",
+        "blockSection": "DSA",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12000",
+          "12004",
+          "12008"
+        ]
+      },
+      {
+        "id": "DSA-PF1-B",
+        "osmId": null,
+        "startNodeId": "DSA-PF1-W",
+        "endNodeId": "DSA-PF1-BERTH",
+        "lineId": "PF1",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF1-2",
+        "blockSection": "DSA",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12000",
+          "12004",
+          "12008"
+        ]
+      },
+      {
+        "id": "DSA-PF1-C",
+        "osmId": null,
+        "startNodeId": "DSA-PF1-BERTH",
+        "endNodeId": "DSA-PF1-E",
+        "lineId": "PF1",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF1-3",
+        "blockSection": "DSA",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12000",
+          "12004",
+          "12008"
+        ]
+      },
+      {
+        "id": "DSA-PF1-D",
+        "osmId": null,
+        "startNodeId": "DSA-PF1-E",
+        "endNodeId": "DSA-E-UP-THROAT",
+        "lineId": "PF1",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF1-4",
+        "blockSection": "DSA",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12000",
+          "12004",
+          "12008"
+        ]
+      },
+      {
+        "id": "DSA-PF2-A",
+        "osmId": null,
+        "startNodeId": "DSA-W-UP-THROAT",
+        "endNodeId": "DSA-PF2-W",
+        "lineId": "PF2",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF2-1",
+        "blockSection": "DSA",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12001",
+          "12005",
+          "12009"
+        ]
+      },
+      {
+        "id": "DSA-PF2-B",
+        "osmId": null,
+        "startNodeId": "DSA-PF2-W",
+        "endNodeId": "DSA-PF2-BERTH",
+        "lineId": "PF2",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF2-2",
+        "blockSection": "DSA",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12001",
+          "12005",
+          "12009"
+        ]
+      },
+      {
+        "id": "DSA-PF2-C",
+        "osmId": null,
+        "startNodeId": "DSA-PF2-BERTH",
+        "endNodeId": "DSA-PF2-E",
+        "lineId": "PF2",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF2-3",
+        "blockSection": "DSA",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12001",
+          "12005",
+          "12009"
+        ]
+      },
+      {
+        "id": "DSA-PF2-D",
+        "osmId": null,
+        "startNodeId": "DSA-PF2-E",
+        "endNodeId": "DSA-E-UP-THROAT",
+        "lineId": "PF2",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF2-4",
+        "blockSection": "DSA",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12001",
+          "12005",
+          "12009"
+        ]
+      },
+      {
+        "id": "DSA-PF3-A",
+        "osmId": null,
+        "startNodeId": "DSA-E-DN-THROAT",
+        "endNodeId": "DSA-PF3-E",
+        "lineId": "PF3",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF3-1",
+        "blockSection": "DSA",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12002",
+          "12006",
+          "12010"
+        ]
+      },
+      {
+        "id": "DSA-PF3-B",
+        "osmId": null,
+        "startNodeId": "DSA-PF3-E",
+        "endNodeId": "DSA-PF3-BERTH",
+        "lineId": "PF3",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF3-2",
+        "blockSection": "DSA",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12002",
+          "12006",
+          "12010"
+        ]
+      },
+      {
+        "id": "DSA-PF3-C",
+        "osmId": null,
+        "startNodeId": "DSA-PF3-BERTH",
+        "endNodeId": "DSA-PF3-W",
+        "lineId": "PF3",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF3-3",
+        "blockSection": "DSA",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12002",
+          "12006",
+          "12010"
+        ]
+      },
+      {
+        "id": "DSA-PF3-D",
+        "osmId": null,
+        "startNodeId": "DSA-PF3-W",
+        "endNodeId": "DSA-W-DN-THROAT",
+        "lineId": "PF3",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF3-4",
+        "blockSection": "DSA",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12002",
+          "12006",
+          "12010"
+        ]
+      },
+      {
+        "id": "DSA-PF4-A",
+        "osmId": null,
+        "startNodeId": "DSA-E-DN-THROAT",
+        "endNodeId": "DSA-PF4-E",
+        "lineId": "PF4",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF4-1",
+        "blockSection": "DSA",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12003",
+          "12007",
+          "12011"
+        ]
+      },
+      {
+        "id": "DSA-PF4-B",
+        "osmId": null,
+        "startNodeId": "DSA-PF4-E",
+        "endNodeId": "DSA-PF4-BERTH",
+        "lineId": "PF4",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF4-2",
+        "blockSection": "DSA",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12003",
+          "12007",
+          "12011"
+        ]
+      },
+      {
+        "id": "DSA-PF4-C",
+        "osmId": null,
+        "startNodeId": "DSA-PF4-BERTH",
+        "endNodeId": "DSA-PF4-W",
+        "lineId": "PF4",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-DSA-PF4-3",
+        "blockSection": "DSA",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12003",
+          "12007",
+          "12011"
+        ]
+      },
+      {
+        "id": "DSA-PF4-D",
+        "osmId": null,
+        "startNodeId": "DSA-PF4-W",
+        "endNodeId": "DSA-W-DN-THROAT",
+        "lineId": "PF4",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-PF4-4",
+        "blockSection": "DSA",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 3,
+        "scheduledTrainIds": [
+          "12003",
+          "12007",
+          "12011"
+        ]
+      },
+      {
+        "id": "DSA-BRANCH-1",
+        "osmId": null,
+        "startNodeId": "DSA-BRANCH-1-W",
+        "endNodeId": "DSA-BRANCH-1-E",
+        "lineId": "BRANCH",
+        "length": 650,
+        "lengthMeters": 650,
+        "direction": "BI",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-DSA-BRANCH-1",
+        "blockSection": "DSA",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-DSA-YARD",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      }
+    ],
+    "routes": [
+      {
+        "id": "R-DSA-PF1-UP",
+        "entrySignalId": "DSA-WEST-UP-ENTRY",
+        "exitSignalId": "DSA-EAST-UP-EXIT",
+        "segments": [
+          "DSA-APP-W-UP",
+          "DSA-PF1-A",
+          "DSA-PF1-B",
+          "DSA-PF1-C",
+          "DSA-PF1-D",
+          "DSA-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "DSA-W-UP-THROAT": "NORMAL",
+          "DSA-E-UP-THROAT": "NORMAL"
+        },
+        "overlapSegments": [
+          "DSA-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-DSA-PF2-UP"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-DSA-PF2-UP",
+        "entrySignalId": "DSA-WEST-UP-ENTRY",
+        "exitSignalId": "DSA-EAST-UP-EXIT",
+        "segments": [
+          "DSA-APP-W-UP",
+          "DSA-PF2-A",
+          "DSA-PF2-B",
+          "DSA-PF2-C",
+          "DSA-PF2-D",
+          "DSA-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "DSA-W-UP-THROAT": "REVERSE",
+          "DSA-E-UP-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "DSA-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-DSA-PF1-UP"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-DSA-PF3-DN",
+        "entrySignalId": "DSA-EAST-DN-ENTRY",
+        "exitSignalId": "DSA-WEST-DN-EXIT",
+        "segments": [
+          "DSA-APP-E-DN",
+          "DSA-PF3-A",
+          "DSA-PF3-B",
+          "DSA-PF3-C",
+          "DSA-PF3-D",
+          "DSA-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "DSA-E-DN-THROAT": "REVERSE",
+          "DSA-W-DN-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "DSA-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-DSA-PF4-DN"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-DSA-PF4-DN",
+        "entrySignalId": "DSA-EAST-DN-ENTRY",
+        "exitSignalId": "DSA-WEST-DN-EXIT",
+        "segments": [
+          "DSA-APP-E-DN",
+          "DSA-PF4-A",
+          "DSA-PF4-B",
+          "DSA-PF4-C",
+          "DSA-PF4-D",
+          "DSA-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "DSA-E-DN-THROAT": "NORMAL",
+          "DSA-W-DN-THROAT": "NORMAL"
+        },
+        "overlapSegments": [
+          "DSA-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-DSA-PF3-DN"
+        ],
+        "routeSpeedKph": 30,
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      }
+    ],
+    "maintenanceZones": [
+      {
+        "id": "MZ-DSA-UP",
+        "name": "DSA UP-side integrated block",
+        "affectedSegments": [
+          "DSA-APP-W-UP",
+          "DSA-APP-E-UP",
+          "DSA-PF1-A",
+          "DSA-PF1-B",
+          "DSA-PF1-C",
+          "DSA-PF1-D",
+          "DSA-PF2-A",
+          "DSA-PF2-B",
+          "DSA-PF2-C",
+          "DSA-PF2-D"
+        ],
+        "affectedPoints": [
+          "DSA-W-UP-THROAT",
+          "DSA-E-UP-THROAT"
+        ],
+        "oheGroups": [
+          "OHE-DSA-UP"
+        ],
+        "kilometreLimits": [
+          6.699999999999999,
+          7.5
+        ],
+        "compatibleDepartments": [
+          "ENG",
+          "S&T",
+          "TRD"
+        ],
+        "provenance": "representative"
+      },
+      {
+        "id": "MZ-DSA-DN",
+        "name": "DSA DOWN-side integrated block",
+        "affectedSegments": [
+          "DSA-APP-E-DN",
+          "DSA-APP-W-DN",
+          "DSA-PF3-A",
+          "DSA-PF3-B",
+          "DSA-PF3-C",
+          "DSA-PF3-D",
+          "DSA-PF4-A",
+          "DSA-PF4-B",
+          "DSA-PF4-C",
+          "DSA-PF4-D"
+        ],
+        "affectedPoints": [
+          "DSA-E-DN-THROAT",
+          "DSA-W-DN-THROAT"
+        ],
+        "oheGroups": [
+          "OHE-DSA-DN"
+        ],
+        "kilometreLimits": [
+          6.699999999999999,
+          7.5
+        ],
+        "compatibleDepartments": [
+          "ENG",
+          "S&T",
+          "TRD"
+        ],
+        "provenance": "representative"
+      }
+    ],
+    "maintenanceTasks": [
+      {
+        "id": "DSA-TMS-01",
+        "sourceSystem": "TMS",
+        "department": "ENG",
+        "assetType": "rail/track geometry",
+        "description": "Rail/Track Geometry maintenance in DSA UP-side integrated block",
+        "maintenanceZoneId": "MZ-DSA-UP",
+        "criticality": 5,
+        "urgency": 5,
+        "overdueDays": 16,
+        "durationMinutes": 180,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "DSA-SMMS-01",
+        "sourceSystem": "SMMS",
+        "department": "S&T",
+        "assetType": "track circuit and point detection",
+        "description": "Track Circuit And Point Detection maintenance in DSA UP-side integrated block",
+        "maintenanceZoneId": "MZ-DSA-UP",
+        "criticality": 5,
+        "urgency": 4,
+        "overdueDays": 17,
+        "durationMinutes": 120,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "DSA-TDMS-01",
+        "sourceSystem": "TDMS",
+        "department": "TRD",
+        "assetType": "25 kV OHE inspection",
+        "description": "25 Kv Ohe Inspection maintenance in DSA UP-side integrated block",
+        "maintenanceZoneId": "MZ-DSA-UP",
+        "criticality": 5,
+        "urgency": 3,
+        "overdueDays": 18,
+        "durationMinutes": 150,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "DSA-TMS-02",
+        "sourceSystem": "TMS",
+        "department": "ENG",
+        "assetType": "rail/track geometry",
+        "description": "Rail/Track Geometry maintenance in DSA DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-DSA-DN",
+        "criticality": 4,
+        "urgency": 5,
+        "overdueDays": 19,
+        "durationMinutes": 180,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "DSA-SMMS-02",
+        "sourceSystem": "SMMS",
+        "department": "S&T",
+        "assetType": "track circuit and point detection",
+        "description": "Track Circuit And Point Detection maintenance in DSA DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-DSA-DN",
+        "criticality": 4,
+        "urgency": 4,
+        "overdueDays": 20,
+        "durationMinutes": 120,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "DSA-TDMS-02",
+        "sourceSystem": "TDMS",
+        "department": "TRD",
+        "assetType": "25 kV OHE inspection",
+        "description": "25 Kv Ohe Inspection maintenance in DSA DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-DSA-DN",
+        "criticality": 4,
+        "urgency": 3,
+        "overdueDays": 21,
+        "durationMinutes": 150,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      }
+    ]
+  }
+}

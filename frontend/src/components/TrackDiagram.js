@@ -28,12 +28,14 @@ const TrackDiagram = ({
     onTrackClick, 
     showNames = false, 
     showSpeeds = false,
-    activeMaintenanceBlocks = []
+    activeMaintenanceBlocks = [],
+    onStationSelect
 }) => {
     const [errTimer, setErrTimer] = useState(120);
     const [selectedPoint, setSelectedPoint] = useState(null);
     const [clock, setClock] = useState(() => new Date());
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [viewScale, setViewScale] = useState(1);
     const screenRef = useRef(null);
 
     useEffect(() => {
@@ -80,11 +82,43 @@ const TrackDiagram = ({
     const lockedSegmentIds = new Set();
     if (trains) {
         trains.forEach(train => {
-            if (train.route) train.route.forEach(id => lockedSegmentIds.add(id));
+            const route = train.route || [];
+            const routeIndex = route.indexOf(train.currentSegmentId);
+            if (routeIndex < 0) return;
+
+            // Show the occupied circuit and one protecting circuit only.  The
+            // old full-route paint made every future crossover look locked and
+            // hid what the interlocking was actually doing at this instant.
+            lockedSegmentIds.add(route[routeIndex]);
+            if (['RUNNING', 'STOPPED_AWAITING_CLEARANCE'].includes(train.state) && route[routeIndex + 1]) {
+                lockedSegmentIds.add(route[routeIndex + 1]);
+            }
         });
     }
 
     const blockedSet = new Set(activeMaintenanceBlocks);
+    const activeCrossoverSegments = new Set();
+    const junctionActivity = new Map();
+    (trains || []).forEach(train => {
+        const route = train.route || [];
+        const routeIndex = route.indexOf(train.currentSegmentId);
+        const crossoverSegments = routeIndex >= 0 && ['RUNNING', 'STOPPED_AWAITING_CLEARANCE'].includes(train.state)
+            ? route.slice(routeIndex, routeIndex + 2).filter(segmentId => segmentId.includes('-XO-'))
+            : [];
+        crossoverSegments.forEach(segmentId => {
+            activeCrossoverSegments.add(segmentId);
+            const match = segmentId.match(/^COR-XO-([A-Z]+)-(EAST|WEST)-/);
+            if (!match) return;
+            const key = `${match[1]}-${match[2]}`;
+            const entry = junctionActivity.get(key) || { station: match[1], direction: match[2], trains: new Set(), held: 0 };
+            entry.trains.add(train.id);
+            if (train.state === 'HOLD') entry.held += 1;
+            junctionActivity.set(key, entry);
+        });
+    });
+    const activeJunctions = [...junctionActivity.values()]
+        .map(activity => ({ ...activity, trains: [...activity.trains] }))
+        .slice(0, 4);
 
     const calculateTrainPosition = (train) => {
         if (!train.currentSegmentId || !train.route) return null;
@@ -110,13 +144,33 @@ const TrackDiagram = ({
         const posFraction = Math.max(0, Math.min(1, train.positionOnSegment || 0));
         const x = startNode.position.x + (endNode.position.x - startNode.position.x) * posFraction;
         const y = startNode.position.y + (endNode.position.y - startNode.position.y) * posFraction;
-        const angle = Math.atan2(endNode.position.y - startNode.position.y, endNode.position.x - startNode.position.x) * (180 / Math.PI);
+        // The capsule is horizontally symmetric, so keep its visual heading in
+        // the -90..90 range. Route segments may reverse their stored node order
+        // at a crossover; using the raw 180/-180 angle makes SVG interpolation
+        // appear as a full spin even though the train only changed track.
+        let angle = Math.atan2(endNode.position.y - startNode.position.y, endNode.position.x - startNode.position.x) * (180 / Math.PI);
+        if (angle > 90) angle -= 180;
+        if (angle < -90) angle += 180;
         return { x, y, angle };
     };
 
     const stationMeta = network.station || null;
+    const corridorMeta = network.corridor || null;
+    const metadata = network.metadata || {};
     const platforms = stationMeta?.platforms || [];
-    const tracksMeta = stationMeta?.tracksMeta || [];
+    const tracksMeta = stationMeta?.tracksMeta || (corridorMeta?.lines || []).map((line, index) => ({ index: line.id, name: `${line.name} · ${line.direction}`, y: [135, 205, 295, 365][index] }));
+    const semanticLabels = showNames || viewScale >= 1.45;
+    const titleSuffix = stationMeta ? `${stationMeta.platformCount}-PLATFORM ${stationMeta.kind.replaceAll('-', ' ').toUpperCase()}` : 'FOUR-LINE CORRIDOR OVERVIEW';
+    const westConnection = stationMeta?.westConnection || corridorMeta?.westConnection || 'WESTERN APPROACH';
+    const eastConnection = stationMeta?.eastConnection || corridorMeta?.eastConnection || 'EASTERN APPROACH';
+    const opState = network.operationalState || {};
+    const maintenanceCount = opState.activeMaintenanceZones?.length || activeMaintenanceBlocks.length;
+    const activeConflicts = opState.activeConflicts || [];
+    const activeConflictsCount = activeConflicts.length || trains.filter(t => t.state === 'HOLD').length;
+    // Derive the footer from the same current/next-segment window as the
+    // junction panel.  Older backend snapshots may describe a whole planned
+    // crossover route as active; the VDU must report only live point moves.
+    const activeCrossoversCount = activeJunctions.length;
 
     return (
         <div className="vdu-screen-container" ref={screenRef}>
@@ -131,9 +185,9 @@ const TrackDiagram = ({
                 </div>
 
                 <div className="vdu-station-titleplate">
-                    <div className="title-hindi">उत्तर रेलवे · पुरानी दिल्ली जंक्शन</div>
-                    <div className="title-main">OLD DELHI JUNCTION (DLI) · 16-PLATFORM YARD</div>
-                    <div className="title-sub">REPRESENTATIVE ELECTRONIC INTERLOCKING CONTROL VIEW</div>
+                    <div className="title-hindi">उत्तर रेलवे · {metadata.hindiName || metadata.name}</div>
+                    <div className="title-main">{(metadata.name || 'RAILWAY NETWORK').toUpperCase()} · {titleSuffix}</div>
+                    <div className="title-sub">SCHEMA v{network.schemaVersion || 2} · MULTI-TRACK INTERLOCKING & DYNAMIC CP-SAT OPTIMIZER</div>
                 </div>
 
                 <div className="vdu-header-right">
@@ -155,13 +209,25 @@ const TrackDiagram = ({
                 <button className="vdu-btn btn-ch">CRANK HANDLE UNLOCK</button>
                 <button className="vdu-btn btn-ac-reset">AXLE COUNTER RESET</button>
                 <button className="vdu-btn btn-ohe">25kV OHE ENERGIZED</button>
-                <button className={`vdu-btn ${activeMaintenanceBlocks.length > 0 ? 'btn-bdms-active' : 'btn-bdms-idle'}`}>
-                    BDMS: {activeMaintenanceBlocks.length > 0 ? `${activeMaintenanceBlocks.length} ACTIVE BLOCK${activeMaintenanceBlocks.length > 1 ? 'S' : ''}` : 'NO ACTIVE BLOCK'}
+                <button className={`vdu-btn ${maintenanceCount > 0 ? 'btn-bdms-active' : 'btn-bdms-idle'}`}>
+                    BDMS: {maintenanceCount > 0 ? `${maintenanceCount} ACTIVE BLOCK${maintenanceCount > 1 ? 'S' : ''}` : 'NO ACTIVE BLOCK'}
                 </button>
             </div>
 
             {/* CTC Interactive Vector Canvas */}
             <div className="track-diagram-wrapper">
+                {activeJunctions.length > 0 && (
+                    <div className="junction-activity-overlay" aria-live="polite">
+                        <div className="junction-activity-title">🔀 ACTIVE JUNCTION ROUTES</div>
+                        {activeJunctions.map(activity => (
+                            <div key={`${activity.station}-${activity.direction}`} className="junction-activity-row">
+                                <strong>{activity.station} · {activity.direction === 'EAST' ? 'UP' : 'DOWN'}</strong>
+                                <span>P-REV · T{activity.trains.slice(0, 2).join(', T')}</span>
+                                {activity.held > 0 && <em>{activity.held} queued</em>}
+                            </div>
+                        ))}
+                    </div>
+                )}
                 <TransformWrapper
                     limitToBounds={false}
                     minScale={0.35}
@@ -170,6 +236,7 @@ const TrackDiagram = ({
                     centerOnInit={true}
                     wheel={{ step: 0.08 }}
                     doubleClick={{ disabled: true }}
+                    onTransformed={(ref, state) => setViewScale(state?.scale || ref?.state?.scale || 1)}
                 >
                     {({ zoomIn, zoomOut, resetTransform }) => (
                         <>
@@ -185,8 +252,12 @@ const TrackDiagram = ({
                             <div className="diagram-state-legend" aria-label="Track state legend">
                                 <span><i className="legend-line clear" />Clear</span>
                                 <span><i className="legend-line locked" />Route locked</span>
+                                <span><i className="legend-line crossover-locked" />Crossover Diverge [REV]</span>
                                 <span><i className="legend-line occupied" />Occupied</span>
                                 <span><i className="legend-line blocked" />Maintenance</span>
+                                <span><i className="legend-line failure" />Equipment failure</span>
+                                <span><i className="signal-aspect-icon proceed" />Proceed</span>
+                                <span><i className="signal-aspect-icon stop" />Stop</span>
                             </div>
                             <TransformComponent
                                 wrapperStyle={{ width: '100%', height: '100%' }}
@@ -217,25 +288,54 @@ const TrackDiagram = ({
                                     <feGaussianBlur stdDeviation="4" result="blur" />
                                     <feComposite in="SourceGraphic" in2="blur" operator="over" />
                                 </filter>
+                                <filter id="amber-glow" x="-25%" y="-25%" width="150%" height="150%">
+                                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
                             </defs>
+
+                            {corridorMeta?.infrastructure?.map(item => (
+                                <g key={item.id} className={`corridor-infrastructure ${item.type}`}>
+                                    <rect x={item.x - item.width / 2} y="92" width={item.width} height="325" rx="6" />
+                                    <text x={item.x} y="108">{item.name}</text>
+                                </g>
+                            ))}
+
+                            {corridorMeta?.stations?.map(station => (
+                                <g
+                                    key={station.code}
+                                    transform={`translate(${station.x}, 72)`}
+                                    className="corridor-station-boundary"
+                                    onClick={() => onStationSelect && onStationSelect(station.code)}
+                                    role="button"
+                                    tabIndex="0"
+                                    aria-label={`Open ${station.name || station.code} schematic`}
+                                    onKeyDown={(event) => event.key === 'Enter' && onStationSelect && onStationSelect(station.code)}
+                                >
+                                    <line x1="0" y1="18" x2="0" y2="330" />
+                                    <rect x="-65" y="-18" width="130" height="34" rx="5" />
+                                    <text x="0" y="-2">{station.code}</text>
+                                    <text x="0" y="11" className="corridor-chainage">KM {station.chainageKm.toFixed(1)}</text>
+                                </g>
+                            ))}
 
                             {/* Section Corridor Markers */}
                             <g transform="translate(180, 42)">
                                 <rect x="-10" y="-12" width="310" height="24" rx="4" className="vdu-corridor-plate-bg" />
                                 <text className="vdu-corridor-plate-text" x="145" y="4">
-                                    ⬅️ WEST ENTRY (AMBALA / ROHTAK / REWARI)
+                                    ⬅ WEST · {westConnection}
                                 </text>
                             </g>
                             <g transform="translate(3050, 42)">
                                 <rect x="-10" y="-12" width="320" height="24" rx="4" className="vdu-corridor-plate-bg" />
                                 <text className="vdu-corridor-plate-text" x="150" y="4">
-                                    EAST EXIT (YAMUNA BRIDGE / GHAZIABAD) ➡️
+                                    {eastConnection} · EAST ➡
                                 </text>
                             </g>
 
                             {/* Passenger Platforms 1 to 16 (Authentic IR VDU Platform Bays) */}
                             {platforms.map(pf => {
-                                const isUp = pf.direction === 'WEST';
+                                const isUp = pf.direction === 'EAST';
                                 return (
                                     <g key={pf.number} className="platform-vdu-group">
                                         {/* Frosted Platform Island */}
@@ -268,16 +368,19 @@ const TrackDiagram = ({
                                 </g>
                             ))}
 
-                            {/* Track Circuits (Clean Steel Lines / Route Yellow / Solid Red Occupied) */}
+                            {/* Track Circuits (Clean Steel Lines / Route Yellow / Amber Crossover / Solid Red Occupied) */}
                             <g id="track-segments">
                                 {network.trackSegments.map(segment => {
                                     const startNode = nodesMap.get(segment.startNodeId);
                                     const endNode = nodesMap.get(segment.endNodeId);
                                     if (!startNode || !endNode) return null;
 
-                                    const isBlocked = segment.status === 'FAULTY' || blockedSet.has(segment.id);
+                                    const isFailure = segment.status === 'FAULTY' || segment.status === 'FAILURE';
+                                    const isMaintenance = segment.status === 'MAINTENANCE' || blockedSet.has(segment.id);
                                     const isLocked = lockedSegmentIds.has(segment.id);
                                     const isOccupied = segment.isOccupied;
+                                    const isCrossover = segment.lineId === 'CROSSOVER' || segment.id.includes('-XO-');
+                                    const isActiveCrossover = isCrossover && activeCrossoverSegments.has(segment.id);
 
                                     const midX = (startNode.position.x + endNode.position.x) / 2;
                                     const midY = (startNode.position.y + endNode.position.y) / 2;
@@ -285,8 +388,12 @@ const TrackDiagram = ({
                                     return (
                                         <g 
                                             key={segment.id} 
-                                            className="segment-group" 
+                                            className={`segment-group ${isCrossover ? 'crossover-segment' : ''} ${isActiveCrossover ? 'active-crossover-segment' : ''}`}
                                             onClick={() => onTrackClick && onTrackClick(segment.id)}
+                                            role="button"
+                                            tabIndex="0"
+                                            aria-label={`Track asset ${segment.id}`}
+                                            onKeyDown={(event) => event.key === 'Enter' && onTrackClick && onTrackClick(segment.id)}
                                         >
                                             {/* Base Crisp White/Grey Track Circuit Line */}
                                             <line
@@ -294,11 +401,11 @@ const TrackDiagram = ({
                                                 y1={startNode.position.y}
                                                 x2={endNode.position.x}
                                                 y2={endNode.position.y}
-                                                className="vdu-track-base"
+                                                className={`vdu-track-base ${isCrossover ? 'crossover-base' : ''}`}
                                             />
 
                                             {/* Dynamic VDU State Rendering */}
-                                            {isBlocked ? (
+                                            {isMaintenance ? (
                                                 <>
                                                     <line
                                                         x1={startNode.position.x}
@@ -316,32 +423,73 @@ const TrackDiagram = ({
                                                         </text>
                                                     </g>
                                                 </>
+                                            ) : isFailure ? (
+                                                <line
+                                                    x1={startNode.position.x}
+                                                    y1={startNode.position.y}
+                                                    x2={endNode.position.x}
+                                                    y2={endNode.position.y}
+                                                    className="vdu-track-failure"
+                                                />
                                             ) : isOccupied ? (
-                                                /* SOLID GLOWING RED (Exact Indian Railways VDU standard!) */
-                                                <line
-                                                    x1={startNode.position.x}
-                                                    y1={startNode.position.y}
-                                                    x2={endNode.position.x}
-                                                    y2={endNode.position.y}
-                                                    className="vdu-track-occupied"
-                                                    filter="url(#red-glow)"
-                                                />
+                                                /* SOLID GLOWING RED (Crossover or Standard) */
+                                                isCrossover ? (
+                                                    <line
+                                                        x1={startNode.position.x}
+                                                        y1={startNode.position.y}
+                                                        x2={endNode.position.x}
+                                                        y2={endNode.position.y}
+                                                        className="vdu-track-crossover-occupied"
+                                                        filter="url(#red-glow)"
+                                                    />
+                                                ) : (
+                                                    <line
+                                                        x1={startNode.position.x}
+                                                        y1={startNode.position.y}
+                                                        x2={endNode.position.x}
+                                                        y2={endNode.position.y}
+                                                        className="vdu-track-occupied"
+                                                        filter="url(#red-glow)"
+                                                    />
+                                                )
                                             ) : isLocked ? (
-                                                /* Interlocking Yellow Route Locked Line */
-                                                <line
-                                                    x1={startNode.position.x}
-                                                    y1={startNode.position.y}
-                                                    x2={endNode.position.x}
-                                                    y2={endNode.position.y}
-                                                    className="vdu-track-locked"
-                                                    filter="url(#cyan-glow)"
-                                                />
+                                                /* Crossover Amber Dash Flow or Main Yellow Route Locked */
+                                                isCrossover ? (
+                                                    <>
+                                                        <line
+                                                            x1={startNode.position.x}
+                                                            y1={startNode.position.y}
+                                                            x2={endNode.position.x}
+                                                            y2={endNode.position.y}
+                                                            className="vdu-track-crossover-locked"
+                                                            filter="url(#amber-glow)"
+                                                        />
+                                                        <g transform={`translate(${midX}, ${midY - 14})`} className="vdu-crossover-badge">
+                                                            <rect x="-42" y="-7" width="84" height="15" rx="3" className="vdu-crossover-badge-bg" />
+                                                            <text x="0" y="3.5" className="vdu-crossover-badge-text">🔀 XO ACTIVE [REV]</text>
+                                                        </g>
+                                                    </>
+                                                ) : (
+                                                    <line
+                                                        x1={startNode.position.x}
+                                                        y1={startNode.position.y}
+                                                        x2={endNode.position.x}
+                                                        y2={endNode.position.y}
+                                                        className="vdu-track-locked"
+                                                        filter="url(#cyan-glow)"
+                                                    />
+                                                )
                                             ) : null}
 
                                             {/* Track Circuit Name Label */}
-                                            {showNames && segment.trackCircuit && (
+                                            {semanticLabels && segment.trackCircuit && (
                                                 <text x={midX} y={midY - 6} className="vdu-tc-name">
                                                     {segment.trackCircuit}
+                                                </text>
+                                            )}
+                                            {(showSpeeds || viewScale >= 2.1) && (
+                                                <text x={midX} y={midY + 14} className="vdu-speed-label">
+                                                    {segment.permissibleSpeedKph || segment.maxSpeed} km/h
                                                 </text>
                                             )}
                                         </g>
@@ -354,26 +502,27 @@ const TrackDiagram = ({
                                 {network.nodes.map(node => {
                                     if (node.type === 'SIGNAL') {
                                         const isGreen = ((node.state || 'RED').toUpperCase() === 'GREEN');
+                                        const isEast = node.direction !== 'WEST';
                                         return (
                                             <g 
                                                 key={node.id} 
                                                 transform={`translate(${node.position.x}, ${node.position.y})`}
                                                 className="vdu-signal-mast"
                                                 onClick={() => onSignalClick && onSignalClick(node.id)}
+                                                role="button"
+                                                tabIndex="0"
+                                                aria-label={`${node.label || node.id}: ${isGreen ? 'green proceed' : 'red stop'}`}
+                                                onKeyDown={(event) => event.key === 'Enter' && onSignalClick && onSignalClick(node.id)}
                                             >
-                                                {/* Mast stem */}
-                                                <line x1="0" y1="0" x2="0" y2="-12" stroke="#64748b" strokeWidth="2" />
-                                                {/* Aspect Head */}
-                                                <circle
-                                                    cx="0"
-                                                    cy="-12"
-                                                    r="5"
-                                                    className={isGreen ? "vdu-signal-green" : "vdu-signal-red"}
-                                                    filter={isGreen ? "url(#cyan-glow)" : "url(#red-glow)"}
-                                                />
-                                                {showNames && (
-                                                    <text x="0" y="-18" className="vdu-device-id">
-                                                        {node.id}
+                                                <line className="signal-mast-stem" x1="0" y1="0" x2="0" y2="-8" />
+                                                <line className="signal-mast-foot" x1="-5" y1="0" x2="5" y2="0" />
+                                                <rect className="signal-head" x="-7" y="-34" width="14" height="27" rx="6" />
+                                                <circle cx="0" cy="-27" r="4" className={`signal-lamp red ${!isGreen ? 'active' : 'dim'}`} filter={!isGreen ? "url(#red-glow)" : undefined} />
+                                                <circle cx="0" cy="-15" r="4" className={`signal-lamp green ${isGreen ? 'active' : 'dim'}`} filter={isGreen ? "url(#cyan-glow)" : undefined} />
+                                                <polygon className={`signal-direction ${isGreen ? 'proceed' : 'stop'}`} points={isEast ? "8,-19 14,-15 8,-11" : "-8,-19 -14,-15 -8,-11"} />
+                                                {semanticLabels && (
+                                                    <text x="0" y="-39" className="vdu-device-id">
+                                                        {node.label || node.id}
                                                     </text>
                                                 )}
                                             </g>
@@ -391,13 +540,15 @@ const TrackDiagram = ({
                                                     points="-4,-4 0,-7 4,-4 0,7" 
                                                     className="vdu-switch-blade" 
                                                 />
-                                                {showNames && (
+                                                {semanticLabels && (
                                                     <text x="0" y="14" className="vdu-point-label">
                                                         {node.id.replace('SW-', 'P')}
                                                     </text>
                                                 )}
                                             </g>
                                         );
+                                    } else if (node.type === 'BUFFER_STOP') {
+                                        return <g key={node.id} transform={`translate(${node.position.x}, ${node.position.y})`} className="vdu-buffer-stop"><line x1="0" y1="-8" x2="0" y2="8" /><line x1="-5" y1="-8" x2="5" y2="-8" /></g>;
                                     }
                                     return null;
                                 })}
@@ -411,28 +562,42 @@ const TrackDiagram = ({
                                     const color = getTrainColor(train.type);
                                     const isHeld = train.state === 'HOLD';
                                     const isBoarding = train.state === 'BOARDING_PASSENGERS';
+                                    const conflict = train.conflictInfo || {};
 
                                     return (
                                         <g 
                                             key={train.id} 
                                             transform={`translate(${pos.x}, ${pos.y}) rotate(${pos.angle})`} 
-                                            className="vdu-train-capsule"
+                                            className={`vdu-train-capsule ${isHeld ? 'held-capsule' : ''}`}
                                         >
                                             {/* Forward High-Intensity Headlight Beam */}
-                                            <polygon 
-                                                points="22,-6 56,-16 56,16 22,6" 
-                                                fill="rgba(255, 255, 255, 0.22)" 
-                                                filter="url(#cyan-glow)" 
-                                            />
+                                            {!isHeld && (
+                                                <polygon
+                                                    points="22,-6 56,-16 56,16 22,6"
+                                                    fill="rgba(255, 255, 255, 0.22)"
+                                                    filter="url(#cyan-glow)"
+                                                />
+                                            )}
+                                            {/* Held Pulsing Aura */}
+                                            {isHeld && (
+                                                <rect
+                                                    x="-34"
+                                                    y="-13"
+                                                    width="68"
+                                                    height="26"
+                                                    rx="13"
+                                                    className="vdu-train-hold-halo"
+                                                />
+                                            )}
                                             {/* Train Hull */}
-                                            <rect 
+                                            <rect
                                                 x="-28" 
                                                 y="-9" 
                                                 width="56" 
                                                 height="18" 
                                                 rx="9" 
                                                 fill={color} 
-                                                className="vdu-train-hull" 
+                                                className={`vdu-train-hull ${isHeld ? 'vdu-train-hull-held' : ''}`}
                                             />
                                             {/* Cockpit Visor */}
                                             <rect x="16" y="-6" width="9" height="12" rx="3" fill="#020617" />
@@ -440,6 +605,17 @@ const TrackDiagram = ({
                                             <text x="-2" y="3" className="vdu-train-id-text">
                                                 {train.id} {isBoarding ? '👥' : isHeld ? '⏸' : ''}
                                             </text>
+                                            {/* Upright Informative Callout above Held Train */}
+                                            {isHeld && (
+                                                <g transform={`translate(0, -22) rotate(${-pos.angle})`} className="vdu-train-conflict-callout">
+                                                    <rect x="-65" y="-9" width="130" height="18" rx="4" className="callout-bg" />
+                                                    <text x="0" y="3.5" className="callout-text">
+                                                        {conflict.conflictingTrainId
+                                                            ? `⚡ YIELD T-${conflict.conflictingTrainId} (P${conflict.conflictingTrainPriority || '?'})`
+                                                            : '⚡ QUEUED: SAFE HEADWAY'}
+                                                    </text>
+                                                </g>
+                                            )}
                                         </g>
                                     );
                                 })}
@@ -457,16 +633,29 @@ const TrackDiagram = ({
                     <span className="telemetry-label">UP MAIN BLOCK:</span>
                     <span className="telemetry-value-clear">LINE CLEAR</span>
                 </div>
+                <div className="telemetry-block attribution-block" title={metadata.disclaimer}>
+                    <span className="telemetry-label">MAP SOURCE:</span>
+                    <a href={metadata.licenseUrl || 'https://www.openstreetmap.org/copyright'} target="_blank" rel="noreferrer">{metadata.attribution || '© OpenStreetMap contributors'}</a>
+                    <span> · snapshot {metadata.snapshotDate || 'offline'} · representative operations</span>
+                </div>
                 <div className="telemetry-block">
                     <span className="telemetry-label">DN MAIN BLOCK:</span>
                     <span className="telemetry-value-tol">TRAIN ON LINE (TOL)</span>
                 </div>
                 <div className="telemetry-block">
-                    <span className="telemetry-label">STATION CONTROLLER:</span>
-                    <span className="telemetry-value-auto">AUTOMATIC AI ROUTE SETTING (OR-TOOLS)</span>
+                    <span className="telemetry-label">JUNCTION CONTENTION:</span>
+                    <span className={activeConflictsCount > 0 ? "telemetry-value-warn" : "telemetry-value-clear"}>
+                        {activeConflictsCount > 0 ? `${activeConflictsCount} QUEUED (OR-TOOLS)` : '0 CONTENTION'} · 0 UNSAFE
+                    </span>
                 </div>
                 <div className="telemetry-block">
-                    <span className="telemetry-label">ACTIVE TRAINS IN YARD:</span>
+                    <span className="telemetry-label">CROSSOVERS:</span>
+                    <span className={activeCrossoversCount > 0 ? "telemetry-value-auto" : "telemetry-value-clear"}>
+                        {activeCrossoversCount > 0 ? `${activeCrossoversCount} ACTIVE (P-REV)` : 'NORMAL'}
+                    </span>
+                </div>
+                <div className="telemetry-block">
+                    <span className="telemetry-label">ACTIVE IN YARD:</span>
                     <span className="telemetry-value-count">{trains.filter(t => t.currentSegmentId).length}</span>
                 </div>
                 <div className="telemetry-block">
@@ -474,9 +663,9 @@ const TrackDiagram = ({
                     <span className="telemetry-value-auto">{selectedPoint || 'POINT 101 (N)'}</span>
                 </div>
                 <div className="telemetry-block">
-                    <span className="telemetry-label">MAINTENANCE BLOCKS (BDMS):</span>
-                    <span className={activeMaintenanceBlocks.length > 0 ? "telemetry-value-warn" : "telemetry-value-clear"}>
-                        {activeMaintenanceBlocks.length} ACTIVE
+                    <span className="telemetry-label">MAINTENANCE (BDMS):</span>
+                    <span className={maintenanceCount > 0 ? "telemetry-value-warn" : "telemetry-value-clear"}>
+                        {maintenanceCount} ACTIVE
                     </span>
                 </div>
             </div>

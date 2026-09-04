@@ -2,10 +2,11 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 import re
 import sys
+import os
 
 # --- CONFIGURATION ---
 CSV_FILE_PATH = 'backend/data/train_details.csv' # Make sure this points to your 241-row Delhi file
-DB_CONNECTION_STRING = 'postgresql://postgres:flowstate1212$$12@db.yilzdhtjvfvslcmqmgum.supabase.co:5432/postgres'
+DB_CONNECTION_STRING = os.getenv('DATABASE_URL')
 
 class Simulation:
     def __init__(self, section_code='DLI'):
@@ -47,6 +48,9 @@ class Simulation:
 
     def _load_master_schedule(self):
         try:
+            if not DB_CONNECTION_STRING:
+                print("Database import skipped: set DATABASE_URL in Backend/.env or the Render environment.")
+                return {}
             engine = create_engine(DB_CONNECTION_STRING)
             with engine.connect() as connection:
                 query = text(f"SELECT DISTINCT train_no FROM stops WHERE station_code = '{self.section_code}'")

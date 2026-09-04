@@ -250,6 +250,27 @@ input:checked + .slider:before {
     transform: translateY(0); /* Press effect */
 }
 
+.stress-test-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 10px;
+    padding: 9px 10px;
+    color: #fbbf24;
+    text-align: left;
+    background: linear-gradient(90deg, rgba(245, 158, 11, .12), rgba(245, 158, 11, .03));
+    border: 1px solid rgba(245, 158, 11, .38);
+    border-radius: 7px;
+    cursor: pointer;
+}
+.stress-test-btn svg { flex: 0 0 auto; font-size: 18px; }
+.stress-test-btn span { display: flex; flex-direction: column; min-width: 0; }
+.stress-test-btn strong { font-size: 11px; letter-spacing: .25px; }
+.stress-test-btn small { margin-top: 2px; color: #94a3b8; font-size: 8px; }
+.stress-test-btn:hover { border-color: #fbbf24; background: rgba(245, 158, 11, .16); }
+.stress-test-btn.active { color: #fecaca; background: rgba(239, 68, 68, .13); border-color: rgba(239, 68, 68, .55); }
+
 .blocked-track-list {
     display: flex;
     flex-direction: column;

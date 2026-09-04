@@ -54,7 +54,7 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
         if (trackIdToAdd && !blockedTracks.includes(trackIdToAdd)) {
             const newFaultyTracks = [...blockedTracks, trackIdToAdd];
             onBlockedTracksChange(newFaultyTracks);
-            socketService.emit('controller_set_track_status', { trackId: trackIdToAdd, status: 'FAULTY' });
+            socketService.emit('controller_set_track_status', { trackId: trackIdToAdd, status: 'MAINTENANCE' });
             setFaultyTrackInput('');
         }
     };
@@ -63,6 +63,18 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
         const newFaultyTracks = blockedTracks.filter(t => t !== trackId);
         onBlockedTracksChange(newFaultyTracks);
         socketService.emit('controller_set_track_status', { trackId: trackId, status: 'OPERATIONAL' });
+    };
+
+    const stressTestTrack = 'COR-UP_FAST-DSA-ANVR-TC2';
+    const stressTestActive = blockedTracks.includes(stressTestTrack);
+    const handleStressTest = () => {
+        if (stressTestActive) {
+            handleRemoveFaultyTrack(stressTestTrack);
+            return;
+        }
+        const newFaultyTracks = [...blockedTracks, stressTestTrack];
+        onBlockedTracksChange(newFaultyTracks);
+        socketService.emit('controller_set_track_status', { trackId: stressTestTrack, status: 'MAINTENANCE' });
     };
 
     return (
@@ -79,6 +91,7 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
                         >
                             <option value="CORRIDOR">Delhi–Ghaziabad Corridor (Quadruple Line)</option>
                             <option value="DLI">Delhi Junction Yard</option>
+                            <option value="DSA">Delhi Shahdara Junction</option>
                             <option value="ANVR">Anand Vihar Terminal</option>
                             <option value="SBB">Sahibabad Junction</option>
                             <option value="GZB">Ghaziabad Junction</option>
@@ -110,11 +123,20 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
                 <div className="panel">
                     <div className="panel-header"><span>Blocked Tracks</span></div>
                     <div className="panel-content">
+                        {selectedStation === 'CORRIDOR' && (
+                            <button className={`stress-test-btn ${stressTestActive ? 'active' : ''}`} onClick={handleStressTest}>
+                                <FiAlertCircle />
+                                <span>
+                                    <strong>{stressTestActive ? 'Restore main line' : 'Run AI stress test'}</strong>
+                                    <small>{stressTestActive ? 'DSA–ANVR UP FAST is blocked' : 'Block DSA–ANVR UP FAST circuit'}</small>
+                                </span>
+                            </button>
+                        )}
                         <div className="track-control-input-group">
                             <input
                                 type="text"
                                 className="track-input"
-                                placeholder="e.g., TS-APP-1"
+                                placeholder="Select a track or enter its ID"
                                 value={faultyTrackInput}
                                 onChange={(e) => setFaultyTrackInput(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddFaultyTrack()}
@@ -125,7 +147,7 @@ const LeftSidebar = ({ simulationStatus, selectedStation, onStationChange, block
                         </div>
                         <div className="blocked-track-list">
                             {blockedTracks.length === 0 ? (
-                                <div className="no-tracks-message">No tracks manually blocked.</div>
+                                <div className="no-tracks-message">No maintenance possessions.</div>
                             ) : (
                                 blockedTracks.map(trackId => (
                                     <div key={trackId} className="blocked-track-item">

@@ -7,6 +7,8 @@
 # -----------------------------------------------------------------------------
 # Ignore all .env files in any subdirectory (most important rule).
 **/.env*
+!**/.env.example
+**/.runtime/
 
 # -----------------------------------------------------------------------------
 # General Dependencies & Build Artifacts
