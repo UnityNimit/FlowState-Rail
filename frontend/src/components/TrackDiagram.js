@@ -1,6 +1,7 @@
 // TrackDiagram.js - Authentic Indian Railways Electronic Interlocking (EI) VDU Digital Twin
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { FiMaximize2, FiMinimize2, FiMinus, FiPlus, FiTarget } from 'react-icons/fi';
 import './TrackDiagram.css';
 
 const trainColorMap = new Map([
@@ -31,13 +32,34 @@ const TrackDiagram = ({
 }) => {
     const [errTimer, setErrTimer] = useState(120);
     const [selectedPoint, setSelectedPoint] = useState(null);
+    const [clock, setClock] = useState(() => new Date());
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const screenRef = useRef(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setErrTimer(prev => (prev > 0 ? prev - 1 : 120));
+            setClock(new Date());
         }, 1000);
         return () => clearInterval(interval);
     }, []);
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(document.fullscreenElement === screenRef.current);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
+    const toggleFullscreen = async () => {
+        if (!screenRef.current) return;
+        if (document.fullscreenElement === screenRef.current) {
+            await document.exitFullscreen();
+        } else {
+            await screenRef.current.requestFullscreen();
+        }
+    };
 
     if (!network || !network.nodes || !network.trackSegments) return null;
 
@@ -97,19 +119,21 @@ const TrackDiagram = ({
     const tracksMeta = stationMeta?.tracksMeta || [];
 
     return (
-        <div className="vdu-screen-container">
-            {/* Authentic Indian Railways VDU Top Control Console */}
+        <div className="vdu-screen-container" ref={screenRef}>
+            {/* Representative railway control display for the planning simulation. */}
             <div className="vdu-top-bar">
                 <div className="vdu-header-left">
-                    <span className="ei-system-badge">MEDHA / HITACHI EI</span>
-                    <span className="ei-doc-badge">NR-DLI-SIP-2026/01</span>
-                    <span className="ei-clock">⏰ 00:00:00 LIVE</span>
+                    <span className="ei-system-badge">EI DIGITAL TWIN</span>
+                    <span className="ei-doc-badge">DEMONSTRATION DATA</span>
+                    <span className="ei-clock">
+                        {clock.toLocaleTimeString('en-IN', { hour12: false, timeZone: 'Asia/Kolkata' })} IST
+                    </span>
                 </div>
 
                 <div className="vdu-station-titleplate">
                     <div className="title-hindi">उत्तर रेलवे · पुरानी दिल्ली जंक्शन</div>
-                    <div className="title-main">OLD DELHI JUNCTION (DLI) · 16 PLATFORMS ROUTE RELAY INTERLOCKING</div>
-                    <div className="title-sub">ELECTRONIC INTERLOCKING VDU OPERATIONAL CONSOLE · CHENNAI/DELHI DIVISION STANDARDS</div>
+                    <div className="title-main">OLD DELHI JUNCTION (DLI) · 16-PLATFORM YARD</div>
+                    <div className="title-sub">REPRESENTATIVE ELECTRONIC INTERLOCKING CONTROL VIEW</div>
                 </div>
 
                 <div className="vdu-header-right">
@@ -119,7 +143,7 @@ const TrackDiagram = ({
                 </div>
             </div>
 
-            {/* Authentic VDU Hardware Operation Push-Buttons Row (As in the real Photo!) */}
+            {/* Route-control shortcuts remain available without consuming canvas height. */}
             <div className="vdu-buttons-strip">
                 <button className="vdu-btn btn-sig-clear">SIGNAL CLEAR (KL)</button>
                 <button className="vdu-btn btn-sig-cancel">CANCEL ROUTE (KR)</button>
@@ -131,26 +155,50 @@ const TrackDiagram = ({
                 <button className="vdu-btn btn-ch">CRANK HANDLE UNLOCK</button>
                 <button className="vdu-btn btn-ac-reset">AXLE COUNTER RESET</button>
                 <button className="vdu-btn btn-ohe">25kV OHE ENERGIZED</button>
-                <button className="vdu-btn btn-bdms-active">🚧 BDMS SHADOW BLOCK ACTIVE</button>
+                <button className={`vdu-btn ${activeMaintenanceBlocks.length > 0 ? 'btn-bdms-active' : 'btn-bdms-idle'}`}>
+                    BDMS: {activeMaintenanceBlocks.length > 0 ? `${activeMaintenanceBlocks.length} ACTIVE BLOCK${activeMaintenanceBlocks.length > 1 ? 'S' : ''}` : 'NO ACTIVE BLOCK'}
+                </button>
             </div>
 
             {/* CTC Interactive Vector Canvas */}
             <div className="track-diagram-wrapper">
-                <TransformWrapper 
-                    limitToBounds={false} 
-                    minScale={0.2} 
-                    maxScale={8} 
-                    initialScale={0.52}
+                <TransformWrapper
+                    limitToBounds={false}
+                    minScale={0.35}
+                    maxScale={10}
+                    initialScale={1}
                     centerOnInit={true}
+                    wheel={{ step: 0.08 }}
+                    doubleClick={{ disabled: true }}
                 >
-                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
-                        <svg 
-                            width="100%" 
-                            height="100%" 
-                            viewBox={`${originX} 0 ${viewBoxWidth} ${viewBoxHeight}`} 
-                            preserveAspectRatio="xMidYMid meet"
-                            className="ctc-svg-canvas"
-                        >
+                    {({ zoomIn, zoomOut, resetTransform }) => (
+                        <>
+                            <div className="diagram-view-controls" aria-label="Track diagram view controls">
+                                <button type="button" onClick={() => zoomIn(0.35)} title="Zoom in" aria-label="Zoom in"><FiPlus /></button>
+                                <button type="button" onClick={() => zoomOut(0.35)} title="Zoom out" aria-label="Zoom out"><FiMinus /></button>
+                                <button type="button" onClick={() => resetTransform(250)} title="Fit entire yard" aria-label="Fit entire yard"><FiTarget /></button>
+                                <span className="view-control-divider" />
+                                <button type="button" onClick={toggleFullscreen} title={isFullscreen ? 'Exit full screen' : 'Open full screen'} aria-label={isFullscreen ? 'Exit full screen' : 'Open full screen'}>
+                                    {isFullscreen ? <FiMinimize2 /> : <FiMaximize2 />}
+                                </button>
+                            </div>
+                            <div className="diagram-state-legend" aria-label="Track state legend">
+                                <span><i className="legend-line clear" />Clear</span>
+                                <span><i className="legend-line locked" />Route locked</span>
+                                <span><i className="legend-line occupied" />Occupied</span>
+                                <span><i className="legend-line blocked" />Maintenance</span>
+                            </div>
+                            <TransformComponent
+                                wrapperStyle={{ width: '100%', height: '100%' }}
+                                contentStyle={{ width: '100%', height: '100%' }}
+                            >
+                                <svg
+                                    width="100%"
+                                    height="100%"
+                                    viewBox={`${originX} 0 ${viewBoxWidth} ${viewBoxHeight}`}
+                                    preserveAspectRatio="xMidYMid meet"
+                                    className="ctc-svg-canvas"
+                                >
                             <defs>
                                 <pattern id="maint-hazard" width="16" height="16" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
                                     <line x1="0" y1="0" x2="0" y2="16" stroke="#f59e0b" strokeWidth="6" />
@@ -291,7 +339,7 @@ const TrackDiagram = ({
                                             ) : null}
 
                                             {/* Track Circuit Name Label */}
-                                            {segment.trackCircuit && (
+                                            {showNames && segment.trackCircuit && (
                                                 <text x={midX} y={midY - 6} className="vdu-tc-name">
                                                     {segment.trackCircuit}
                                                 </text>
@@ -396,8 +444,10 @@ const TrackDiagram = ({
                                     );
                                 })}
                             </g>
-                        </svg>
-                    </TransformComponent>
+                                </svg>
+                            </TransformComponent>
+                        </>
+                    )}
                 </TransformWrapper>
             </div>
 

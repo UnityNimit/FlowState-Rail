@@ -3,8 +3,10 @@
     padding: 14px;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 3fr 2fr;
+    grid-template-rows: minmax(0, 3fr) minmax(120px, 1fr);
     gap: 12px;
+    min-width: 0;
+    min-height: 0;
 }
 .panel {
     background-color: var(--bg-dark-1);
@@ -16,7 +18,9 @@
 }
 .track-panel {
     position: relative;
+    min-height: 0;
 }
+
 /* ... other existing styles ... */
 .toolbar-floating {
     position: absolute;

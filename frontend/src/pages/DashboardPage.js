@@ -10,7 +10,7 @@ import { FiSettings } from 'react-icons/fi';
 const DashboardPage = ({ selectedStation, simulationStatus, liveData }) => {
     const [previewData, setPreviewData] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-    const [showNames, setShowNames] = useState(true);
+    const [showNames, setShowNames] = useState(false);
     const [showSpeeds, setShowSpeeds] = useState(false);
     const [selectedTrack, setSelectedTrack] = useState(null);
     const [signalClickBlocked, setSignalClickBlocked] = useState(false);
