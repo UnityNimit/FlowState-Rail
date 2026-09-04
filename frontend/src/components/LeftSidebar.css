@@ -77,13 +77,12 @@
 }
 
 .map-dropdown:hover {
-    border-color: rgba(255, 255, 255, 0.1); /* --accent-orange to rgba(255, 255, 255, 0.1) */
+    border-color: var(--border-hover);
 }
 
 .map-dropdown:focus {
     outline: none;
-    border-color: var(--accent-cyan); /* --accent-orange to --accent-cyan */
-    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); /* Orange glow on focus */
+    border-color: var(--border-focus);
 }
 
 .map-image-container {
@@ -172,24 +171,24 @@
 }
 
 input:checked + .slider {
-    background-color: var(--accent-cyan-dark); /* --accent-orange to --accent-cyan-dark */
-    border-color: var(--accent-cyan); /* Added border-color */
+    background-color: var(--btn-primary-bg);
+    border-color: var(--btn-primary-hover);
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); /* Orange glow on focus */
+    border-color: var(--border-focus);
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(18px); /* Adjusted translation */
+    -webkit-transform: translateX(18px);
     -ms-transform: translateX(18px);
     transform: translateX(18px);
-    background-color: #fff; /* #1a1c1d to #fff */
+    background-color: #fff;
 }
 
 /* Rounded sliders */
 .slider.round {
-    border-radius: 22px; /* Match height for perfect roundness */
+    border-radius: 22px;
 }
 
 .slider.round:before {
@@ -206,38 +205,36 @@ input:checked + .slider:before {
 
 .track-input {
     flex-grow: 1;
-    background-color: var(--bg-dark-2); /* --bg-main to --bg-dark-2 */
+    background-color: var(--bg-dark-2);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    /* padding: 0px; Increased padding */
-    padding-left: 5px; 
-    border-radius: 6px; /* 4px to 6px */
-    font-size: 14px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding-left: 8px; 
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    transition: border-color 0.2s ease;
 }
 
 .track-input:focus {
     outline: none;
-    border-color: var(--accent-cyan); /* --accent-orange to --accent-cyan */
-    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); /* 0 0 0 2px rgba(255, 165, 0, 0.3) */
+    border-color: var(--border-focus);
 }
 
 .track-add-btn {
-    background-color: var(--accent-cyan-dark); /* --accent-orange to --accent-cyan-dark */
-    color: #fff; /* #1a1c1d to #fff */
-    border: 1px solid var(--accent-cyan); /* none to 1px solid var(--accent-cyan) */
-    /* Adjusted to ensure it fits and is square */
-    width: 38px; /* Set a fixed width */
-    height: 38px; /* Set a fixed height, matching input visual height approx */
-    padding: 0; /* Remove padding as width/height are explicit */
-    line-height: 38px; /* Center content vertically */
-    text-align: center; /* Center content horizontally */
-    border-radius: 6px; /* 4px to 6px */
-    font-weight: 700; /* 600 to 700 */
+    background-color: var(--train-express);
+    color: #fff;
+    border: 1px solid var(--border-focus);
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    font-size: 1.2em; /* Keep existing font size for the + */
-    flex-shrink: 0; /* Prevent it from shrinking */
+    transition: background-color 0.2s ease;
+    font-size: 1.2em;
+    flex-shrink: 0;
 }
 
 .track-add-btn:hover {
@@ -295,20 +292,23 @@ input:checked + .slider:before {
 
 .track-remove-btn {
     margin-left: auto;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
     cursor: pointer;
-    padding: 0 5px;
-    transition: color 0.2s ease, transform 0.1s ease;
+    padding: 2px 6px;
+    transition: all 0.15s ease;
 }
 
 .track-remove-btn:hover {
-    color: #ef4444; /* #e74c3c to #ef4444 */
-    transform: scale(1.1); /* Slightly larger on hover */
+    background: var(--btn-danger-bg);
+    border-color: transparent;
+    color: #ffffff;
 }
 
 .track-remove-btn:active {
-    transform: scale(0.9); /* Press effect */
+    transform: scale(0.95);
 }

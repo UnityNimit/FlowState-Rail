@@ -33,8 +33,7 @@ html, body {
   color: #ffffff;
   opacity: 1;
   letter-spacing: 0.28em;
-  transform: scale(1.04);
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
+  transform: scale(1.02);
 }
 
 .launch-text:active {

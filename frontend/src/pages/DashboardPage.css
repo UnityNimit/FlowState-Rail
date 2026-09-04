@@ -99,14 +99,22 @@
     font-size: 1.1rem;
 }
 .close-btn {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
     color: var(--text-secondary);
-    font-size: 24px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 4px 8px;
     cursor: pointer;
     line-height: 1;
+    transition: all 0.15s ease;
 }
-.close-btn:hover { color: var(--text-primary); }
+.close-btn:hover { 
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary); 
+}
 
 .settings-content {
     display: flex;
@@ -132,17 +140,96 @@
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-dark-1); transition: .4s; border: 1px solid var(--border-color); }
 .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: var(--text-secondary); transition: .4s; }
-input:checked + .slider { background-color: var(--accent-cyan-dark); border-color: var(--accent-cyan); }
+input:checked + .slider { background-color: #1d4ed8; border-color: #2563eb; }
 input:checked + .slider:before { transform: translateX(18px); background-color: #fff; }
 .slider.round { border-radius: 22px; }
 .slider.round:before { border-radius: 50%; }
 
-/* Legend Styles */
-.legend-item { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+/* Legend Styles - Clean solid colors, NO GLOW */
+.legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-secondary); }
 .legend-item .track { stroke-width: 4; }
-.legend-swatch { width: 18px; height: 18px; border-radius: 4px; }
-.legend-swatch.signal-green { background-color: #22c55e; filter: drop-shadow(0 0 4px #22c55e); }
-.legend-swatch.signal-red { background-color: #ef4444; filter: drop-shadow(0 0 4px #ef4444); }
-.legend-swatch.point { background-color: var(--accent-yellow); }
-.legend-swatch.train-high-prio { background-color: #e74c3c; } /* Example color from getTrainColor */
-.legend-swatch.train-low-prio { background-color: #7f8c8d; } /* Example color */
+.legend-swatch { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
+.legend-swatch.signal-green { background-color: var(--sig-green); }
+.legend-swatch.signal-red { background-color: var(--sig-red); }
+.legend-swatch.point { background-color: var(--sig-amber); }
+
+/* Sleek Docked Track Segment Action Bar */
+.track-action-dock {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    padding: 8px 16px;
+    z-index: 150;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.track-action-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+}
+
+.track-action-title {
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.track-action-id {
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.track-action-btns {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dock-btn {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.dock-btn:hover {
+    background: var(--bg-surface-3);
+    border-color: var(--border-hover);
+}
+
+.dock-btn.danger {
+    background: var(--btn-danger-bg);
+    border-color: transparent;
+    color: #ffffff;
+}
+
+.dock-btn.danger:hover {
+    background: var(--btn-danger-hover);
+}
+
+.dock-btn.success {
+    background: var(--btn-primary-bg);
+    border-color: transparent;
+    color: #ffffff;
+}
+
+.dock-btn.success:hover {
+    background: var(--btn-primary-hover);
+}

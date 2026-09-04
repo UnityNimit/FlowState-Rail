@@ -1,73 +1,174 @@
 # =============================================================================
-# FlowState-Rail: Unified .gitignore for Full-Stack Application
+# FlowState-Rail: Master Consolidated .gitignore
+# Full-Stack Railway Twin: React Frontend + FastAPI/Python Backend
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Environment Variables & Sensitive Files
+# 1. Environment Variables & Secrets (Critical)
 # -----------------------------------------------------------------------------
-# Ignore all .env files in any subdirectory (most important rule).
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 **/.env*
+*.env
+!.env.example
 
 # -----------------------------------------------------------------------------
-# General Dependencies & Build Artifacts
+# 2. Node.js & React Frontend
 # -----------------------------------------------------------------------------
-# Ignore dependency directories for both Node.js and Python.
+# Dependency directories
 node_modules/
-venv/
-.venv/
-env/
+**/node_modules/
+jspm_packages/
+web_modules/
 
-# Ignore general build output folders.
+# Production build outputs
 /build/
+build/
+**/build/
 /dist/
+dist/
+**/dist/
+out/
+.next/
 
-# -----------------------------------------------------------------------------
-# Frontend Specific (React)
-# -----------------------------------------------------------------------------
-# Logs
+# Package manager debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Yarn PnP files
+# Yarn PnP & Modern Package Manager Artifacts
 .pnp
 .pnp.js
+.pnp.*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# Testing
-/coverage
+# Frontend Linters & Testing Cache
+.eslintcache
+.stylelintcache
+coverage/
+**/coverage/
+.nyc_output/
 
 # -----------------------------------------------------------------------------
-# Backend Specific (Python)
+# 3. Python & FastAPI Backend
 # -----------------------------------------------------------------------------
-# Python bytecode and compiled files
+# Bytecode, compiled files & C-extensions
 __pycache__/
-*.pyc
-*.pyo
+**/__pycache__/
+*.py[cod]
+*.class
+*.so
 *.pyd
+*.pyo
+*.c
 
-# Distribution / packaging
+# Python Distribution & Packaging
 *.egg-info/
+**/*.egg-info/
 *.egg
+develop-eggs/
+eggs/
+parts/
+var/
+sdist/
+*.manifest
+*.spec
+
+# Python Virtual Environments
+.venv/
+**/.venv/
+venv/
+**/venv/
+env/
+**/env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing, Coverage & Linters
+.pytest_cache/
+**/.pytest_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.dmypy.json
+dmypy.json
+
+# Jupyter & Interactive Python Checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
 
 # -----------------------------------------------------------------------------
-# System & IDE Files
+# 4. Logs, Runtimes & Temp Files
+# -----------------------------------------------------------------------------
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# 5. Operating System & IDE Specifics
 # -----------------------------------------------------------------------------
 # macOS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 .AppleDouble
 .LSOverride
 
-# Thumbnails
-._*
-
 # Windows
 Thumbs.db
+Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
+Desktop.ini
+.BIN/
 *.stackdump
 
-# IDE-specific
+# Linux
+.directory
+.Trash-*
+.fuse_hidden*
+
+# IDEs & Code Editors
 .idea/
+**/.idea/
 .vscode/
-*.swp
-*.swo
+**/.vscode/
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+
+# -----------------------------------------------------------------------------
+# 6. Local Scratch & Tool Generated Logs
+# -----------------------------------------------------------------------------
+.system_generated/
+scratch/

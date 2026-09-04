@@ -8,10 +8,7 @@
     It goes from a tight, intense glow to a wider, softer bloom.
     This shadow is applied directly to the text's color.
   */
-  text-shadow: 
-    0 0 5px rgba(0, 0, 0, 0.5),  /* Inner, sharper glow */
-    0 0 15px rgba(0, 0, 0, 0.3), /* Softer, medium bloom */
-    0 0 30px rgba(0, 0, 0, 0.2); /* Widest, faintest bloom */
+  text-shadow: none;
 
   /* The background gradient for the moving shine remains exactly the same */
   background: linear-gradient(

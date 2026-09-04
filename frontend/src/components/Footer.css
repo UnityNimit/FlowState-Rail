@@ -14,9 +14,8 @@
 }
 
 .footer-status .status-ok {
-    color: #22c55e; /* --status-green to #22c55e */
+    color: var(--sig-green);
     font-weight: bold;
-    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5); /* Added text-shadow */
 }
 
 .footer-actions {

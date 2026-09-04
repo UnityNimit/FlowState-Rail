@@ -19,7 +19,7 @@ const legendaryStepsFactory = () => [
     { id: 'station-selector', title: 'Station Selector', selector: '.left-sidebar .panel:nth-of-type(1)', content: 'Use this panel to select the railway network you want to control. You can only change the station when the simulation is stopped.' },
     { id: 'ai-strategy', title: 'AI Optimization', selector: '.left-sidebar .panel:nth-of-type(2)', content: 'Configure the AI\'s decision-making process by toggling different priorities.' },
     { id: 'blocked-tracks', title: 'Blocked Tracks', selector: '.left-sidebar .panel:nth-of-type(3)', content: 'Manually block a track segment if there is a fault.' },
-    { id: 'track', title: 'Track Diagram', selector: '#panel-1', content: 'This is the Track Diagram — it shows all track segments, signals, and trains in real time.' },
+    { id: 'track', title: 'Track Diagram', selector: '#panel-1', content: 'This is the Track Diagram - it shows all track segments, signals, and trains in real time.' },
     { id: 'chat', title: 'Operator Chatbot', selector: '#panel-chat', content: 'Ask the chatbot questions about the network status or AI decisions.' },
     { id: 'right-sidebar', title: 'Right Sidebar', selector: '.right-sidebar', content: 'This sidebar provides a live feed of the simulation status and the AI\'s decisions.' },
     { id: 'decision-panel', title: 'Decision Panel', selector: '.right-sidebar .main-panel', content: 'Shows what the AI is doing and why.' },

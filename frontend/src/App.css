@@ -58,7 +58,8 @@
 
 .hud-brand:hover {
     background: rgba(255, 255, 255, 0.12);
-    color: #00f0ff;
+    color: #f8fafc;
+    border-color: rgba(255, 255, 255, 0.25);
 }
 
 .hud-station-select {
@@ -75,7 +76,7 @@
 }
 
 .hud-station-select:hover {
-    border-color: #38bdf8;
+    border-color: var(--border-hover);
 }
 
 /* Buttons */
@@ -101,7 +102,7 @@
 .hud-btn.active {
     background: #0284c7;
     color: #ffffff;
-    border-color: #38bdf8;
+    border-color: #0369a1;
 }
 
 .hud-btn-primary {
@@ -167,8 +168,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 6px #22c55e;
+    background: #16a34a;
 }
 
 /* Floating Drawers */
@@ -218,16 +218,23 @@
 }
 
 .drawer-close {
-    background: transparent;
-    border: none;
-    color: #64748b;
-    font-size: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: #94a3b8;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 3px 7px;
     cursor: pointer;
     line-height: 1;
+    transition: all 0.15s ease;
 }
 
 .drawer-close:hover {
+    background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
 }
 
 .drawer-body {
