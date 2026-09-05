@@ -49,32 +49,6 @@ DISCLAIMER = (
 )
 
 
-def refresh_osm() -> None:
-    query = """
-[out:json][timeout:180];
-(
-  way[railway~"^(rail|platform)$"](28.61,77.19,28.72,77.48);
-  node[railway~"^(station|halt|switch|signal|buffer_stop)$"](28.61,77.19,28.72,77.48);
-  way[bridge][railway](28.61,77.19,28.72,77.48);
-);
-out body geom;
-""".strip()
-    request = urllib.request.Request(
-        OVERPASS_URL,
-        data=urllib.parse.urlencode({"data": query}).encode("utf-8"),
-        headers={"User-Agent": "FlowState-Rail-SIH/2.0 (offline educational snapshot)"},
-    )
-    with urllib.request.urlopen(request, timeout=210) as response:
-        payload = json.load(response)
-    payload["flowstateSnapshot"] = {
-        "date": date.today().isoformat(),
-        "query": query,
-        "attribution": "© OpenStreetMap contributors, ODbL 1.0",
-    }
-    SNAPSHOT.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-    print(f"Refreshed {SNAPSHOT} ({len(payload.get('elements', []))} elements)")
-
-
 def load_osm():
     if not SNAPSHOT.exists():
         return {"elements": [], "flowstateSnapshot": {"date": SNAPSHOT_DATE}}
@@ -271,10 +245,10 @@ def add_maintenance_tasks(network, prefix):
 
 def build_corridor(snapshot_date, geo_features, station_nodes):
     lines = [
-        ("UP_FAST", "UP FAST (MAIN)", "EAST", 130, 140),
-        ("UP_SLOW", "UP SLOW (SUBURBAN)", "EAST", 80, 200),
-        ("DN_FAST", "DOWN FAST (MAIN)", "WEST", 130, 300),
-        ("DN_SLOW", "DOWN SLOW (SUBURBAN)", "WEST", 80, 360),
+        ("UP_FAST", "UP FAST (MAIN)", "EAST", 130, 150),
+        ("UP_SLOW", "UP SLOW (SUBURBAN)", "EAST", 90, 210),
+        ("DN_FAST", "DOWN FAST (MAIN)", "WEST", 130, 310),
+        ("DN_SLOW", "DOWN SLOW (SUBURBAN)", "WEST", 90, 370),
     ]
     nodes, segments, routes = [], [], []
     nodes_by_id = {}
@@ -292,11 +266,14 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
             resolved.update({"lat": osm_station["lat"], "lon": osm_station["lon"], "osmId": osm_station["id"]})
         located.append(resolved)
 
-    x_positions = [300, 950, 1500, 2250, 3100]
+    # Station X positions along the 3600-unit horizontal coordinate space
+    x_positions = [340, 1150, 1850, 2550, 3300]
     line_paths = {}
     boundary_offsets = {}
 
+    # ----------------------------------------------------------------------
     # 1. Mainlines Generation with Automatic Block Signals
+    # ----------------------------------------------------------------------
     for line_id, line_name, direction, speed, y in lines:
         ordered = located if direction == "EAST" else list(reversed(located))
         ordered_x = x_positions if direction == "EAST" else list(reversed(x_positions))
@@ -305,8 +282,8 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
         entry_station, exit_station = ordered[0], ordered[-1]
         entry = f"COR-{entry_code}-{line_id}-ENTRY"
         exit_id = f"COR-{exit_code}-{line_id}-EXIT"
-        entry_x = ordered_x[0] - (150 if direction == "EAST" else -150)
-        exit_x = ordered_x[-1] + (150 if direction == "EAST" else -150)
+        entry_x = ordered_x[0] - (160 if direction == "EAST" else -160)
+        exit_x = ordered_x[-1] + (160 if direction == "EAST" else -160)
 
         add_node(node(entry, "SIGNAL", entry_x, y, entry_station["lat"], entry_station["lon"], state="GREEN", direction=direction, label=f"{line_id} HOME"))
 
@@ -364,14 +341,16 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
         line_paths[line_id] = route_segments
         routes.append(route(f"R-COR-{line_id}", entry, exit_id, route_segments, {}, speed, "THROUGH"))
 
-    # 2. Universal Throat Ladders & Scissors Crossovers
+    # ----------------------------------------------------------------------
+    # 2. Universal Throat Ladders & Scissors Crossovers (At Junctions)
+    # ----------------------------------------------------------------------
     for direction, main, slow in [("EAST", "UP_FAST", "UP_SLOW"), ("WEST", "DN_FAST", "DN_SLOW")]:
-        for station_code in ("DSA", "ANVR", "SBB"):
+        for station_code in ("DSA", "ANVR", "SBB", "GZB"):
             a = f"COR-{station_code}-{main}"
             b = f"COR-{station_code}-{slow}"
             sw = f"COR-{station_code}-{direction}-XOVER"
             na, nb = nodes_by_id[a], nodes_by_id[b]
-            add_node(node(sw, "SWITCH", na["position"]["x"] + (38 if direction == "EAST" else -38), (na["position"]["y"] + nb["position"]["y"]) / 2, na["geoPosition"]["lat"], na["geoPosition"]["lon"]))
+            add_node(node(sw, "SWITCH", na["position"]["x"] + (40 if direction == "EAST" else -40), (na["position"]["y"] + nb["position"]["y"]) / 2, na["geoPosition"]["lat"], na["geoPosition"]["lon"]))
             segments.append(segment(f"COR-XO-{station_code}-{direction}-A", a, sw, 90, "BI", 30, f"TC-XO-{station_code}-{direction}-A", station_code, line_id="CROSSOVER", ohe=f"OHE-{station_code}"))
             segments.append(segment(f"COR-XO-{station_code}-{direction}-B", sw, b, 90, "BI", 30, f"TC-XO-{station_code}-{direction}-B", station_code, line_id="CROSSOVER", ohe=f"OHE-{station_code}"))
 
@@ -379,6 +358,7 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
         main_route = direct[f"R-COR-{main}"]
         slow_route = direct[f"R-COR-{slow}"]
         transfer_order = (["DSA", "ANVR", "SBB"] if direction == "EAST" else ["SBB", "ANVR", "DSA"])
+        
         for first_index, second_index in ((0, 1), (1, 2), (0, 2)):
             first_station = transfer_order[first_index]
             second_station = transfer_order[second_index]
@@ -435,22 +415,60 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
                 slow_to_main, {point_id: "REVERSE"}, 30, "MERGE_DIVERGE",
             ))
 
-    # 3. Real-World Locomotive Run-Around & Yard Sidings (DLI, ANVR, SBB, GZB)
-    branch_specs = [
-        ("DLI-LOCO-REV", "COR-DLI-UP_FAST", 440, 85, "DLI LOCO ESCAPE & RUN-AROUND"),
-        ("ANVR-LOCO-REV", "COR-ANVR-UP_SLOW", 1680, 75, "ANVR ENGINE TURNAROUND NECK"),
-        ("SBB-CONCOR-LOOP", "COR-SBB-DN_SLOW", 2480, 425, "SBB CONCOR FREIGHT RECEPTION"),
-        ("GZB-ELS-DEPOT", "COR-GZB-UP_SLOW", 3280, 180, "GZB ELECTRIC LOCO SHED (ELS)"),
+    # ----------------------------------------------------------------------
+    # 3. Real-World Station Platform Loops, Freight Yards & Sidings
+    # ----------------------------------------------------------------------
+    # Station Loops, Locomotive Escape Necks & Freight Reception Lines
+    station_loops = [
+        # DLI Platform Loop Lines & Engine Reversal
+        ("DLI-PF1-LOOP", "COR-DLI-UP_FAST", 260, 420, 100, "EAST", "DLI PF 1 LOOP", 30),
+        ("DLI-LOCO-REV", "COR-DLI-UP_FAST", 380, 520, 55, "EAST", "DLI LOCO ESCAPE & RUN-AROUND", 20),
+        ("DLI-STABLING", "COR-DLI-DN_SLOW", 380, 540, 430, "WEST", "DLI COACHING STABLING", 15),
+
+        # DSA (Shahdara) Platform Loop & Shamli Branch Siding
+        ("DSA-PF1-LOOP", "COR-DSA-UP_SLOW", 1080, 1220, 100, "EAST", "DSA PF 1 PASSENGER LOOP", 40),
+        ("DSA-PF4-LOOP", "COR-DSA-DN_SLOW", 1220, 1080, 420, "WEST", "DSA PF 4 PASSENGER LOOP", 40),
+        ("DSA-SHAMLI-SPUR", "COR-DSA-UP_FAST", 1220, 1380, 55, "EAST", "SHAMLI BRANCH DIVERSION", 30),
+
+        # ANVR Terminal Platform Loops & Locomotive Neck
+        ("ANVR-PF1-TERM", "COR-ANVR-UP_SLOW", 1760, 1920, 260, "EAST", "ANVR PF 1 TERMINAL BERTH", 30),
+        ("ANVR-LOCO-REV", "COR-ANVR-UP_FAST", 1780, 1940, 55, "EAST", "ANVR ENGINE TURNAROUND NECK", 20),
+        ("ANVR-PIT-LINE", "COR-ANVR-DN_SLOW", 1920, 1760, 430, "WEST", "ANVR COACHING PIT EXAMINATION", 15),
+
+        # SBB CONCOR Freight Loops & Yards
+        ("SBB-PF1-LOOP", "COR-SBB-UP_SLOW", 2480, 2620, 100, "EAST", "SBB PF 1 LOOP", 40),
+        ("SBB-CONCOR-REC", "COR-SBB-DN_SLOW", 2620, 2460, 420, "WEST", "SBB CONCOR FREIGHT RECEPTION", 30),
+        ("SBB-CONCOR-DISP", "COR-SBB-DN_SLOW", 2640, 2480, 460, "WEST", "SBB CONCOR FREIGHT DISPATCH", 25),
+
+        # GZB (Ghaziabad) Platform Loops & Electric Loco Shed
+        ("GZB-PF1-LOOP", "COR-GZB-UP_FAST", 3200, 3380, 95, "EAST", "GZB PF 1 MAIN LOOP", 40),
+        ("GZB-PF6-LOOP", "COR-GZB-DN_SLOW", 3380, 3200, 425, "WEST", "GZB PF 6 LOCAL LOOP", 40),
+        ("GZB-ELS-DEPOT", "COR-GZB-UP_SLOW", 3240, 3440, 55, "EAST", "GZB ELECTRIC LOCO SHED (ELS)", 15),
+        ("GZB-EMU-SHED", "COR-GZB-DN_SLOW", 3420, 3260, 470, "WEST", "GZB SUBURBAN EMU SHED", 20),
     ]
-    for branch_id, anchor_id, end_x, end_y, label in branch_specs:
+
+    for loop_id, anchor_id, x_start, x_end, loop_y, loop_dir, label, loop_spd in station_loops:
         anchor = nodes_by_id[anchor_id]
-        direction = "EAST" if end_x >= anchor["position"]["x"] else "WEST"
-        junction_id = f"COR-{branch_id}-POINT"
-        buffer_id = f"COR-{branch_id}-BUFFER"
-        add_node(node(junction_id, "SWITCH", anchor["position"]["x"] + (70 if direction == "EAST" else -70), (anchor["position"]["y"] + end_y) / 2, anchor["geoPosition"]["lat"], anchor["geoPosition"]["lon"], label=f"{branch_id} P"))
-        add_node(node(buffer_id, "BUFFER_STOP", end_x, end_y, anchor["geoPosition"]["lat"], anchor["geoPosition"]["lon"], label=label))
-        segments.append(segment(f"COR-{branch_id}-A", anchor_id, junction_id, 220, "BI", 25, f"TC-{branch_id}-A", branch_id, line_id="SIDING", ohe=f"OHE-{branch_id}"))
-        segments.append(segment(f"COR-{branch_id}-B", junction_id, buffer_id, 480, "BI", 15, f"TC-{branch_id}-B", branch_id, line_id="SIDING", ohe=f"OHE-{branch_id}"))
+        lat, lon = anchor["geoPosition"]["lat"], anchor["geoPosition"]["lon"]
+        sw_in = f"COR-{loop_id}-SW-IN"
+        sw_out = f"COR-{loop_id}-SW-OUT"
+
+        add_node(node(sw_in, "SWITCH", x_start, (anchor["position"]["y"] + loop_y) / 2, lat, lon, label=f"{loop_id} SW1"))
+        
+        # Buffer-stop siding vs through platform loop
+        if "REV" in loop_id or "STABLING" in loop_id or "PIT" in loop_id or "DEPOT" in loop_id or "SHED" in loop_id or "SPUR" in loop_id:
+            buffer_node = f"COR-{loop_id}-BUF"
+            add_node(node(buffer_node, "BUFFER_STOP", x_end, loop_y, lat, lon, label=label))
+            segments.append(segment(f"COR-{loop_id}-LEAD", anchor_id, sw_in, 180, "BI", loop_spd, f"TC-{loop_id}-L", loop_id, line_id="SIDING", ohe=f"OHE-{loop_id}"))
+            segments.append(segment(f"COR-{loop_id}-BODY", sw_in, buffer_node, 420, "BI", loop_spd, f"TC-{loop_id}-B", loop_id, line_id="SIDING", ohe=f"OHE-{loop_id}"))
+        else:
+            add_node(node(sw_out, "SWITCH", x_end, (anchor["position"]["y"] + loop_y) / 2, lat, lon, label=f"{loop_id} SW2"))
+            mid_node = f"COR-{loop_id}-MID"
+            add_node(node(mid_node, "PLATFORM", (x_start + x_end) / 2, loop_y, lat, lon, label=label))
+            segments.append(segment(f"COR-{loop_id}-IN", anchor_id, sw_in, 120, loop_dir, 30, f"TC-{loop_id}-IN", loop_id, line_id="LOOP", ohe=f"OHE-{loop_id}"))
+            segments.append(segment(f"COR-{loop_id}-PF", sw_in, mid_node, 260, loop_dir, loop_spd, f"TC-{loop_id}-PF", loop_id, line_id="LOOP", ohe=f"OHE-{loop_id}"))
+            segments.append(segment(f"COR-{loop_id}-OUT", mid_node, sw_out, 260, loop_dir, loop_spd, f"TC-{loop_id}-OUT", loop_id, line_id="LOOP", ohe=f"OHE-{loop_id}"))
+            segments.append(segment(f"COR-{loop_id}-MERGE", sw_out, anchor_id, 120, loop_dir, 30, f"TC-{loop_id}-MG", loop_id, line_id="LOOP", ohe=f"OHE-{loop_id}"))
 
     add_conflicts(routes)
     network = {
@@ -463,10 +481,10 @@ def build_corridor(snapshot_date, geo_features, station_nodes):
             "stations": [{**s, "x": x_positions[i]} for i, s in enumerate(located)],
             "geographicFeatures": geo_features,
             "infrastructure": [
-                {"id": "YAMUNA-BRIDGE", "name": "HISTORIC YAMUNA RAIL BRIDGE", "type": "bridge", "x": 625, "width": 160, "provenance": "osm-derived-corridor-landmark"},
-                {"id": "ANVR-TERMINAL", "name": "ANAND VIHAR TERMINAL COMPLEX", "type": "terminal", "x": 1500, "width": 320, "provenance": "representative-operational-layer"},
-                {"id": "SBB-FREIGHT", "name": "SAHIBABAD CONCOR FREIGHT YARD", "type": "freight", "x": 2250, "width": 360, "provenance": "representative-operational-layer"},
-                {"id": "GZB-ELS-YARD", "name": "GHAZIABAD ELECTRIC LOCO SHED", "type": "depot", "x": 3100, "width": 340, "provenance": "representative-operational-layer"},
+                {"id": "YAMUNA-BRIDGE", "name": "HISTORIC YAMUNA RAIL BRIDGE (BR-249)", "type": "bridge", "x": 720, "width": 180, "provenance": "osm-derived-corridor-landmark"},
+                {"id": "ANVR-TERMINAL", "name": "ANAND VIHAR TERMINAL COMPLEX", "type": "terminal", "x": 1850, "width": 320, "provenance": "representative-operational-layer"},
+                {"id": "SBB-FREIGHT", "name": "SAHIBABAD CONCOR FREIGHT TERMINAL", "type": "freight", "x": 2550, "width": 360, "provenance": "representative-operational-layer"},
+                {"id": "GZB-ELS-YARD", "name": "GHAZIABAD ELECTRIC LOCO SHED", "type": "depot", "x": 3300, "width": 340, "provenance": "representative-operational-layer"},
             ],
         },
         "nodes": nodes,
@@ -565,7 +583,6 @@ def build_station(station, snapshot_date, station_nodes):
             "PLATFORM_LOOP"
         ))
 
-    # Locomotive Reversal & Stabling Yard Siding per Station
     extras = {
         "DLI": [("LOCO RUN-AROUND LOOP", "LOCO_REV", 515), ("COACHING SIDING", "STABLING", 555)],
         "DSA": [("BRANCH DIVERSION LOOP", "BRANCH", 315)],
@@ -616,7 +633,6 @@ def write_json(name, network):
 
 def write_schedule(name, network, count):
     routes = network["routes"]
-    route_cycle = routes
     burst_size = 1
     if network.get("metadata", {}).get("networkId") == "CORRIDOR":
         through_routes = [item for item in routes if item.get("movementType") != "MERGE_DIVERGE"]
@@ -703,7 +719,7 @@ def main():
         (HERE / f"{alias}_layout.json").write_text((HERE / f"{canonical}_layout.json").read_text(encoding="utf-8"), encoding="utf-8")
         (HERE / f"{alias}_schedule.csv").write_text((HERE / f"{canonical}_schedule.csv").read_text(encoding="utf-8"), encoding="utf-8")
 
-    print(f"Generated schema-v2 network with engine reversal loops, scissors crossovers, and freight sidings.")
+    print("Generated schema-v2 network with engine reversal loops, scissors crossovers, and freight sidings.")
 
 
 if __name__ == "__main__":

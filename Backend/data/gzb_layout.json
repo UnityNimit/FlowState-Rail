@@ -1,0 +1,2299 @@
+{
+  "network": {
+    "schemaVersion": 2,
+    "metadata": {
+      "networkId": "GZB",
+      "name": "Ghaziabad Junction",
+      "hindiName": "गाज़ियाबाद जंक्शन",
+      "topologyType": "station-schematic",
+      "source": [
+        "OpenStreetMap",
+        "OpenRailwayMap-compatible tags",
+        "representative operational layer"
+      ],
+      "attribution": "© OpenStreetMap contributors · ODbL 1.0",
+      "snapshotDate": "2026-09-04",
+      "licenseUrl": "https://www.openstreetmap.org/copyright",
+      "disclaimer": "Geography is derived from OpenStreetMap. Signals, routes, track circuits, speeds, OHE groups and maintenance resources are representative demonstration assumptions conforming to Indian Railways G&SR principles.",
+      "movementTimeScale": 0.16
+    },
+    "station": {
+      "code": "GZB",
+      "name": "Ghaziabad Junction",
+      "hindiName": "गाज़ियाबाद जंक्शन",
+      "kind": "major-junction",
+      "platformCount": 6,
+      "osmId": 6354716753,
+      "geoPosition": {
+        "lat": 28.6528563,
+        "lon": 77.4282442
+      },
+      "westConnection": "SAHIBABAD / DELHI",
+      "eastConnection": "MEERUT / ALIGARH / MORADABAD",
+      "platforms": [
+        {
+          "number": 1,
+          "name": "Platform 1",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 125,
+          "direction": "EAST"
+        },
+        {
+          "number": 2,
+          "name": "Platform 2",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 179,
+          "direction": "EAST"
+        },
+        {
+          "number": 3,
+          "name": "Platform 3",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 233,
+          "direction": "EAST"
+        },
+        {
+          "number": 4,
+          "name": "Platform 4",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 287,
+          "direction": "WEST"
+        },
+        {
+          "number": 5,
+          "name": "Platform 5",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 341,
+          "direction": "WEST"
+        },
+        {
+          "number": 6,
+          "name": "Platform 6",
+          "x_start": 690,
+          "x_end": 1810,
+          "y": 395,
+          "direction": "WEST"
+        }
+      ],
+      "tracksMeta": [
+        {
+          "index": 1,
+          "name": "PF 1 · UP LOOP",
+          "y": 125
+        },
+        {
+          "index": 2,
+          "name": "PF 2 · UP LOOP",
+          "y": 179
+        },
+        {
+          "index": 3,
+          "name": "PF 3 · UP LOOP",
+          "y": 233
+        },
+        {
+          "index": 4,
+          "name": "PF 4 · DOWN LOOP",
+          "y": 287
+        },
+        {
+          "index": 5,
+          "name": "PF 5 · DOWN LOOP",
+          "y": 341
+        },
+        {
+          "index": 6,
+          "name": "PF 6 · DOWN LOOP",
+          "y": 395
+        },
+        {
+          "index": "E1",
+          "name": "ELECTRIC LOCO SHED LEAD",
+          "y": 390
+        },
+        {
+          "index": "E2",
+          "name": "BRANCH SORTING YARD",
+          "y": 440
+        }
+      ]
+    },
+    "nodes": [
+      {
+        "id": "GZB-WEST-UP-ENTRY",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 120,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-WEST-UP-ENTRY",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "EAST"
+      },
+      {
+        "id": "GZB-EAST-UP-EXIT",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 2380,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-EAST-UP-EXIT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "EAST"
+      },
+      {
+        "id": "GZB-EAST-DN-ENTRY",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 2380,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-EAST-DN-ENTRY",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "WEST"
+      },
+      {
+        "id": "GZB-WEST-DN-EXIT",
+        "osmId": null,
+        "type": "SIGNAL",
+        "position": {
+          "x": 120,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-WEST-DN-EXIT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "state": "GREEN",
+        "direction": "WEST"
+      },
+      {
+        "id": "GZB-W-UP-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 420,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-W-UP-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-E-UP-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 2080,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-E-UP-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-E-DN-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 2080,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-E-DN-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-W-DN-THROAT",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 420,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-W-DN-THROAT",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF1-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF1-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF1-BERTH",
+        "osmId": 6354716753,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "Platform 1",
+        "provenance": {
+          "geoPosition": "osm",
+          "type": "osm",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-PF1-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 125
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF1-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF2-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 179
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF2-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF2-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 179
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "Platform 2",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-PF2-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 179
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF2-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF3-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 233
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF3-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF3-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 233
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "Platform 3",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-PF3-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 233
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF3-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF4-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF4-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF4-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "Platform 4",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-PF4-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 287
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF4-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF5-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 341
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF5-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF5-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 341
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "Platform 5",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-PF5-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 341
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF5-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF6-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 650,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF6-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-PF6-BERTH",
+        "osmId": null,
+        "type": "PLATFORM",
+        "position": {
+          "x": 1250,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "Platform 6",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-PF6-E",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 1850,
+          "y": 395
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-PF6-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-LOCO_DEPOT-1-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 720,
+          "y": 390
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-LOCO_DEPOT-1-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-LOCO_DEPOT-1-E",
+        "osmId": null,
+        "type": "BUFFER_STOP",
+        "position": {
+          "x": 1800,
+          "y": 390
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-LOCO_DEPOT-1-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      },
+      {
+        "id": "GZB-BRANCH-2-W",
+        "osmId": null,
+        "type": "SWITCH",
+        "position": {
+          "x": 720,
+          "y": 440
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-BRANCH-2-W",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        },
+        "normalPosition": "NORMAL",
+        "state": "NORMAL"
+      },
+      {
+        "id": "GZB-BRANCH-2-E",
+        "osmId": null,
+        "type": "BUFFER_STOP",
+        "position": {
+          "x": 1800,
+          "y": 440
+        },
+        "geoPosition": {
+          "lat": 28.6528563,
+          "lon": 77.4282442
+        },
+        "label": "GZB-BRANCH-2-E",
+        "provenance": {
+          "geoPosition": "osm-anchor-interpolation",
+          "type": "representative",
+          "state": "simulation"
+        }
+      }
+    ],
+    "trackSegments": [
+      {
+        "id": "GZB-APP-W-UP",
+        "osmId": null,
+        "startNodeId": "GZB-WEST-UP-ENTRY",
+        "endNodeId": "GZB-W-UP-THROAT",
+        "lineId": "UP",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "EAST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-GZB-APP-1",
+        "blockSection": "GZB-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12000",
+          "12001",
+          "12002",
+          "12006",
+          "12007",
+          "12008"
+        ]
+      },
+      {
+        "id": "GZB-APP-E-UP",
+        "osmId": null,
+        "startNodeId": "GZB-E-UP-THROAT",
+        "endNodeId": "GZB-EAST-UP-EXIT",
+        "lineId": "UP",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "EAST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-GZB-APP-2",
+        "blockSection": "GZB-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12000",
+          "12001",
+          "12002",
+          "12006",
+          "12007",
+          "12008"
+        ]
+      },
+      {
+        "id": "GZB-APP-E-DN",
+        "osmId": null,
+        "startNodeId": "GZB-EAST-DN-ENTRY",
+        "endNodeId": "GZB-E-DN-THROAT",
+        "lineId": "DN",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "WEST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-GZB-APP-3",
+        "blockSection": "GZB-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12003",
+          "12004",
+          "12005",
+          "12009",
+          "12010",
+          "12011"
+        ]
+      },
+      {
+        "id": "GZB-APP-W-DN",
+        "osmId": null,
+        "startNodeId": "GZB-W-DN-THROAT",
+        "endNodeId": "GZB-WEST-DN-EXIT",
+        "lineId": "DN",
+        "length": 700,
+        "lengthMeters": 700,
+        "direction": "WEST",
+        "permissibleSpeedKph": 80,
+        "maxSpeed": 80,
+        "trackCircuit": "TC-GZB-APP-4",
+        "blockSection": "GZB-APPROACH",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-APP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 6,
+        "scheduledTrainIds": [
+          "12003",
+          "12004",
+          "12005",
+          "12009",
+          "12010",
+          "12011"
+        ]
+      },
+      {
+        "id": "GZB-PF1-A",
+        "osmId": null,
+        "startNodeId": "GZB-W-UP-THROAT",
+        "endNodeId": "GZB-PF1-W",
+        "lineId": "PF1",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF1-1",
+        "blockSection": "GZB",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12006"
+        ]
+      },
+      {
+        "id": "GZB-PF1-B",
+        "osmId": null,
+        "startNodeId": "GZB-PF1-W",
+        "endNodeId": "GZB-PF1-BERTH",
+        "lineId": "PF1",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF1-2",
+        "blockSection": "GZB",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12006"
+        ]
+      },
+      {
+        "id": "GZB-PF1-C",
+        "osmId": null,
+        "startNodeId": "GZB-PF1-BERTH",
+        "endNodeId": "GZB-PF1-E",
+        "lineId": "PF1",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF1-3",
+        "blockSection": "GZB",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12006"
+        ]
+      },
+      {
+        "id": "GZB-PF1-D",
+        "osmId": null,
+        "startNodeId": "GZB-PF1-E",
+        "endNodeId": "GZB-E-UP-THROAT",
+        "lineId": "PF1",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF1-4",
+        "blockSection": "GZB",
+        "platform": 1,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12000",
+          "12006"
+        ]
+      },
+      {
+        "id": "GZB-PF2-A",
+        "osmId": null,
+        "startNodeId": "GZB-W-UP-THROAT",
+        "endNodeId": "GZB-PF2-W",
+        "lineId": "PF2",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF2-1",
+        "blockSection": "GZB",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12007"
+        ]
+      },
+      {
+        "id": "GZB-PF2-B",
+        "osmId": null,
+        "startNodeId": "GZB-PF2-W",
+        "endNodeId": "GZB-PF2-BERTH",
+        "lineId": "PF2",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF2-2",
+        "blockSection": "GZB",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12007"
+        ]
+      },
+      {
+        "id": "GZB-PF2-C",
+        "osmId": null,
+        "startNodeId": "GZB-PF2-BERTH",
+        "endNodeId": "GZB-PF2-E",
+        "lineId": "PF2",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF2-3",
+        "blockSection": "GZB",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12007"
+        ]
+      },
+      {
+        "id": "GZB-PF2-D",
+        "osmId": null,
+        "startNodeId": "GZB-PF2-E",
+        "endNodeId": "GZB-E-UP-THROAT",
+        "lineId": "PF2",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF2-4",
+        "blockSection": "GZB",
+        "platform": 2,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12001",
+          "12007"
+        ]
+      },
+      {
+        "id": "GZB-PF3-A",
+        "osmId": null,
+        "startNodeId": "GZB-W-UP-THROAT",
+        "endNodeId": "GZB-PF3-W",
+        "lineId": "PF3",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF3-1",
+        "blockSection": "GZB",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12008"
+        ]
+      },
+      {
+        "id": "GZB-PF3-B",
+        "osmId": null,
+        "startNodeId": "GZB-PF3-W",
+        "endNodeId": "GZB-PF3-BERTH",
+        "lineId": "PF3",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF3-2",
+        "blockSection": "GZB",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12008"
+        ]
+      },
+      {
+        "id": "GZB-PF3-C",
+        "osmId": null,
+        "startNodeId": "GZB-PF3-BERTH",
+        "endNodeId": "GZB-PF3-E",
+        "lineId": "PF3",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "EAST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF3-3",
+        "blockSection": "GZB",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12008"
+        ]
+      },
+      {
+        "id": "GZB-PF3-D",
+        "osmId": null,
+        "startNodeId": "GZB-PF3-E",
+        "endNodeId": "GZB-E-UP-THROAT",
+        "lineId": "PF3",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "EAST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF3-4",
+        "blockSection": "GZB",
+        "platform": 3,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-UP",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12002",
+          "12008"
+        ]
+      },
+      {
+        "id": "GZB-PF4-A",
+        "osmId": null,
+        "startNodeId": "GZB-E-DN-THROAT",
+        "endNodeId": "GZB-PF4-E",
+        "lineId": "PF4",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF4-1",
+        "blockSection": "GZB",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12009"
+        ]
+      },
+      {
+        "id": "GZB-PF4-B",
+        "osmId": null,
+        "startNodeId": "GZB-PF4-E",
+        "endNodeId": "GZB-PF4-BERTH",
+        "lineId": "PF4",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF4-2",
+        "blockSection": "GZB",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12009"
+        ]
+      },
+      {
+        "id": "GZB-PF4-C",
+        "osmId": null,
+        "startNodeId": "GZB-PF4-BERTH",
+        "endNodeId": "GZB-PF4-W",
+        "lineId": "PF4",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF4-3",
+        "blockSection": "GZB",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12009"
+        ]
+      },
+      {
+        "id": "GZB-PF4-D",
+        "osmId": null,
+        "startNodeId": "GZB-PF4-W",
+        "endNodeId": "GZB-W-DN-THROAT",
+        "lineId": "PF4",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF4-4",
+        "blockSection": "GZB",
+        "platform": 4,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12003",
+          "12009"
+        ]
+      },
+      {
+        "id": "GZB-PF5-A",
+        "osmId": null,
+        "startNodeId": "GZB-E-DN-THROAT",
+        "endNodeId": "GZB-PF5-E",
+        "lineId": "PF5",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF5-1",
+        "blockSection": "GZB",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12010"
+        ]
+      },
+      {
+        "id": "GZB-PF5-B",
+        "osmId": null,
+        "startNodeId": "GZB-PF5-E",
+        "endNodeId": "GZB-PF5-BERTH",
+        "lineId": "PF5",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF5-2",
+        "blockSection": "GZB",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12010"
+        ]
+      },
+      {
+        "id": "GZB-PF5-C",
+        "osmId": null,
+        "startNodeId": "GZB-PF5-BERTH",
+        "endNodeId": "GZB-PF5-W",
+        "lineId": "PF5",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF5-3",
+        "blockSection": "GZB",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12010"
+        ]
+      },
+      {
+        "id": "GZB-PF5-D",
+        "osmId": null,
+        "startNodeId": "GZB-PF5-W",
+        "endNodeId": "GZB-W-DN-THROAT",
+        "lineId": "PF5",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF5-4",
+        "blockSection": "GZB",
+        "platform": 5,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12004",
+          "12010"
+        ]
+      },
+      {
+        "id": "GZB-PF6-A",
+        "osmId": null,
+        "startNodeId": "GZB-E-DN-THROAT",
+        "endNodeId": "GZB-PF6-E",
+        "lineId": "PF6",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF6-1",
+        "blockSection": "GZB",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12005",
+          "12011"
+        ]
+      },
+      {
+        "id": "GZB-PF6-B",
+        "osmId": null,
+        "startNodeId": "GZB-PF6-E",
+        "endNodeId": "GZB-PF6-BERTH",
+        "lineId": "PF6",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF6-2",
+        "blockSection": "GZB",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12005",
+          "12011"
+        ]
+      },
+      {
+        "id": "GZB-PF6-C",
+        "osmId": null,
+        "startNodeId": "GZB-PF6-BERTH",
+        "endNodeId": "GZB-PF6-W",
+        "lineId": "PF6",
+        "length": 540,
+        "lengthMeters": 540,
+        "direction": "WEST",
+        "permissibleSpeedKph": 50,
+        "maxSpeed": 50,
+        "trackCircuit": "TC-GZB-PF6-3",
+        "blockSection": "GZB",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12005",
+          "12011"
+        ]
+      },
+      {
+        "id": "GZB-PF6-D",
+        "osmId": null,
+        "startNodeId": "GZB-PF6-W",
+        "endNodeId": "GZB-W-DN-THROAT",
+        "lineId": "PF6",
+        "length": 180,
+        "lengthMeters": 180,
+        "direction": "WEST",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-PF6-4",
+        "blockSection": "GZB",
+        "platform": 6,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-DN",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 2,
+        "scheduledTrainIds": [
+          "12005",
+          "12011"
+        ]
+      },
+      {
+        "id": "GZB-LOCO_DEPOT-1",
+        "osmId": null,
+        "startNodeId": "GZB-LOCO_DEPOT-1-W",
+        "endNodeId": "GZB-LOCO_DEPOT-1-E",
+        "lineId": "LOCO_DEPOT",
+        "length": 650,
+        "lengthMeters": 650,
+        "direction": "BI",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-LOCO_DEPOT-1",
+        "blockSection": "GZB",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-YARD",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      },
+      {
+        "id": "GZB-BRANCH-2",
+        "osmId": null,
+        "startNodeId": "GZB-BRANCH-2-W",
+        "endNodeId": "GZB-BRANCH-2-E",
+        "lineId": "BRANCH",
+        "length": 650,
+        "lengthMeters": 650,
+        "direction": "BI",
+        "permissibleSpeedKph": 30,
+        "maxSpeed": 30,
+        "trackCircuit": "TC-GZB-BRANCH-2",
+        "blockSection": "GZB",
+        "platform": null,
+        "electrification": "25 kV AC",
+        "oheIsolationGroup": "OHE-GZB-YARD",
+        "isOccupied": false,
+        "occupancy": "CLEAR",
+        "condition": "GOOD",
+        "status": "OPERATIONAL",
+        "weather": "GOOD",
+        "defects": [],
+        "tags": {},
+        "provenance": {
+          "geometry": "osm-anchor-interpolation",
+          "lengthMeters": "calculated-from-geography",
+          "direction": "representative",
+          "permissibleSpeedKph": "representative",
+          "trackCircuit": "representative",
+          "blockSection": "representative",
+          "electrification": "representative",
+          "oheIsolationGroup": "representative"
+        },
+        "scheduledTrainCount": 0,
+        "scheduledTrainIds": []
+      }
+    ],
+    "routes": [
+      {
+        "id": "R-GZB-PF1-UP",
+        "entrySignalId": "GZB-WEST-UP-ENTRY",
+        "exitSignalId": "GZB-EAST-UP-EXIT",
+        "segments": [
+          "GZB-APP-W-UP",
+          "GZB-PF1-A",
+          "GZB-PF1-B",
+          "GZB-PF1-C",
+          "GZB-PF1-D",
+          "GZB-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "GZB-W-UP-THROAT": "NORMAL",
+          "GZB-E-UP-THROAT": "NORMAL"
+        },
+        "overlapSegments": [
+          "GZB-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-GZB-PF2-UP",
+          "R-GZB-PF3-UP"
+        ],
+        "routeSpeedKph": 30,
+        "movementType": "PLATFORM_LOOP",
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-GZB-PF2-UP",
+        "entrySignalId": "GZB-WEST-UP-ENTRY",
+        "exitSignalId": "GZB-EAST-UP-EXIT",
+        "segments": [
+          "GZB-APP-W-UP",
+          "GZB-PF2-A",
+          "GZB-PF2-B",
+          "GZB-PF2-C",
+          "GZB-PF2-D",
+          "GZB-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "GZB-W-UP-THROAT": "REVERSE",
+          "GZB-E-UP-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "GZB-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-GZB-PF1-UP",
+          "R-GZB-PF3-UP"
+        ],
+        "routeSpeedKph": 30,
+        "movementType": "PLATFORM_LOOP",
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-GZB-PF3-UP",
+        "entrySignalId": "GZB-WEST-UP-ENTRY",
+        "exitSignalId": "GZB-EAST-UP-EXIT",
+        "segments": [
+          "GZB-APP-W-UP",
+          "GZB-PF3-A",
+          "GZB-PF3-B",
+          "GZB-PF3-C",
+          "GZB-PF3-D",
+          "GZB-APP-E-UP"
+        ],
+        "requiredPointPositions": {
+          "GZB-W-UP-THROAT": "REVERSE",
+          "GZB-E-UP-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "GZB-APP-E-UP"
+        ],
+        "conflicts": [
+          "R-GZB-PF1-UP",
+          "R-GZB-PF2-UP"
+        ],
+        "routeSpeedKph": 30,
+        "movementType": "PLATFORM_LOOP",
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-GZB-PF4-DN",
+        "entrySignalId": "GZB-EAST-DN-ENTRY",
+        "exitSignalId": "GZB-WEST-DN-EXIT",
+        "segments": [
+          "GZB-APP-E-DN",
+          "GZB-PF4-A",
+          "GZB-PF4-B",
+          "GZB-PF4-C",
+          "GZB-PF4-D",
+          "GZB-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "GZB-E-DN-THROAT": "REVERSE",
+          "GZB-W-DN-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "GZB-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-GZB-PF5-DN",
+          "R-GZB-PF6-DN"
+        ],
+        "routeSpeedKph": 30,
+        "movementType": "PLATFORM_LOOP",
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-GZB-PF5-DN",
+        "entrySignalId": "GZB-EAST-DN-ENTRY",
+        "exitSignalId": "GZB-WEST-DN-EXIT",
+        "segments": [
+          "GZB-APP-E-DN",
+          "GZB-PF5-A",
+          "GZB-PF5-B",
+          "GZB-PF5-C",
+          "GZB-PF5-D",
+          "GZB-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "GZB-E-DN-THROAT": "REVERSE",
+          "GZB-W-DN-THROAT": "REVERSE"
+        },
+        "overlapSegments": [
+          "GZB-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-GZB-PF4-DN",
+          "R-GZB-PF6-DN"
+        ],
+        "routeSpeedKph": 30,
+        "movementType": "PLATFORM_LOOP",
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      },
+      {
+        "id": "R-GZB-PF6-DN",
+        "entrySignalId": "GZB-EAST-DN-ENTRY",
+        "exitSignalId": "GZB-WEST-DN-EXIT",
+        "segments": [
+          "GZB-APP-E-DN",
+          "GZB-PF6-A",
+          "GZB-PF6-B",
+          "GZB-PF6-C",
+          "GZB-PF6-D",
+          "GZB-APP-W-DN"
+        ],
+        "requiredPointPositions": {
+          "GZB-E-DN-THROAT": "NORMAL",
+          "GZB-W-DN-THROAT": "NORMAL"
+        },
+        "overlapSegments": [
+          "GZB-APP-W-DN"
+        ],
+        "conflicts": [
+          "R-GZB-PF4-DN",
+          "R-GZB-PF5-DN"
+        ],
+        "routeSpeedKph": 30,
+        "movementType": "PLATFORM_LOOP",
+        "validated": true,
+        "provenance": "representative-validated-demonstration-route"
+      }
+    ],
+    "maintenanceZones": [
+      {
+        "id": "MZ-GZB-UP",
+        "name": "GZB UP-side integrated block",
+        "affectedSegments": [
+          "GZB-APP-W-UP",
+          "GZB-APP-E-UP",
+          "GZB-PF1-A",
+          "GZB-PF1-B",
+          "GZB-PF1-C",
+          "GZB-PF1-D",
+          "GZB-PF2-A",
+          "GZB-PF2-B",
+          "GZB-PF2-C",
+          "GZB-PF2-D",
+          "GZB-PF3-A",
+          "GZB-PF3-B",
+          "GZB-PF3-C",
+          "GZB-PF3-D"
+        ],
+        "affectedPoints": [
+          "GZB-W-UP-THROAT",
+          "GZB-E-UP-THROAT"
+        ],
+        "oheGroups": [
+          "OHE-GZB-UP"
+        ],
+        "kilometreLimits": [
+          24.400000000000002,
+          25.2
+        ],
+        "compatibleDepartments": [
+          "ENG",
+          "S&T",
+          "TRD"
+        ],
+        "provenance": "representative"
+      },
+      {
+        "id": "MZ-GZB-DN",
+        "name": "GZB DOWN-side integrated block",
+        "affectedSegments": [
+          "GZB-APP-E-DN",
+          "GZB-APP-W-DN",
+          "GZB-PF4-A",
+          "GZB-PF4-B",
+          "GZB-PF4-C",
+          "GZB-PF4-D",
+          "GZB-PF5-A",
+          "GZB-PF5-B",
+          "GZB-PF5-C",
+          "GZB-PF5-D",
+          "GZB-PF6-A",
+          "GZB-PF6-B",
+          "GZB-PF6-C",
+          "GZB-PF6-D"
+        ],
+        "affectedPoints": [
+          "GZB-E-DN-THROAT",
+          "GZB-W-DN-THROAT"
+        ],
+        "oheGroups": [
+          "OHE-GZB-DN"
+        ],
+        "kilometreLimits": [
+          24.400000000000002,
+          25.2
+        ],
+        "compatibleDepartments": [
+          "ENG",
+          "S&T",
+          "TRD"
+        ],
+        "provenance": "representative"
+      }
+    ],
+    "maintenanceTasks": [
+      {
+        "id": "GZB-TMS-01",
+        "sourceSystem": "TMS",
+        "department": "ENG",
+        "assetType": "rail/track geometry defect renewal",
+        "description": "Rail/Track Geometry Defect Renewal in GZB UP-side integrated block",
+        "maintenanceZoneId": "MZ-GZB-UP",
+        "criticality": 5,
+        "urgency": 5,
+        "overdueDays": 16,
+        "durationMinutes": 180,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "GZB-SMMS-01",
+        "sourceSystem": "SMMS",
+        "department": "S&T",
+        "assetType": "point machine and track circuit calibration",
+        "description": "Point Machine And Track Circuit Calibration in GZB UP-side integrated block",
+        "maintenanceZoneId": "MZ-GZB-UP",
+        "criticality": 5,
+        "urgency": 4,
+        "overdueDays": 17,
+        "durationMinutes": 120,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "GZB-TDMS-01",
+        "sourceSystem": "TDMS",
+        "department": "TRD",
+        "assetType": "25 kV OHE isolator and contact wire inspection",
+        "description": "25 Kv Ohe Isolator And Contact Wire Inspection in GZB UP-side integrated block",
+        "maintenanceZoneId": "MZ-GZB-UP",
+        "criticality": 5,
+        "urgency": 3,
+        "overdueDays": 18,
+        "durationMinutes": 150,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "GZB-TMS-02",
+        "sourceSystem": "TMS",
+        "department": "ENG",
+        "assetType": "rail/track geometry defect renewal",
+        "description": "Rail/Track Geometry Defect Renewal in GZB DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-GZB-DN",
+        "criticality": 4,
+        "urgency": 5,
+        "overdueDays": 19,
+        "durationMinutes": 180,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "GZB-SMMS-02",
+        "sourceSystem": "SMMS",
+        "department": "S&T",
+        "assetType": "point machine and track circuit calibration",
+        "description": "Point Machine And Track Circuit Calibration in GZB DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-GZB-DN",
+        "criticality": 4,
+        "urgency": 4,
+        "overdueDays": 20,
+        "durationMinutes": 120,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      },
+      {
+        "id": "GZB-TDMS-02",
+        "sourceSystem": "TDMS",
+        "department": "TRD",
+        "assetType": "25 kV OHE isolator and contact wire inspection",
+        "description": "25 Kv Ohe Isolator And Contact Wire Inspection in GZB DOWN-side integrated block",
+        "maintenanceZoneId": "MZ-GZB-DN",
+        "criticality": 4,
+        "urgency": 3,
+        "overdueDays": 21,
+        "durationMinutes": 150,
+        "preferredHorizons": [
+          "weekly",
+          "monthly"
+        ],
+        "provenance": {
+          "sourceSystem": "representative-integration-contract",
+          "priorityFields": "representative",
+          "resourceMapping": "derived-from-maintenance-zone"
+        }
+      }
+    ]
+  }
+}

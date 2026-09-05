@@ -1,12 +1,17 @@
-/* TrackDiagram.css - High-Contrast SCADA Electronic Interlocking Digital Twin */
+/* ==========================================================================
+   TrackDiagram.css - High-Contrast Super-Minimal SCADA Interlocking Digital Twin
+   Palette: Carbon Black, Slate Steel, High-Visibility Signal Optics.
+   Super minimal aesthetic, thick high-contrast traffic lanes, zero clutter boxes.
+   ========================================================================== */
 
 .track-canvas-container {
   width: 100%;
   height: 100%;
   position: relative;
-  background: var(--bg-base);
+  background-color: #07090b;
   overflow: hidden;
   user-select: none;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
 }
 
 .minimal-svg-canvas {
@@ -15,260 +20,463 @@
   display: block;
   shape-rendering: geometricPrecision;
   text-rendering: geometricPrecision;
+  background: radial-gradient(circle at 50% 50%, #0c0f13 0%, #06080a 100%);
 }
 
-/* Direction & Boundary Telemetry */
+/* ---------- 1. Direction & Section Boundary Telemetry ---------- */
+
+.scada-boundary-label,
 .corridor-direction-text {
-  fill: var(--text-faint);
-  font-family: var(--font-mono);
+  fill: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* ---------- 2. Infrastructure Landmarks (Super Minimal, Zero Boxes) ---------- */
+
+.scada-infra-marker {
+  pointer-events: none;
+}
+
+.infra-header-line {
+  stroke: #2e3846;
+  stroke-width: 1.5px;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+.scada-landmark-title,
+.infra-landmark-label {
+  fill: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* Hide any legacy landmark bounding boxes for minimal aesthetic */
+.infra-landmark-rect {
+  display: none !important;
+}
+
+/* ---------- 3. Station Floating Text & KM Chainage (Zero Heavy Boxes) ---------- */
+
+.scada-station-gantry {
+  pointer-events: none;
+}
+
+/* Remove heavy monolithic boxes */
+.station-monolith-box,
+.station-code-box {
+  display: none !important;
+}
+
+.station-boundary-guide {
+  stroke: #1e252f;
+  stroke-width: 1px;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+/* Clean, crisp, floating typographic station codes */
+.station-monolith-code,
+.station-code-text {
+  fill: #f8fafc;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+
+.station-chainage-text,
+.station-km-text {
+  fill: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  pointer-events: none;
+}
+
+/* ---------- 4. Platform Islands (Minimal Outlines, Zero Heavy Fill) ---------- */
+
+.scada-platform-island {
+  pointer-events: none;
+}
+
+.platform-slab,
+.pf-island-up,
+.pf-island-dn {
+  fill: transparent;
+  stroke: #242c35;
+  stroke-width: 1px;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+.platform-code-text,
+.pf-number-text {
+  text-anchor: middle;
+  fill: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  pointer-events: none;
+}
+
+/* ---------- 5. Line Identifiers / Lanes Header ---------- */
+
+.scada-track-identifier {
+  pointer-events: none;
+}
+
+.scada-track-name,
+.minimal-line-text {
+  fill: #94a3b8;
+  font-family: var(--font-mono, monospace);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 1.2px;
   pointer-events: none;
 }
 
-/* Corridor Infrastructure Landmarks */
-.infra-landmark-rect {
-  fill: rgba(255, 255, 255, 0.02);
-  stroke: var(--border-default);
-  stroke-dasharray: 4 4;
+/* ---------- 6. Thickened Traffic Lines & Lanes (Increased Size) ---------- */
+
+/* Layer A: Heavy Ballast Underbed */
+.track-ballast-bed {
+  stroke: #141a22;
+  stroke-width: 14px;
+  stroke-linecap: round;
   pointer-events: none;
 }
 
-.infra-landmark-label {
-  fill: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  font-weight: 800;
-  letter-spacing: 1px;
+/* Layer B: Solid Steel Rails Core (Significantly Increased Gauge) */
+.scada-rail-core,
+.minimal-rail-base {
+  stroke: #5d6f85;
+  stroke-width: 7.5px;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition: stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.scada-segment-group:hover .scada-rail-core,
+.segment-render-group:hover .minimal-rail-base {
+  stroke: #94a3b8;
+  stroke-width: 9px;
+}
+
+/* Selected Asset Halo */
+.scada-rail-core.selected,
+.minimal-rail-base.selected {
+  stroke: #ffffff !important;
+  stroke-width: 9.5px !important;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+/* Crossover Indicator */
+.scada-rail-core.crossover,
+.minimal-rail-base.crossover {
+  stroke: #64748b;
+  stroke-width: 6.5px;
+  stroke-dasharray: 8 4;
+}
+
+/* Layer D: 32px Wide Ultra-Fat Click Target */
+.rail-interactive-hitbox,
+.rail-hitbox-target {
+  stroke: transparent;
+  stroke-width: 32px;
+  stroke-linecap: round;
+  cursor: pointer;
+}
+
+/* ---------- 7. Dynamic Interlocking Circuit States ---------- */
+
+/* Occupied: Solid High-Visibility Crimson Red */
+.rail-state-occupied,
+.minimal-rail-occupied {
+  stroke: #ef4444;
+  stroke-width: 8.5px;
+  stroke-linecap: round;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.95));
+}
+
+/* Route Locked: Industrial Gold / Amber */
+.rail-state-locked,
+.minimal-rail-locked {
+  stroke: #f59e0b;
+  stroke-width: 8px;
+  stroke-linecap: round;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.9));
+}
+
+/* Hazard / Maintenance Block */
+.rail-state-hazard,
+.minimal-rail-hazard {
+  stroke-width: 14px;
+  stroke-linecap: round;
   pointer-events: none;
 }
 
-/* Station Boundary Gantries */
-.station-boundary-guide {
-  stroke: var(--border-subtle);
-  stroke-dasharray: 3 3;
-  pointer-events: none;
-}
-
-.station-code-box {
-  fill: var(--bg-surface-2);
-  stroke: var(--border-default);
-  stroke-width: 1px;
-  pointer-events: none;
-}
-
-.station-code-text {
-  fill: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 800;
-  pointer-events: none;
-}
-
-.station-km-text {
-  fill: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 7px;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-/* Platform Islands */
-.pf-island-up {
-  fill: var(--pf-island-up-fill);
-  stroke: var(--pf-island-up-stroke);
-  stroke-width: 1px;
-  stroke-dasharray: 4 4;
-  pointer-events: none;
-}
-
-.pf-island-dn {
-  fill: var(--pf-island-dn-fill);
-  stroke: var(--pf-island-dn-stroke);
-  stroke-width: 1px;
-  stroke-dasharray: 4 4;
-  pointer-events: none;
-}
-
-.pf-number-text {
+/* Permissible Speed Readout */
+.scada-speed-label,
+.minimal-speed-text {
   text-anchor: middle;
-  fill: var(--text-muted);
-  font-family: var(--font-mono);
+  fill: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 8px;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+/* ---------- 8. Optical Signals (Increased Light Size & High-Glow Optics) ---------- */
+
+.scada-signal-gantry,
+.minimal-signal {
+  cursor: pointer;
+}
+
+/* Signal Mast Post */
+.scada-signal-pole,
+.signal-mast {
+  stroke: #64748b;
+  stroke-width: 2.5px;
+  pointer-events: none;
+}
+
+/* Signal Housing Plate */
+.signal-housing-plate {
+  fill: #080c12;
+  stroke: #334155;
+  stroke-width: 1.5px;
+  pointer-events: none;
+  transition: stroke 0.15s ease;
+}
+
+/* Active Lamp Optics - Bold High-Luminance Glow */
+.signal-lamp {
+  stroke-width: 1.5px;
+  pointer-events: none;
+  transition: fill 0.15s ease, filter 0.15s ease;
+}
+
+.signal-lamp.green,
+.sig-dot-green {
+  fill: #22c55e;
+  stroke: #15803d;
+  filter: drop-shadow(0 0 10px rgba(34, 197, 94, 1));
+}
+
+.signal-lamp.red,
+.sig-dot-red {
+  fill: #ef4444;
+  stroke: #b91c1c;
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 1));
+}
+
+.signal-lamp.amber {
+  fill: #f59e0b;
+  stroke: #d97706;
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 1));
+}
+
+.signal-lamp.double-amber {
+  fill: #eab308;
+  stroke: #ca8a04;
+  filter: drop-shadow(0 0 10px rgba(234, 179, 8, 1));
+}
+
+.scada-signal-gantry:hover .signal-housing-plate,
+.minimal-signal:hover .signal-housing-plate {
+  stroke: #ffffff;
+  stroke-width: 2px;
+}
+
+/* Selected Signal Highlight */
+.scada-signal-gantry.selected .signal-housing-plate,
+.minimal-signal.selected .signal-housing-plate {
+  stroke: #ffffff !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+}
+
+/* Signal ID Tag */
+.signal-id-tag,
+.sig-name-text {
+  text-anchor: middle;
+  fill: #94a3b8;
+  font-family: var(--font-mono, monospace);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  pointer-events: none;
+}
+
+/* ---------- 9. Turnout Switches (Points, Sleek & Minimal) ---------- */
+
+.scada-point-machine,
+.minimal-switch {
+  cursor: pointer;
+}
+
+/* Remove box on points */
+.point-actuator-box {
+  display: none !important;
+}
+
+.switch-blade,
+.switch-blade-solid {
+  stroke: #07090b;
+  stroke-width: 1px;
+  transition: transform 0.2s ease, fill 0.15s ease;
+}
+
+.switch-blade.normal,
+.switch-blade-solid {
+  fill: #f59e0b;
+}
+
+.switch-blade.reverse,
+.switch-blade-solid.reverse {
+  fill: #eab308;
+  transform: rotate(24deg);
+  transform-origin: center;
+}
+
+.scada-point-machine:hover .switch-blade,
+.minimal-switch:hover .switch-blade-solid {
+  stroke: #ffffff;
+  stroke-width: 1.5px;
+}
+
+/* ---------- 10. Dead-End Buffer Stops ---------- */
+
+.scada-buffer-stop,
+.minimal-buffer-stop {
+  pointer-events: none;
+}
+
+.buffer-post,
+.buffer-bar {
+  stroke: #ef4444;
+  stroke-width: 4px;
+  stroke-linecap: square;
+}
+
+.buffer-stanchion,
+.buffer-bracket {
+  fill: #b91c1c;
+  stroke: #07090b;
+  stroke-width: 0.8px;
+}
+
+/* ---------- 11. Rolling Stock Train Units ---------- */
+
+.scada-train-unit,
+.minimal-train {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.train-headlight-cone,
+.train-light-beam {
+  fill: rgba(255, 255, 255, 0.22);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+  pointer-events: none;
+}
+
+.train-hull,
+.train-capsule-body {
+  stroke: #ffffff;
+  stroke-width: 1.2px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.train-windshield,
+.train-cockpit-window {
+  fill: #07090b;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 0.6px;
+}
+
+.train-id-text,
+.train-label-text {
+  text-anchor: middle;
+  fill: #ffffff;
+  font-family: var(--font-mono, monospace);
   font-size: 7.5px;
   font-weight: 800;
   letter-spacing: 0.5px;
   pointer-events: none;
 }
 
-/* Line Identifiers */
-.minimal-line-text {
-  fill: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  font-weight: 700;
+/* ---------- 12. Micro-Telemetry Inspection HUD ---------- */
+
+.track-inspection-hud {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 18, 24, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #283545;
+  border-radius: 4px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: #f8fafc;
+  z-index: 100;
   pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
 }
 
-/* Hitbox Layer for 100% Reliable Click Selection */
-.rail-hitbox-target {
-  stroke: transparent;
-  stroke-width: 16px;
-  stroke-linecap: round;
-  cursor: pointer;
-}
-
-/* Steel Rails - Crisp Industrial Thickness */
-.minimal-rail-base {
-  stroke: var(--rail-base);
-  stroke-width: 3.4px;
-  stroke-linecap: round;
-  pointer-events: none;
-  transition: stroke var(--transition-fast), stroke-width var(--transition-fast);
-}
-
-.segment-render-group:hover .minimal-rail-base {
-  stroke: var(--rail-hover);
-}
-
-/* Selected Asset Halo */
-.minimal-rail-base.selected {
-  stroke: #ffffff !important;
-  stroke-width: 5px !important;
-}
-
-/* Crossover Indicator */
-.minimal-rail-base.crossover {
-  stroke: #4d5358;
-}
-
-/* Interlocking Circuit States */
-.minimal-rail-occupied {
-  stroke: var(--rail-occupied);
-  stroke-width: 4.8px;
-  stroke-linecap: round;
-  pointer-events: none;
-}
-
-.minimal-rail-locked {
-  stroke: var(--rail-locked);
-  stroke-width: 4px;
-  stroke-linecap: round;
-  pointer-events: none;
-}
-
-.minimal-rail-hazard {
-  stroke-width: 6.5px;
-  stroke-linecap: round;
-  pointer-events: none;
-}
-
-.minimal-speed-text {
-  text-anchor: middle;
-  fill: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 7px;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-/* MACLS Signals */
-.minimal-signal {
-  cursor: pointer;
-}
-
-.signal-mast {
-  stroke: var(--text-faint);
-  stroke-width: 1.5px;
-  pointer-events: none;
-}
-
-.sig-dot-red {
-  fill: var(--sig-red);
-  stroke: #0a0c0e;
-  stroke-width: 1px;
-}
-
-.sig-dot-green {
-  fill: var(--sig-green);
-  stroke: #0a0c0e;
-  stroke-width: 1px;
-}
-
-.minimal-signal.selected circle:last-of-type {
-  stroke: #ffffff;
-  stroke-width: 2px;
-  r: 6px;
-}
-
-.sig-name-text {
-  text-anchor: middle;
-  fill: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-/* Turnout Switches (Points) */
-.minimal-switch {
-  cursor: pointer;
-}
-
-.switch-blade-solid {
-  fill: var(--sig-amber);
-  stroke: #0a0c0e;
-  stroke-width: 1px;
-  transition: transform var(--transition-fast);
-}
-
-.switch-blade-solid.reverse {
-  fill: var(--sig-double-amber);
-  transform: rotate(22deg);
-  transform-origin: center;
-}
-
-/* Dead-End Buffer Stops */
-.minimal-buffer-stop {
-  pointer-events: none;
-}
-
-.buffer-bar {
-  stroke: var(--sig-red);
-  stroke-width: 3.5px;
-  stroke-linecap: square;
-}
-
-.buffer-bracket {
-  fill: var(--sig-red);
-}
-
-/* Rolling Stock Train Capsules */
-.minimal-train {
-  cursor: pointer;
-  /* CHANGED: Removed CSS transition so GSAP can take over smoothly! */
-}
-
-.train-light-beam {
-  fill: rgba(255, 255, 255, 0.12);
-  pointer-events: none;
-}
-
-.train-capsule-body {
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 1px;
-}
-
-.train-cockpit-window {
-  fill: #0a0c0e;
-}
-
-.train-label-text {
-  text-anchor: middle;
-  fill: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 7.5px;
+.hud-code {
   font-weight: 800;
-  letter-spacing: 0.3px;
-  pointer-events: none;
+  color: #38bdf8;
+  letter-spacing: 0.5px;
+}
+
+.hud-metric {
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.hud-status-badge {
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hud-status-badge.operational {
+  background: rgba(22, 163, 74, 0.2);
+  color: #4ade80;
+  border: 1px solid #16a34a;
+}
+
+.hud-status-badge.faulty {
+  background: rgba(220, 38, 38, 0.2);
+  color: #f87171;
+  border: 1px solid #dc2626;
+}
+
+.hud-status-badge.maintenance {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+  border: 1px solid #ca8a04;
 }

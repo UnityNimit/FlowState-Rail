@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import gsap from 'gsap';
 import './TrackDiagram.css';
@@ -13,11 +13,14 @@ const trainColorMap = new Map([
   ['SF Express', '#0d9488'],
   ['Mail', '#b45309'],
   ['Express', '#3b82f6'],
-  ['Freight', '#525860']
+  ['Freight', '#64748b']
 ]);
 
 const getTrainColor = (trainType = '') => trainColorMap.get(trainType.trim()) || '#3b82f6';
 
+/* --------------------------------------------------------------------------
+   GSAP Animated Rolling Stock Capsule
+   -------------------------------------------------------------------------- */
 const TrainElement = ({ train, pos, color }) => {
   const trainRef = useRef(null);
   const isFirstRender = useRef(true);
@@ -50,11 +53,11 @@ const TrainElement = ({ train, pos, color }) => {
   const isBoarding = train.state === 'BOARDING_PASSENGERS';
 
   return (
-    <g ref={trainRef} className="minimal-train">
-      <polygon points="18,-4 42,-11 42,11 18,4" className="train-light-beam" />
-      <rect x="-24" y="-7.5" width="48" height="15" rx="7.5" fill={color} className="train-capsule-body" />
-      <rect x="12" y="-4.5" width="7" height="9" rx="2.5" className="train-cockpit-window" />
-      <text x="-2" y="3" className="train-label-text">
+    <g ref={trainRef} className="scada-train-unit">
+      <polygon points="20,-5 48,-14 48,14 20,5" className="train-headlight-cone" />
+      <rect x="-26" y="-8.5" width="52" height="17" rx="8.5" fill={color} className="train-hull" />
+      <rect x="14" y="-5.5" width="8" height="11" rx="2.5" className="train-windshield" />
+      <text x="-4" y="3.5" className="train-id-text">
         {train.id}
         {isBoarding ? ' [PAX]' : isHeld ? ' [HOLD]' : ''}
       </text>
@@ -62,6 +65,9 @@ const TrainElement = ({ train, pos, color }) => {
   );
 };
 
+/* --------------------------------------------------------------------------
+   Master SCADA Section Diagram Canvas
+   -------------------------------------------------------------------------- */
 const TrackDiagram = ({
   network,
   trains = [],
@@ -72,36 +78,45 @@ const TrackDiagram = ({
   activeMaintenanceBlocks = [],
   selectedAssetId = null
 }) => {
+  const [hoveredTrack, setHoveredTrack] = useState(null);
+
   const nodesMap = useMemo(() => {
     if (!network?.nodes) return new Map();
     return new Map(network.nodes.map((n) => [n.id, n]));
   }, [network]);
 
-  const { viewBox, safeMinX, safeMaxX } = useMemo(() => {
-    if (!network?.nodes?.length) return { viewBox: '0 0 2600 600', safeMinX: 0, safeMaxX: 2600 };
-    
+  // CHANGED: Tight vertical framing to eliminate empty black void
+  const { viewBox, safeMinX, safeMaxX, safeMinY } = useMemo(() => {
+    if (!network?.nodes?.length) return { viewBox: '0 0 3600 500', safeMinX: 0, safeMaxX: 3600, safeMinY: 0 };
+
     let minX = Infinity;
     let maxX = -Infinity;
+    let minY = Infinity;
     let maxY = -Infinity;
 
     network.nodes.forEach((n) => {
       if (n.position.x < minX) minX = n.position.x;
       if (n.position.x > maxX) maxX = n.position.x;
+      if (n.position.y < minY) minY = n.position.y;
       if (n.position.y > maxY) maxY = n.position.y;
     });
 
-    const paddingX = 140; 
-    const paddingBottom = 160; 
-    
-    const safeMinX = minX - paddingX;
+    const paddingX = 140;
+    const paddingY = 70;
+
+    const safeMinX = Math.max(0, minX - paddingX);
     const safeMaxX = maxX + paddingX;
     const width = safeMaxX - safeMinX;
-    const height = maxY + paddingBottom;
-    
-    return { 
-      viewBox: `${safeMinX} 0 ${width} ${height}`, 
-      safeMinX, 
-      safeMaxX 
+
+    // Tight vertical crop directly around the active rails
+    const safeMinY = Math.max(0, minY - paddingY);
+    const height = (maxY - safeMinY) + paddingY * 2;
+
+    return {
+      viewBox: `${safeMinX} ${safeMinY} ${width} ${height}`,
+      safeMinX,
+      safeMaxX,
+      safeMinY
     };
   }, [network]);
 
@@ -166,18 +181,18 @@ const TrackDiagram = ({
   const tracksMeta = stationMeta?.tracksMeta || (corridorMeta?.lines || []).map((line, index) => ({
     index: line.id,
     name: `${line.name} · ${line.direction}`,
-    y: [135, 205, 295, 365][index] || (130 + index * 70)
+    y: [150, 210, 310, 370][index] || (150 + index * 60)
   }));
-  const westConnection = stationMeta?.westConnection || corridorMeta?.westConnection || 'WESTERN APPROACH';
-  const eastConnection = stationMeta?.eastConnection || corridorMeta?.eastConnection || 'EASTERN APPROACH';
+  const westConnection = stationMeta?.westConnection || corridorMeta?.westConnection || 'DELHI JN';
+  const eastConnection = stationMeta?.eastConnection || corridorMeta?.eastConnection || 'GHAZIABAD JN';
 
   return (
     <div className="track-canvas-container">
       <TransformWrapper
         limitToBounds={false}
-        minScale={0.15}    
+        minScale={0.2}
         maxScale={8}
-        initialScale={5}
+        initialScale={1.15}
         centerOnInit={true}
         doubleClick={{ disabled: true }}
       >
@@ -191,56 +206,83 @@ const TrackDiagram = ({
             onClick={handleSvgBackgroundClick}
           >
             <defs>
-              <pattern id="maint-hazard" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-                <line x1="0" y1="0" x2="0" y2="12" stroke="#f59e0b" strokeWidth="4" />
-                <line x1="6" y1="0" x2="6" y2="12" stroke="#121417" strokeWidth="4" />
+              <pattern id="maint-hazard-heavy" width="16" height="16" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="16" stroke="#f59e0b" strokeWidth="6" />
+                <line x1="8" y1="0" x2="8" y2="16" stroke="#0a0c0e" strokeWidth="6" />
               </pattern>
             </defs>
 
-            <rect id="canvas-bg-target" x="-1000" y="-1000" width="10000" height="4000" fill="transparent" />
+            {/* Clickable Background Target */}
+            <rect id="canvas-bg-target" x="-2000" y="-1000" width="12000" height="5000" fill="transparent" />
 
+            {/* =========================================================
+                1. CLEAN OVERHEAD LANDMARKS (ZERO GIANT BLACK BLOCKS)
+                ========================================================= */}
             {corridorMeta?.infrastructure?.map((item) => (
-              <g key={item.id} className="minimal-corridor-infra">
-                <rect x={item.x - item.width / 2} y="86" width={item.width} height="340" rx="3" className="infra-landmark-rect" />
-                <text x={item.x} y="102" textAnchor="middle" className="infra-landmark-label">{item.name.toUpperCase()}</text>
-              </g>
-            ))}
-
-            {corridorMeta?.stations?.map((station) => (
-              <g key={station.code} transform={`translate(${station.x}, 52)`} className="minimal-station-gantry">
-                <line x1="0" y1="20" x2="0" y2="380" className="station-boundary-guide" />
-                <rect x="-42" y="-10" width="84" height="20" rx="3" className="station-code-box" />
-                <text x="0" y="0" textAnchor="middle" className="station-code-text">{station.code}</text>
-                <text x="0" y="8" textAnchor="middle" className="station-km-text">
-                  KM {station.chainageKm !== undefined ? station.chainageKm.toFixed(1) : ''}
+              <g key={item.id} className="scada-infra-marker" transform={`translate(${item.x}, ${safeMinY + 20})`}>
+                <line x1="-60" y1="0" x2="60" y2="0" className="infra-header-line" />
+                <text x="0" y="-8" textAnchor="middle" className="scada-landmark-title">
+                  {item.name}
                 </text>
               </g>
             ))}
 
-            <g transform={`translate(${safeMinX + 40}, 38)`}>
-              <text className="corridor-direction-text">WEST APPROACH · {westConnection.toUpperCase()}</text>
+            {/* =========================================================
+                2. STATION GANTRY POSTS & CHAINAGE MARKERS
+                ========================================================= */}
+            {corridorMeta?.stations?.map((station) => (
+              <g key={station.code} transform={`translate(${station.x}, ${safeMinY + 45})`} className="scada-station-gantry">
+                <line x1="0" y1="18" x2="0" y2="340" className="station-boundary-guide" />
+                <text x="0" y="0" textAnchor="middle" className="station-monolith-code">
+                  {station.code}
+                </text>
+                <text x="0" y="14" textAnchor="middle" className="station-chainage-text">
+                  KM {station.chainageKm !== undefined ? station.chainageKm.toFixed(1) : '0.0'}
+                </text>
+              </g>
+            ))}
+
+            {/* Section Outer Flanks */}
+            <g transform={`translate(${safeMinX + 30}, ${safeMinY + 45})`}>
+              <text className="scada-boundary-label">&lt;-- {westConnection.toUpperCase()}</text>
             </g>
-            <g transform={`translate(${safeMaxX - 250}, 38)`}>
-              <text className="corridor-direction-text">EAST DEPARTURE · {eastConnection.toUpperCase()}</text>
+            <g transform={`translate(${safeMaxX - 220}, ${safeMinY + 45})`}>
+              <text className="scada-boundary-label">{eastConnection.toUpperCase()} --&gt;</text>
             </g>
 
+            {/* Station Platforms (Platform Islands) */}
             {platforms.map((pf) => {
-              const isUp = pf.direction === 'WEST';
+              const isUp = pf.direction === 'EAST';
               return (
-                <g key={pf.number} className="platform-island-group">
-                  <rect x={pf.x_start} y={pf.y - 10} width={pf.x_end - pf.x_start} height={20} rx="3" className={isUp ? 'pf-island-up' : 'pf-island-dn'} />
-                  <text x={pf.x_start + 65} y={pf.y + 3.5} className="pf-number-text">{`PF ${pf.number} ${isUp ? 'UP' : 'DN'}`}</text>
+                <g key={pf.number} className="scada-platform-island">
+                  <rect
+                    x={pf.x_start}
+                    y={pf.y - 10}
+                    width={pf.x_end - pf.x_start}
+                    height={20}
+                    rx="2"
+                    className="platform-slab"
+                  />
+                  <text x={pf.x_start + 65} y={pf.y + 3.5} className="platform-code-text">
+                    {`PF ${pf.number} ${isUp ? 'UP' : 'DN'}`}
+                  </text>
                 </g>
               );
             })}
 
+            {/* Line Identifiers on West Flank */}
             {tracksMeta.map((tm) => (
-              <g key={tm.index} transform={`translate(${safeMinX + 10}, ${tm.y})`} className="minimal-line-label">
-                <text x="0" y="3.5" className="minimal-line-text">{tm.name}</text>
+              <g key={tm.index} transform={`translate(${safeMinX + 15}, ${tm.y})`} className="scada-track-identifier">
+                <text x="0" y="3.5" className="scada-track-name">
+                  {tm.name}
+                </text>
               </g>
             ))}
 
-            <g id="track-segments">
+            {/* =========================================================
+                3. TRACK CIRCUITS (THICK VISIBLE RAILS)
+                ========================================================= */}
+            <g id="track-circuits-layer">
               {network.trackSegments.map((segment) => {
                 const startNode = nodesMap.get(segment.startNodeId);
                 const endNode = nodesMap.get(segment.endNodeId);
@@ -256,26 +298,74 @@ const TrackDiagram = ({
                 const midY = (startNode.position.y + endNode.position.y) / 2;
 
                 return (
-                  <g key={segment.id} className="segment-render-group">
+                  <g
+                    key={segment.id}
+                    className="scada-segment-group"
+                    onMouseEnter={() => setHoveredTrack(segment)}
+                    onMouseLeave={() => setHoveredTrack(null)}
+                  >
+                    {/* Layer A: Heavy Ballast Underbed */}
                     <line
-                      x1={startNode.position.x} y1={startNode.position.y} x2={endNode.position.x} y2={endNode.position.y}
-                      className="rail-hitbox-target"
-                      onClick={(e) => { e.stopPropagation(); if (onTrackClick) onTrackClick(segment.id); }}
+                      x1={startNode.position.x}
+                      y1={startNode.position.y}
+                      x2={endNode.position.x}
+                      y2={endNode.position.y}
+                      className="track-ballast-bed"
                     />
+
+                    {/* Layer B: Steel Rail Core */}
                     <line
-                      x1={startNode.position.x} y1={startNode.position.y} x2={endNode.position.x} y2={endNode.position.y}
-                      className={`minimal-rail-base ${isCrossover ? 'crossover' : ''} ${isSelected ? 'selected' : ''}`}
+                      x1={startNode.position.x}
+                      y1={startNode.position.y}
+                      x2={endNode.position.x}
+                      y2={endNode.position.y}
+                      className={`scada-rail-core ${isCrossover ? 'crossover' : ''} ${isSelected ? 'selected' : ''}`}
                     />
+
+                    {/* Layer C: Active Interlocking States */}
                     {isBlocked ? (
-                      <line x1={startNode.position.x} y1={startNode.position.y} x2={endNode.position.x} y2={endNode.position.y} className="minimal-rail-hazard" stroke="url(#maint-hazard)" />
+                      <line
+                        x1={startNode.position.x}
+                        y1={startNode.position.y}
+                        x2={endNode.position.x}
+                        y2={endNode.position.y}
+                        className="rail-state-hazard"
+                        stroke="url(#maint-hazard-heavy)"
+                      />
                     ) : isOccupied ? (
-                      <line x1={startNode.position.x} y1={startNode.position.y} x2={endNode.position.x} y2={endNode.position.y} className="minimal-rail-occupied" />
+                      <line
+                        x1={startNode.position.x}
+                        y1={startNode.position.y}
+                        x2={endNode.position.x}
+                        y2={endNode.position.y}
+                        className="rail-state-occupied"
+                      />
                     ) : isLocked ? (
-                      <line x1={startNode.position.x} y1={startNode.position.y} x2={endNode.position.x} y2={endNode.position.y} className="minimal-rail-locked" />
+                      <line
+                        x1={startNode.position.x}
+                        y1={startNode.position.y}
+                        x2={endNode.position.x}
+                        y2={endNode.position.y}
+                        className="rail-state-locked"
+                      />
                     ) : null}
 
+                    {/* Layer D: 26px Wide Click Target */}
+                    <line
+                      x1={startNode.position.x}
+                      y1={startNode.position.y}
+                      x2={endNode.position.x}
+                      y2={endNode.position.y}
+                      className="rail-interactive-hitbox"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onTrackClick) onTrackClick(segment.id);
+                      }}
+                    />
+
+                    {/* Line Speed Limit */}
                     {showSpeeds && (
-                      <text x={midX} y={midY - 6} className="minimal-speed-text">
+                      <text x={midX} y={midY - 8} className="scada-speed-label">
                         {segment.permissibleSpeedKph || segment.speedLimit || 60}
                       </text>
                     )}
@@ -284,41 +374,87 @@ const TrackDiagram = ({
               })}
             </g>
 
-            <g id="interlocking-nodes">
+            {/* =========================================================
+                4. INTERLOCKING SIGNALS & POINTS
+                ========================================================= */}
+            <g id="interlocking-nodes-layer">
               {network.nodes.map((node) => {
                 const isSelected = selectedAssetId === node.id;
 
+                /* --- High-Contrast Optical Signals --- */
                 if (node.type === 'SIGNAL') {
-                  const isGreen = (node.state || 'RED').toUpperCase() === 'GREEN';
+                  const state = (node.state || 'RED').toUpperCase();
+                  const isGreen = state === 'GREEN';
+                  const isAmber = state === 'AMBER' || state === 'CAUTION';
+                  const isDoubleAmber = state === 'DOUBLE_AMBER';
+
                   return (
                     <g
                       key={node.id}
                       transform={`translate(${node.position.x}, ${node.position.y})`}
-                      className={`minimal-signal ${isSelected ? 'selected' : ''}`}
-                      onClick={(e) => { e.stopPropagation(); if (onSignalClick) onSignalClick(node.id); }}
+                      className={`scada-signal-gantry ${isSelected ? 'selected' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onSignalClick) onSignalClick(node.id);
+                      }}
                     >
-                      <circle cx="0" cy="-10" r="14" fill="transparent" />
-                      <line x1="0" y1="0" x2="0" y2="-10" className="signal-mast" />
-                      <circle cx="0" cy="-10" r="4.5" className={isGreen ? 'sig-dot-green' : 'sig-dot-red'} />
-                      {showNames && <text x="0" y="-17" className="sig-name-text">{node.label || node.id}</text>}
+                      {/* Generous 22px click target */}
+                      <circle cx="0" cy="-15" r="22" fill="transparent" />
+                      
+                      {/* Signal Mast */}
+                      <line x1="0" y1="0" x2="0" y2="-15" className="scada-signal-pole" />
+
+                      {/* Optical Signal Housing */}
+                      <circle cx="0" cy="-15" r="10.5" className="signal-housing-plate" />
+
+                      {/* Bright Active Lamp Lens */}
+                      <circle
+                        cx="0"
+                        cy="-15"
+                        r="7.5"
+                        className={`signal-lamp ${
+                          isGreen ? 'green' : isDoubleAmber ? 'double-amber' : isAmber ? 'amber' : 'red'
+                        }`}
+                      />
+
+                      {/* Monospaced ID Tag */}
+                      {showNames && (
+                        <text x="0" y="-28" textAnchor="middle" className="signal-id-tag">
+                          {node.label || node.id}
+                        </text>
+                      )}
                     </g>
                   );
                 }
 
+                /* --- Motorized Interlocking Turnout Points --- */
                 if (node.type === 'SWITCH') {
                   const isReverse = (node.state || 'NORMAL').toUpperCase() === 'REVERSE';
                   return (
-                    <g key={node.id} transform={`translate(${node.position.x}, ${node.position.y})`} className="minimal-switch">
-                      <polygon points="-3.5,-3.5 0,-6 3.5,-3.5 0,6" className={`switch-blade-solid ${isReverse ? 'reverse' : 'normal'}`} />
+                    <g
+                      key={node.id}
+                      transform={`translate(${node.position.x}, ${node.position.y})`}
+                      className="scada-point-machine"
+                    >
+                      <rect x="-4" y="-4" width="8" height="8" rx="1.5" className="point-actuator-box" />
+                      <polygon
+                        points="-4,-3 0,-7 4,-3 0,7"
+                        className={`switch-blade ${isReverse ? 'reverse' : 'normal'}`}
+                      />
                     </g>
                   );
                 }
 
+                /* --- Dead-End Hydraulic Buffer Stops --- */
                 if (node.type === 'BUFFER_STOP') {
                   return (
-                    <g key={node.id} transform={`translate(${node.position.x}, ${node.position.y})`} className="minimal-buffer-stop">
-                      <line x1="0" y1="-8" x2="0" y2="8" className="buffer-bar" />
-                      <polygon points="-4,-4 0,0 -4,4" className="buffer-bracket" />
+                    <g
+                      key={node.id}
+                      transform={`translate(${node.position.x}, ${node.position.y})`}
+                      className="scada-buffer-stop"
+                    >
+                      <line x1="0" y1="-8" x2="0" y2="8" className="buffer-post" />
+                      <polygon points="-5,-5 0,0 -5,5" className="buffer-stanchion" />
                     </g>
                   );
                 }
@@ -327,18 +463,33 @@ const TrackDiagram = ({
               })}
             </g>
 
-            <g id="trains">
-              {/* CHANGED: Now trains show immediately as soon as they get a plan (WAITING_PLAN -> READY_TO_PROCEED) */}
-              {trains?.filter((t) => t.state !== 'WAITING_PLAN' && t.state !== 'EXITED').map((train) => {
-                const pos = calculateTrainPosition(train);
-                if (!pos) return null;
-                const color = getTrainColor(train.type);
-                return <TrainElement key={train.id} train={train} pos={pos} color={color} />;
-              })}
+            {/* =========================================================
+                5. ROLLING STOCK TRAIN CARRIAGES (GSAP ANIMATED)
+                ========================================================= */}
+            <g id="trains-traffic-layer">
+              {trains
+                ?.filter((t) => t.state !== 'WAITING_PLAN' && t.state !== 'EXITED')
+                .map((train) => {
+                  const pos = calculateTrainPosition(train);
+                  if (!pos) return null;
+                  const color = getTrainColor(train.type);
+                  return <TrainElement key={train.id} train={train} pos={pos} color={color} />;
+                })}
             </g>
           </svg>
         </TransformComponent>
       </TransformWrapper>
+
+      {/* Floating Micro-Telemetry Inspection HUD */}
+      {hoveredTrack && (
+        <aside className="track-inspection-hud">
+          <span className="hud-code">{hoveredTrack.id}</span>
+          <span className="hud-metric">{hoveredTrack.permissibleSpeedKph || 60} KM/H</span>
+          <span className={`hud-status-badge ${(hoveredTrack.status || 'OPERATIONAL').toLowerCase()}`}>
+            {hoveredTrack.status || 'OPERATIONAL'}
+          </span>
+        </aside>
+      )}
     </div>
   );
 };
