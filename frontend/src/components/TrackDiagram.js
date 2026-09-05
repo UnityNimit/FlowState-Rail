@@ -192,7 +192,7 @@ const TrackDiagram = ({
         limitToBounds={false}
         minScale={0.2}
         maxScale={8}
-        initialScale={1.15}
+        initialScale={4.7}
         centerOnInit={true}
         doubleClick={{ disabled: true }}
       >
